@@ -107,7 +107,7 @@ Hospital managment system  will also provide a web interface for users to access
              
 ### PatientMedication
 ````
-             ![IMG_6536](https://github.com/nss-se-cohort-3/CapStone_NSS/assets/42800039/8e90a0a5-d52f-4a77-96ba-812c1758c8b6)
+           
 String madicationId      // Unique identifier for the medication
              String medicationName;   // Name of the medication
              String dosage;           // Dosage of the medication
