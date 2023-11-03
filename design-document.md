@@ -22,14 +22,30 @@ _The existing paper-based patient record systems are prone to errors and are dif
 #### U1. Registration and Authentication
 _As a healthcare professional, I want to register for a secure account and log in to access patient records and add/update medical information._
 
-#### U2. Registration and Authentication
+#### U2. Create new patient
 _As a healthcare professional, I want to create electronic records for new patients, including their personal details, medical history, and diagnosis._
 
-#### U3. Registration and Authentication
-_As a healthcare professional, I want to search for patient records using various criteria such as name, date of birth, or medical condition for quick and easy access._
+#### U3. Search Patient using name
+_As a healthcare professional, I want to search for patient records using  name for quick and easy access._
 
-#### U4. Registration and Authentication
-_As a healthcare professional, I want to be able to update patient records with new diagnoses, treatment plans, and any changes to their medical history._
+#### U4. Search Patient using DOB
+_As a healthcare professional, I want to search for patient records using date of birth for quick and easy access._
+
+#### U5. Update patient diagnosis record
+_As a healthcare professional, I want to be able to update patient records with new diagnoses._
+
+#### U6. Update patient medication record
+_As a healthcare professional, I want to be able to update patient records with changes to their medical history._
+
+#### U7. Delete patient diagnosis record
+_As a healthcare professional, I want to be able to delete  patient diagnoses records._
+
+#### U8. Delete patient medication record
+_As a healthcare professional, I want to be able to delete  patient  medications records._
+
+#### U9. Search complete medical History
+_As a healthcare professional, I want to view a patient's complete medical history, including past diagnoses, treatments, and test results, to make informed decisions._
+
 
 #### U5. Registration and Authentication
 _As a healthcare professional, I want to categorize and organize patient records by department or medical condition to streamline access._
@@ -40,8 +56,6 @@ _As a healthcare professional, I want to control access to patient records, ensu
 #### U7. Registration and Authentication
 _As a healthcare professional, I want the system to securely store patient records, ensuring compliance with healthcare data privacy regulations._
 
-#### U8. Registration and Authentication
-_As a healthcare professional, I want to view a patient's complete medical history, including past diagnoses, treatments, and test results, to make informed decisions._
 
 #### U9. Registration and Authentication
 _As a healthcare professional, I want to document patient diagnoses in a structured format, making it easier to review and share with other medical staff._
