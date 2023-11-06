@@ -11,13 +11,12 @@ _Hospitals are complex organizations with numerous departments, healthcare profe
 ## 2. Top Questions to Resolve in Review
 
 ### Patient Information Management:
-_The existing paper-based patient record systems are prone to errors and are difficult to access , search , organize and update. The proposed system will provide a secure and efficient way to manage patient records, including medical history and  diagnosis._
+#### 1.How to track  patient historical data
+#### 2.Efficiently display the data retrieved  to be able to communicate with the costumer. 
 
 
 
 ## 3. Use Cases
-
-
 
 #### U1. Registration and Authentication
 _As a healthcare professional, I want to register for a secure account and log in to access patient records and add/update medical information._
@@ -44,30 +43,18 @@ _As a healthcare professional, I want to be able to delete  patient diagnoses re
 _As a healthcare professional, I want to be able to delete  patient  medications records._
 
 #### U9. Search complete medical History
-_As a healthcare professional, I want to view a patient's complete medical history, including past diagnoses, treatments, and test results, to make informed decisions._
+_As a healthcare professional, I want to view a patient's complete medical history, including past diagnoses and treatments to make informed decisions._
 
 
-#### U5. Registration and Authentication
-_As a healthcare professional, I want to categorize and organize patient records by department or medical condition to streamline access._
-
-#### U6. Registration and Authentication
-_As a healthcare professional, I want to control access to patient records, ensuring that only authorized individuals can view or edit them._
-
-#### U7. Registration and Authentication
-_As a healthcare professional, I want the system to securely store patient records, ensuring compliance with healthcare data privacy regulations._
-
-
-#### U9. Registration and Authentication
-_As a healthcare professional, I want to document patient diagnoses in a structured format, making it easier to review and share with other medical staff._
 
 ## 4. Project Scope
 
-_The project aims to develop a comprehensive Hospital Management System (HMS) to address the challenges faced by hospitals in managing patient records and improving the efficiency of healthcare operations.
-The system will replace existing paper-based patient record systems with a secure, efficient, and digital solution._
+_The project aims to develop a comprehensive patient information management software solution   to address the challenges faced by hospitals or  clinics in managing patient records and improving the efficiency of healthcare operations.
+The system will replace existing paper-based patient record systems with an efficient digital solution._
 
 ### 4.1. In Scope
 
-  .  _The primary focus of the system is to provide a user-friendly and secure way to manage patient information, including personal details, medical history, and diagnoses._
+  .  _The primary focus of the system is to provide a user-friendly and secure way to manage animal information, including personal details, medical history, and diagnoses._
 
   .  _The system will allow healthcare professionals to create, update, and access patient records with ease._
 
@@ -83,7 +70,7 @@ The system will replace existing paper-based patient record systems with a secur
  
 # 5. Proposed Architecture Overview
 
- The system will be able to create, update, retriwve and delet patient records.
+ The system will be able to create, update, retrieve and delete patient records.
  
  API Gateway and Lambda  will be used to create eight endpoints (GetPatientProfileLambda, CreatePatientProfileLambda, UpdatePatientProfileLambda, DeletPatientProfileLambda,GetPatientRecordLambda, CreatePatientRecordLambda, UpdatePatientRecordLambda and DeletPatientRecordLambda) that will handle the creation, update, delet and 
  retrieval of the patient record.
@@ -160,30 +147,55 @@ String madicationId      // Unique identifier for the medication
       * If the given patient is not found, it returns the PatientNotFoundException
   
 
-## 6.6. _Get Patient Record Endpoint_
+## 6.6. _Get Patient medication Endpoint_
 
- * Accepts `GET` requests to `/patients/{patientId}/diagnosis-medication`
- * Accepts a patientId and returns the correspondingpatient record from both the diagnosis  and medication  tables
+ * Accepts `GET` requests to `/patients/{patientId}/medication`
+ * Accepts a patientId and returns the corresponding patient record from  medication  table
      *  if the given patient is not found throws a PatientNotFoundException.
 
-## 6.7. _Create Patient Record Endpoint_
+## 6.7. _Get Patient diagnosis Endpoint_
 
-* Accepts `POST` requests to `/patients/{patientId}/records`
-* Accepts data to create a new patient record using the records type to specify if the type is of diagnosis or  medication .
+* Accepts `GET` requests to `/patients/{patientId}/diagnosis`
+* Accepts a patientId and returns the corresponding patient record from  diagnosis table
+    *  if the given patient is not found throws a PatientNotFoundException.
+
+## 6.8. _Create Patient diagnosis Endpoint_
+
+* Accepts `POST` requests to `/patients/{patientId}/diagnosis`
+* Accepts data to create a new patient in the diagnosis table.
      *  if the given patient is not found throws a PatientNotFoundException.
 
+## 6.9. _Create Patient medication Endpoint_
 
-## 6.8. _Update Patient Record Endpoint_
+* Accepts `POST` requests to `/patients/{patientId}/medication`
+* Accepts data to create a new patient in the medication table.
+    *  if the given patient is not found throws a PatientNotFoundException.
 
- * Accepts `PUT` requests to `/patients/{patientId}/records/{recordId}`
- * Accepts data to update a  patient record using the records type to specify if the type is of diagnosis or  medication  and recordid.
+## 6.10. _Update Patient medication  Endpoint_
+
+ * Accepts `PUT` requests to `/patients/{patientId}/medication`
+ * Accepts data to update a  patient  medication record .
      *  if the given patient is not found throws a PatientNotFoundException.
 
-## 6.9. _Delet Patient Record Endpoint_
+## 6.11. _Update Patient medication  Endpoint_
 
- * Accepts `DELETE` requests to `/patients/{patientId}/records/{recordId}`
- * Accepts data to Delet a  patient record using the records type to specify if the type is of diagnosis or medication  and recordid.
+* Accepts `PUT` requests to `/patients/{patientId}/diagnosis`
+* Accepts data to update a  patient  diagnosis record .
+    *  if the given patient is not found throws a PatientNotFoundException.
+
+
+## 6.12. _Delete Patient Record Endpoint_
+
+ * Accepts `DELETE` requests to `/patients/{patientId}/medication`
+ * Accepts data to Delete a  patient  medication record.
      *  if the given patient is not found throws a PatientNotFoundException.
+
+## 6.13. _Delete Patient Record Endpoint_
+
+* Accepts `DELETE` requests to `/patients/{patientId}/diagnosis`
+* Accepts data to Delete a  patient  diagnosis record.
+    *  if the given patient is not found throws a PatientNotFoundException.
+
 # 7. Tables
 
 ### Patients
