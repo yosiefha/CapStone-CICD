@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Music Playlist Service
+  Hospital Management Service
 
 Parameters:
 
@@ -200,21 +200,29 @@ Resources:
                   - logs:PutLogEvents
                   - cloudwatch:PutMetricData
                 Resource: '*'
-        - PolicyName: 'AccessPlaylistsTable'
+        - PolicyName: 'AccessPatientTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action: dynamodb:*
-                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/playlists"
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/patients"
 
-        - PolicyName: 'AccessAlbumTracksTable'
+        - PolicyName: 'AccessDiagnosisTable'
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
               - Effect: Allow
                 Action: dynamodb:*
-                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/album_tracks"
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/diagnoses"
+
+        - PolicyName: 'AccessMedicationTable'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: dynamodb:*
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/medications"
 
   #-----------------------------------------------------
   # Lambda Functions Configuration
@@ -452,23 +460,11 @@ Resources:
   # DynamoDB Configuration
   #-----------------------------------------------------
 
-  PlaylistsTable:
+  PatientTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
         - AttributeName: "patientId"
-          AttributeType: "S"
-        - AttributeName: "firstName"
-          AttributeType: "S"
-        - AttributeName: "lastName"
-          AttributeType: "S"
-        - AttributeName: "dateOfBirth"
-          AttributeType: "S"
-        - AttributeName: "contactNumber"
-          AttributeType: "N"
-        - AttributeName: "emailAddress"
-          AttributeType: "S"
-        - AttributeName: "address"
           AttributeType: "S"
       KeySchema:
         - AttributeName: "patientId"
@@ -483,12 +479,6 @@ Resources:
         AttributeDefinitions:
           - AttributeName: "diagnosisId"
             AttributeType: "S"
-          - AttributeName: "description"
-            AttributeType: "S"
-          - AttributeName: "date"
-            AttributeType: "S"
-          - AttributeName: "healthcareProfessionalId"
-            AttributeType: "S"
           - AttributeName: "patientId"
             AttributeType: "S"
         KeySchema:
@@ -497,7 +487,7 @@ Resources:
           - AttributeName: "patientId"
             KeyType: "RANGE"
         BillingMode: "PAY_PER_REQUEST"
-        TableName: "diagnosis"
+        TableName: "diagnoses"
 
 
   MedicationTable:
@@ -506,22 +496,15 @@ Resources:
         AttributeDefinitions:
           - AttributeName: "medicationId"
             AttributeType: "S"
-          - AttributeName: "description"
-            AttributeType: "S"
-          - AttributeName: "date"
-            AttributeType: "S"
-          - AttributeName: "healthcareProfessionalId"
-            AttributeType: "S"
           - AttributeName: "patientId"
             AttributeType: "S"
-
         KeySchema:
           - AttributeName: "medicationId"
             KeyType: "HASH"
           - AttributeName: "patientId"
             KeyType: "RANGE"
         BillingMode: "PAY_PER_REQUEST"
-        TableName: "medication"
+        TableName: "medications"
 
 
 #-----------------------------------------------------
@@ -541,9 +524,9 @@ Outputs:
     Value: !Sub "${CognitoDomain}.auth.us-east-2.amazoncognito.com"
     Description: "The Cognito Domain (COGNITO_DOMAIN)."
 
-  ApiBaseUrl:
-    Description: "API Gateway endpoint base URL for Prod stage (API_BASE_URL)."
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+#  ApiBaseUrl:
+#    Description: "API Gateway endpoint base URL for Prod stage (API_BASE_URL)."
+#    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
 
   CognitoRedirectSignin:
     Description: "The URL of the deployed front-end application (COGNITO_REDIRECT_SIGNIN)."
