@@ -375,28 +375,52 @@ Resources:
 #            Method: get
 #            Auth:
 #              Authorizer: 'NONE'
-#  CreatePatientRecordLambda:
-#    Type: AWS::Serverless::Function
-#    Properties:
-#      Role: !GetAtt AccessRole.Arn
-#      CodeUri: CapStone_NSS
-#      Handler: java.lambda.CreatePatientRecordLambda::handleRequest
-#      Runtime: java11
-#      Architectures:
-#        - x86_64
-#      MemorySize: 512
-#      Environment:
-#        Variables:
-#          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
-#      Events:
-#        MusicPlaylistService:
-#          Type: Api
-#          Properties:
-#            Path:  /patients/{patientId}/records
-#            Method: post
-#            Auth:
-#              Authorizer: 'NONE'
-#
+
+
+
+  CreateGoalLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: PatientRecordServiceLambda
+      Handler: com.nashss.se.hms.lambda.CreateGoalLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        MusicPlaylistService:
+          Type: Api
+          Properties:
+            Path: /goals
+            Method: post
+
+
+  AddPatientToPatientsLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: !GetAtt AccessRole.Arn
+      CodeUri: PatientRecordServiceLambda
+      Handler: com.nashss.se.hms.lambda.AddPatientToPatientsLambda::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        MusicPlaylistService:
+          Type: Api
+          Properties:
+            Path:  /patients
+            Method: post
+            Auth:
+              Authorizer: 'NONE'
+
 #  UpdatePatientRecordLambda:
 #    Type: AWS::Serverless::Function
 #    Properties:
@@ -506,6 +530,38 @@ Resources:
         BillingMode: "PAY_PER_REQUEST"
         TableName: "medications"
 
+
+  AnotherGoalTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "userId"
+          AttributeType: "S"
+        - AttributeName: "goalName"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "userId"
+          KeyType: "HASH"
+        - AttributeName: "goalName"
+          KeyType: "RANGE"
+      BillingMode: "PAY_PER_REQUEST"
+      TableName: "anothergoal"
+
+#  GoalTable:
+#    Type: AWS::DynamoDB::Table
+#    Properties:
+#      AttributeDefinitions:
+#        - AttributeName: "userId"
+#          AttributeType: "S"
+#        - AttributeName: "goalName"
+#          AttributeType: "S"
+#      KeySchema:
+#        - AttributeName: "userId"
+#          KeyType: "HASH"
+#        - AttributeName: "goalName"
+#          KeyType: "RANGE"
+#      BillingMode: "PAY_PER_REQUEST"
+#      TableName: "goals"
 
 #-----------------------------------------------------
 # The outputs defined below will be printed

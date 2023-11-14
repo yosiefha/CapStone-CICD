@@ -1,0 +1,101 @@
+package com.nashss.se.hms.activity.requests;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+
+@JsonDeserialize(builder = CreateGoalRequest.Builder.class)
+public class CreateGoalRequest {
+
+
+    private final String userId;
+    private final Integer timePeriod;
+    private final Integer target;
+    private final String unit;
+    private final String goalName;
+
+    public CreateGoalRequest(String userId, Integer timePeriod, Integer target, String unit, String goalName) {
+
+        this.userId = userId;
+        this.timePeriod = timePeriod;
+        this.target = target;
+        this.unit = unit;
+        this.goalName = goalName;
+    }
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public Integer getTimePeriod() {
+        return timePeriod;
+    }
+
+    public Integer getTarget() {
+        return target;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public String getGoalName() {
+        return goalName;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateGoalRequest{" +
+                ", userId='" + userId + '\'' +
+                ", timePeriod=" + timePeriod +
+                ", target=" + target +
+                ", unit='" + unit + '\'' +
+                ", goalName='" + goalName + '\'' +
+                '}';
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @JsonPOJOBuilder
+    public static class Builder {
+
+        private String userId;
+        private Integer timePeriod;
+        private Integer target;
+        private String unit;
+        private String goalName;
+
+
+        public Builder withUserId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder withTimePeriod(Integer timePeriod) {
+            this.timePeriod = timePeriod;
+            return this;
+        }
+
+        public Builder withTarget(Integer target) {
+            this.target = target;
+            return this;
+        }
+
+        public Builder withUnit(String unit) {
+            this.unit = unit;
+            return this;
+        }
+
+        public Builder withGoalName(String goalName) {
+            this.goalName = goalName;
+            return this;
+        }
+
+        public CreateGoalRequest build() {
+            return new CreateGoalRequest(userId, timePeriod, target, unit, goalName);
+        }
+    }
+
+}

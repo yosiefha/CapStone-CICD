@@ -9,17 +9,42 @@
 <body class="background">
     <header class="header" id="header"></header>
     <div class="card">
-        <h2>Search Playlists</h2>
+        <h2>Create Patient Profile</h2>
         <form class="card-content" id="search-playlists-form">
             <p class="form-field">
-                <label>Search by name or tag</label>
-                <input type="text" class="validated-field" id="search-criteria" placeholder="smooth-jamz" autofocus>
-                <sub>Search is case-sensitive and tags must match exactly.</sub>
+                <label>First Name</label>
+                <input type="text" class="validated-field" id="firstName" placeholder="First Name" autofocus>
+<!--                <sub>Search is case-sensitive and tags must match exactly.</sub>-->
+            </p>
+            <p class="form-field">
+                <label>Last Name</label>
+                <input type="text" class="validated-field" id="lastName" placeholder="Last Name" autofocus>
+<!--                <sub>Search is case-sensitive and tags must match exactly.</sub>-->
+            </p>
+            <p class="form-field">
+                <label>Date of Birth</label>
+                <input type="text" class="validated-field" id="DOB" placeholder="YYYY.MM.DD" autofocus>
+<!--                <sub>YYYY.MM.DD.</sub>-->
+            </p>
+            <p class="form-field">
+                <label>Contact Number</label>
+                <input type="text" class="validated-field" id="contactNumber" placeholder="(000)-000-0000" autofocus>
+<!--                <sub>Search is case-sensitive and tags must match exactly.</sub>-->
+            </p>
+            <p class="form-field">
+                <label>Email Address</label>
+                <input type="text" class="validated-field" id="emailAddress" placeholder="email address" autofocus>
+<!--                <sub>Search is case-sensitive and tags must match exactly.</sub>-->
+            </p>
+            <p class="form-field">
+                <label>Address</label>
+                <input type="text" class="validated-field" id="search-criteria" placeholder="address" autofocus>
+<!--                <sub>Search is case-sensitive and tags must match exactly.</sub>-->
             </p>
         </form>
         <p class="button-group">
-            <a href="#" class="button" id="search-btn">Search</a>
-            <a href="createPlaylist.html" class="button">New Playlist</a>
+            <a href="#" class="button" id="search-btn">Create</a>
+            <a href="createPlaylist.html" class="button">New Patient</a>
         </p>
     </div>
     <div class="card hidden" id='search-results-container'>
