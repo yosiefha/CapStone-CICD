@@ -1,20 +1,22 @@
-package com.nashss.se.hms.models;
+package com.nashss.se.hms.activity.requests;
 
-import lombok.Builder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import java.util.Objects;
+@JsonDeserialize(builder = CreatePatientMedicationRequest.Builder.class)
+public class CreatePatientMedicationRequest {
 
-public class MedicationModel {
-
-    private final  String medicationId;
+    private final String medicationId;
     private final String medicationName;
     private final String dosage;
-    private  final String  startDate;
+    private final String  startDate;
     private final String endDate;
     private final String instructions;
     private final String patientId;
 
-    public MedicationModel(String medicationId, String medicationName, String dosage, String startDate, String endDate, String instructions, String patientId) {
+
+
+    public CreatePatientMedicationRequest(String medicationId, String medicationName, String dosage, String startDate, String endDate, String instructions, String patientId) {
         this.medicationId = medicationId;
         this.medicationName = medicationName;
         this.dosage = dosage;
@@ -22,19 +24,6 @@ public class MedicationModel {
         this.endDate = endDate;
         this.instructions = instructions;
         this.patientId = patientId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MedicationModel)) return false;
-        MedicationModel that = (MedicationModel) o;
-        return Objects.equals(medicationId, that.medicationId) && Objects.equals(medicationName, that.medicationName) && Objects.equals(dosage, that.dosage) && Objects.equals(startDate, that.startDate) && Objects.equals(endDate, that.endDate) && Objects.equals(instructions, that.instructions) && Objects.equals(patientId, that.patientId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(medicationId, medicationName, dosage, startDate, endDate, instructions, patientId);
     }
 
     public String getMedicationId() {
@@ -65,12 +54,27 @@ public class MedicationModel {
         return patientId;
     }
 
-    public static Builder builder() {
-        return  new Builder();
+    @Override
+    public String toString() {
+        return "CreatePatientMedicationRequest{" +
+                "medicationId='" + medicationId + '\'' +
+                ", medicationName='" + medicationName + '\'' +
+                ", dosage='" + dosage + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", instructions='" + instructions + '\'' +
+                ", patientId='" + patientId + '\'' +
+                '}';
     }
+
+    //CHECKSTYLE:OFF:Builder
+    public static Builder builder() {
+        return new Builder();
+    }
+    @JsonPOJOBuilder
     public static class Builder {
 
-        private String medicationId;
+        private  String medicationId;
         private String medicationName;
         private String dosage;
         private  String  startDate;
@@ -82,9 +86,12 @@ public class MedicationModel {
             this.medicationId = medicationId;
             return this;
         }
-
         public Builder withMedicationName(String medicationName){
-            this.medicationName= medicationName;
+            this.medicationName = medicationName;
+            return this;
+        }
+        public Builder withDosage(String dosage){
+            this.dosage = dosage;
             return this;
         }
         public Builder withStartDate(String startDate){
@@ -95,23 +102,17 @@ public class MedicationModel {
             this.endDate = endDate;
             return this;
         }
-
         public Builder withInstructions(String instructions){
             this.instructions = instructions;
             return this;
         }
-        public Builder withDosage(String dosage){
-            this.dosage = dosage;
-            return this;
-        }
-
         public Builder withPatientId(String patientId){
             this.patientId = patientId;
             return this;
         }
-
-        public MedicationModel build(){
-            return new MedicationModel(medicationId, medicationName, dosage, startDate, endDate, instructions, patientId);
+        public CreatePatientMedicationRequest build(){
+            return new CreatePatientMedicationRequest(medicationId,  medicationName, dosage, startDate, endDate, instructions, patientId);
         }
+
     }
 }

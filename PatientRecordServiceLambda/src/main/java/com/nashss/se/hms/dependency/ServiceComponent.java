@@ -1,8 +1,8 @@
 package com.nashss.se.hms.dependency;
-import com.nashss.se.hms.activity.AddPatientToPatientsActivity;
+import com.nashss.se.hms.activity.*;
 
 
-import com.nashss.se.hms.activity.CreateGoalActivity;
+
 import dagger.Component;
 import javax.inject.Singleton;
 
@@ -18,7 +18,21 @@ public interface ServiceComponent {
      * @return AddPatientToPatientsActivity
      */
     AddPatientToPatientsActivity provideAddPatientToPatientsActivity();
-    CreateGoalActivity provideCreateGoalActivity();
+    SearchPatientByNameActivity provideSearchPatientByNameActivity();
+
+    CreatePatientDiagnosisActivity provideCreatePatientDiagnosisActivity();
+
+    CreatePatientMedicationActivity provideCreatePatientMedicationActivity();
+
+    GetPatientByPatientIdActivity provideGetPatientByPatientIdActivity();
+
+    GetDiagnosisDetailsActivity provideGetDiagnosisDetailsActivity();
+
+    GetMedicationDetailsActivity provideGetMedicationDetailsActivity();
+
+    DeletePatientActivity provideDeletePatientActivity();
+
+    DeleteDiagnosisActivity provideDeleteDiagnosisActivity();
 
 
 }

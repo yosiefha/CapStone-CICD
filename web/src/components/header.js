@@ -1,4 +1,6 @@
-import MusicPlaylistClient from '../api/musicPlaylistClient';
+//import MusicPlaylistClient from '../api/musicPlaylistClient';
+import PatientRecordClient from '../api/patientRecordClient';
+
 import BindingClass from "../util/bindingClass";
 
 /**
@@ -14,7 +16,8 @@ export default class Header extends BindingClass {
         ];
         this.bindClassMethods(methodsToBind, this);
 
-        this.client = new MusicPlaylistClient();
+        //this.client = new MusicPlaylistClient();
+        this.client = new PatientRecordClient();
     }
 
     /**

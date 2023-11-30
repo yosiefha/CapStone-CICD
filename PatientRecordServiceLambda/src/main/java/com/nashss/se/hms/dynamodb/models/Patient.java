@@ -1,13 +1,15 @@
 package com.nashss.se.hms.dynamodb.models;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.time.LocalDate;
 
 @DynamoDBTable(tableName = "patients")
 public class Patient {
-
+    public static final String SEARCH_ByNAME_INDEX = "SearchByNameIndex";
     private String patientId;
     private String firstName;
     private String  lastName;
@@ -24,7 +26,7 @@ public class Patient {
     public void setPatientId(String patientId) {
         this.patientId = patientId;
     }
-
+    @DynamoDBIndexRangeKey(globalSecondaryIndexName = SEARCH_ByNAME_INDEX, attributeName = "firstName")
     public String getFirstName() {
         return firstName;
     }
@@ -32,7 +34,7 @@ public class Patient {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
+    @DynamoDBIndexHashKey(globalSecondaryIndexNames = SEARCH_ByNAME_INDEX, attributeName = "lastName")
     public String getLastName() {
         return lastName;
     }

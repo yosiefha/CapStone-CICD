@@ -88,35 +88,35 @@ public class PatientModel {
         private String emailAddress;
         private String address;
 
-        public  PatientModel.Builder withPatientId(String patientId){
+        public  Builder withPatientId(String patientId){
             this.patientId = patientId;
             return this;
         }
 
-        public PatientModel.Builder withFirstName(String firstName){
+        public Builder withFirstName(String firstName){
             this.firstName = firstName;
             return this;
         }
-        public PatientModel.Builder withLastName(String lastName){
+        public Builder withLastName(String lastName){
             this.lastName = lastName;
             return this;
         }
-        public PatientModel.Builder withDOB(String DOB){
+        public Builder withDOB(String DOB){
             this.DOB = DOB;
             return this;
         }
 
-        public PatientModel.Builder withContactNumber(String contactNumber){
+        public Builder withContactNumber(String contactNumber){
             this.contactNumber = contactNumber;
             return this;
         }
 
-        public PatientModel.Builder withEmailAddress(String emailAddress){
+        public Builder withEmailAddress(String emailAddress){
             this.emailAddress = emailAddress;
             return this;
         }
 
-        public PatientModel.Builder withAddress(String address){
+        public Builder withAddress(String address){
             this.address = address;
             return this;
         }

@@ -22,11 +22,12 @@ public class AddPatientToPatientsLambda  extends LambdaActivityRunner<AddPatient
                                     .withContactNumber(unauthenticatedRequest.getContactNumber())
                                     .withEmailAddress(unauthenticatedRequest.getEmailAddress())
                                     .withAddress(unauthenticatedRequest.getAddress())
-                                    .withUserId(claims.get("email"))
                                     .build());
                 },
                 (request, serviceComponent) ->
                         serviceComponent.provideAddPatientToPatientsActivity().handleRequest(request)
         );
     }
+
+
 }

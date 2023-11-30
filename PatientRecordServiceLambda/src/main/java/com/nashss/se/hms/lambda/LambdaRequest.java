@@ -16,6 +16,8 @@ import static com.nashss.se.hms.utils.NullUtils.ifNull;
  * Represents a generic "APIGateway" request made to a lambda function.
  * @param <T> The type of the concrete request that should be created from this LambdaRequest
  */
+
+
 public class LambdaRequest<T> extends APIGatewayProxyRequestEvent {
 
     protected static final ObjectMapper MAPPER = new ObjectMapper();

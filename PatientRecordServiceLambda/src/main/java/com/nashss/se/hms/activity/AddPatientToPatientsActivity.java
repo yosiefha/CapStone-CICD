@@ -33,6 +33,7 @@ public class AddPatientToPatientsActivity {
        newPatient.setContactNumber(addPatientToPatientsRequest.getContactNumber());
        newPatient.setEmailAddress(addPatientToPatientsRequest.getEmailAddress());
        newPatient.setAddress(addPatientToPatientsRequest.getAddress());
+       patientsDAO.savePatient(newPatient);
 
         PatientModel patientModel = new ModelConverter().toPatientModel(newPatient);
 

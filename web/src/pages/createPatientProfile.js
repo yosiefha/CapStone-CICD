@@ -1,4 +1,4 @@
-import MusicPlaylistClient from '../api/musicPlaylistClient';
+import PatientRecordClient from '../api/patientRecordClient';
 import Header from '../components/header';
 import BindingClass from '../util/bindingClass';
 import DataStore from '../util/DataStore';
@@ -6,7 +6,7 @@ import DataStore from '../util/DataStore';
 /**
  * Logic needed for the create playlist page of the website.
  */
-class CreatePlaylist extends BindingClass {
+class CreatePatientProfile extends BindingClass {
     constructor() {
         super();
         this.bindClassMethods(['mount', 'submit', 'redirectToViewPlaylist'], this);
@@ -23,7 +23,7 @@ class CreatePlaylist extends BindingClass {
 
         this.header.addHeaderToPage();
 
-        this.client = new MusicPlaylistClient();
+        this.client = new PatientRecordClient();
     }
 
     /**
@@ -41,22 +41,24 @@ class CreatePlaylist extends BindingClass {
         const origButtonText = createButton.innerText;
         createButton.innerText = 'Loading...';
 
-        const playlistName = document.getElementById('playlist-name').value;
-        const tagsText = document.getElementById('tags').value;
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const contactNumber = document.getElementById('contactNumber').value;
+        const dob = document.getElementById('dob').value;
+        const emailAddress = document.getElementById('emailAddress').value;
+        const address = document.getElementById('address').value;
 
-        let tags;
-        if (tagsText.length < 1) {
-            tags = null;
-        } else {
-            tags = tagsText.split(/\s*,\s*/);
-        }
 
-        const playlist = await this.client.createPlaylist(playlistName, tags, (error) => {
+
+        const patients = await this.client.addPatient(firstName, lastName, contactNumber,dob ,emailAddress ,address , (error) => {
             createButton.innerText = origButtonText;
+
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');
+
         });
-        this.dataStore.set('playlist', playlist);
+        this.dataStore.set('patients', patients);
+         createButton.innerText = 'create patient profile';
     }
 
     /**
@@ -74,8 +76,8 @@ class CreatePlaylist extends BindingClass {
  * Main method to run when the page contents have loaded.
  */
 const main = async () => {
-    const createPlaylist = new CreatePlaylist();
-    createPlaylist.mount();
+    const createPatientProfile = new CreatePatientProfile();
+    createPatientProfile.mount();
 };
 
 window.addEventListener('DOMContentLoaded', main);

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
 @JsonDeserialize(builder = AddPatientToPatientsRequest.Builder.class)
 public class AddPatientToPatientsRequest {
-     private final String userId;
+
     private final String firstName;
     private final String lastName;
     private  final String DOB;
@@ -13,12 +13,12 @@ public class AddPatientToPatientsRequest {
     private final String emailAddress;
     private final String address;
 
-    private AddPatientToPatientsRequest(String userId, String firstName,
+    private AddPatientToPatientsRequest(String firstName,
                                         String lastName, String DOB,
                                         String contactNumber, String emailAddress,
                                         String address){
 
-        this.userId = userId;
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.DOB = DOB;
@@ -28,9 +28,7 @@ public class AddPatientToPatientsRequest {
     }
 
 
-    public String getUserId() {
-        return userId;
-    }
+
 
     public String getFirstName() {
         return firstName;
@@ -60,7 +58,6 @@ public class AddPatientToPatientsRequest {
     @Override
     public String toString() {
         return "AddPatientToPatientsRequest{" +
-                "userId='" + userId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", DOB='" + DOB + '\'' +
@@ -76,7 +73,7 @@ public class AddPatientToPatientsRequest {
     }
     @JsonPOJOBuilder
     public static class Builder {
-       private  String userId;
+
         private String firstName;
         private String lastName;
         private String DOB;
@@ -84,10 +81,7 @@ public class AddPatientToPatientsRequest {
         private String emailAddress;
         private String address;
 
-        public Builder withUserId(String userId) {
-            this.userId = userId;
-            return this;
-        }
+
         public Builder withFirstName(String firstName) {
             this.firstName = firstName;
             return this;
@@ -113,12 +107,12 @@ public class AddPatientToPatientsRequest {
             return this;
         }
 
-        public Builder withAddress(String Address) {
+        public Builder withAddress(String address) {
             this.address = address;
             return this;
         }
         public AddPatientToPatientsRequest build() {
-            return new AddPatientToPatientsRequest(userId, firstName, lastName, DOB, contactNumber,emailAddress,address);
+            return new AddPatientToPatientsRequest(firstName, lastName, DOB, contactNumber,emailAddress,address);
         }
 
     }
