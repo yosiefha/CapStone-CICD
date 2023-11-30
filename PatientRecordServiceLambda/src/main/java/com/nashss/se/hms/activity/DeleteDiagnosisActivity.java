@@ -1,7 +1,6 @@
 package com.nashss.se.hms.activity;
 
 import com.nashss.se.hms.activity.requests.DeleteDiagnosisRequest;
-import com.nashss.se.hms.activity.requests.DeletePatientRequest;
 import com.nashss.se.hms.activity.results.DeleteDiagnosisResult;
 import com.nashss.se.hms.converters.ModelConverter;
 import com.nashss.se.hms.dynamodb.DiagnosisDAO;
@@ -21,7 +20,7 @@ public class DeleteDiagnosisActivity {
     public DeleteDiagnosisResult handleRequest(final DeleteDiagnosisRequest deleteDiagnosisRequest){
         Diagnosis newDiagnosis = new Diagnosis();
         newDiagnosis.setDiagnosisId(deleteDiagnosisRequest.getDiagnosisId());
-
+        diagnosisDAO.deleteDiagnosis(newDiagnosis);
         DiagnosisModel diagnosisModel = new ModelConverter().toDiagnosisModel(newDiagnosis);
 
         return  DeleteDiagnosisResult.builder()

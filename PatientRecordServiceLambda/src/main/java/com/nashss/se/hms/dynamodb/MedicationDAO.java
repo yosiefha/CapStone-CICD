@@ -43,6 +43,7 @@ public class MedicationDAO {
     }
 
     public void deleteMedication(Medication medication){
+
         dynamoDBMapper.delete(medication);
     }
 

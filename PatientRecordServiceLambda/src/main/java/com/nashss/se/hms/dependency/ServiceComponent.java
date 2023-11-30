@@ -34,5 +34,7 @@ public interface ServiceComponent {
 
     DeleteDiagnosisActivity provideDeleteDiagnosisActivity();
 
+    DeleteMedicationActivity provideDeleteMedicationActivity();
+
 
 }

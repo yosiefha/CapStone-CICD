@@ -8,11 +8,12 @@ import DataStore from "../util/DataStore";
  */
 
  const SEARCH_CRITERIA_KEY = 'patientId';
- const SEARCH_RESULTS_KEY = 'search-results';
-
+ const SEARCH_RESULTS_KEY_DIAGNOSIS = 'search-results-diagnosis';
+ const SEARCH_RESULTS_KEY_MEDICATION = 'search-results-medication';
  const EMPTY_DATASTORE_STATE = {
      [SEARCH_CRITERIA_KEY]: '',
-     [SEARCH_RESULTS_KEY]: [],
+     [SEARCH_RESULTS_KEY_DIAGNOSIS]: [],
+     [SEARCH_RESULTS_KEY_MEDICATION]: [],
 
  };
 class ViewPatientDetail extends BindingClass {
@@ -95,7 +96,7 @@ class ViewPatientDetail extends BindingClass {
 
         const urlParams = new URLSearchParams(window.location.search);
         const searchCriteria = urlParams.get('id');
-        const previousSearchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
+        const previousSearchCriteria = this.dataStore.get(SEARCH_RESULTS_KEY_DIAGNOSIS);
 
          if (previousSearchCriteria === searchCriteria ) {
                     return;
@@ -110,14 +111,14 @@ class ViewPatientDetail extends BindingClass {
 
             this.dataStore.setState({
                                 [SEARCH_CRITERIA_KEY]: searchCriteria,
-                                [SEARCH_RESULTS_KEY]: results,
+                                [SEARCH_RESULTS_KEY_DIAGNOSIS]: results,
                             });
          }else{
               this.dataStore.setState(EMPTY_DATASTORE_STATE);
          }
-         showButton.innerText = 'Show Medication'
-        const searchResultsDisplay = document.getElementById('diagnosis-details');
-        this.displaySearchResults(searchResultsDisplay);
+         showButton.innerText = 'Show Diagnosis Details'
+       // const searchResultsDisplay = document.getElementById('diagnosis-details');
+        this.displaySearchResults();
 
     }
 
@@ -141,7 +142,7 @@ class ViewPatientDetail extends BindingClass {
 
              if(searchCriteria){
 
-                const results = await this.client.getPatientDiagnosis(searchCriteria, (error)=>{
+                const results = await this.client.getPatientMedication(searchCriteria, (error)=>{
                                errorMessageDisplay.innerText = `Error: ${error.message}`;
                                errorMessageDisplay.classList.remove('hidden');
                                } );
@@ -153,19 +154,19 @@ class ViewPatientDetail extends BindingClass {
              }else{
                   this.dataStore.setState(EMPTY_DATASTORE_STATE);
              }
-            const searchResultsDisplay = document.getElementById('medication-details');
-            this.displaySearchResults(searchResultsDisplay);
+           // const searchResultsDisplay = document.getElementById('medication-details');
+            this.displaySearchResultsMedication();
 
         }
 
     /**
          * Pulls search results from the datastore and displays them on the html page.
          */
-        displaySearchResults(searchResultsDisplay) {
+        displaySearchResults() {
             const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
-            const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY);
+            const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY_DIAGNOSIS);
 
-           // const searchResultsDisplay = document.getElementById('diagnosis-details');
+            const searchResultsDisplay = document.getElementById('diagnosis-details');
 
             if (searchCriteria === '') {
                 searchResultsDisplay.innerHTML = '';
@@ -202,15 +203,58 @@ class ViewPatientDetail extends BindingClass {
                 return html;
             }
 
+//             displaySearchResultsMedication() {
+//                        const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
+//                        const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY);
+//
+//                        const searchResultsDisplay = document.getElementById('medication-details');
+//
+//                        if (searchCriteria === '') {
+//                            searchResultsDisplay.innerHTML = '';
+//                        } else {
+//                          searchResultsDisplay.innerHTML = this.getHTMLForSearchResults(searchResults);
+//                        }
+//                    }
+//
+//                      getHTMLForSearchResults(searchResults) {
+//                            if (searchResults.length === 0) {
+//                                return '<h4>No results found</h4>';
+//                            }
+//
+//                            let html = '<table><tr><th>medicationName</th><th>Dosage</th><th>Start Date </th><th>End Date</th><th>Instructions</th></tr>';
+//                            let i = 0;
+//
+//                            for (const res of searchResults) {
+//
+//
+//                                html += `
+//                                <tr>
+//                                    <td>${res.medicationName}</td>
+//                                    <td>${res.dosage}</td>
+//                                    <td>${res.startDate}</td>
+//                                    <td>${res.endDate}</td>
+//                                    <td>${res.instructions}</td>
+//
+//                                </tr>`;
+//                                i+=1;
+//                            }
+//                            html += '</table>';
+//
+//
+//
+//                            return html;
+//                        }
+//
+
     async addDiagnosis(evt) {
             evt.preventDefault();
             const errorMessageDisplay = document.getElementById('error-message');
             errorMessageDisplay.innerText = ``;
             errorMessageDisplay.classList.add('hidden');
 
-            const addButton = document.getElementById('add-diagnosis');
-            const origButtonText = addButton.innerText;
-            addButton.innerText = 'Adding...';
+            const addButtonDiagnosis = document.getElementById('add-diagnosis');
+            const origButtonTextDiagnosis = addButtonDiagnosis.innerText;
+            addButtonDiagnosis.innerText = 'Adding...';
 
             const urlParams = new URLSearchParams(window.location.search);
             const patientId = urlParams.get('id');
@@ -224,7 +268,7 @@ class ViewPatientDetail extends BindingClass {
             });
 
             this.dataStore.set('diagnoses', diagnosisResult);
-            addButton.innerText = 'Add diagnosis'
+            addButtonDiagnosis.innerText = 'Add diagnosis'
 
         }
 
@@ -234,9 +278,9 @@ class ViewPatientDetail extends BindingClass {
                     errorMessageDisplay.innerText = ``;
                     errorMessageDisplay.classList.add('hidden');
 
-                    const addButton = document.getElementById('add-medication');
-                    const origButtonText = addButton.innerText;
-                    addButton.innerText = 'Adding...';
+                    const addButtonMedication = document.getElementById('add-medication');
+                    const origButtonTextMedication = addButtonMedication.innerText;
+                    addButtonMedication.innerText = 'Adding...';
 
                     const urlParams = new URLSearchParams(window.location.search);
                     const patientId = urlParams.get('id');
@@ -248,13 +292,13 @@ class ViewPatientDetail extends BindingClass {
 
 
                     const medicationResult = await this.client.addMedication(medicationName,dosage,startDate,endDate,instruction,patientId, (error) => {
-                        addButton.innerText = origButtonText;
+                        addButtonMedication.innerText = origButtonTextMedication;
                         errorMessageDisplay.innerText = `Error: ${error.message}`;
                         errorMessageDisplay.classList.remove('hidden');
                     });
 
                     this.dataStore.set('medication', medicationResult);
-                    addButton.innerText = 'Add Medication'
+                    addButtonMedication.innerText = 'Add Medication'
 
                 }
 

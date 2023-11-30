@@ -12,7 +12,6 @@ public class Diagnosis {
     private String  patientId;
 
     @DynamoDBHashKey(attributeName = "diagnosisId")
-    @DynamoDBIndexRangeKey(globalSecondaryIndexName = SEARCH_ByPatientId_INDEX, attributeName = "diagnosisId")
     public String getDiagnosisId() {
         return diagnosisId;
     }
@@ -28,7 +27,7 @@ public class Diagnosis {
     public String getHealthcareProfessionalId() {
         return healthcareProfessionalId;
     }
-    @DynamoDBRangeKey(attributeName = "patientId")
+  //  @DynamoDBRangeKey(attributeName = "patientId")
     @DynamoDBIndexHashKey(globalSecondaryIndexNames = SEARCH_ByPatientId_INDEX, attributeName = "patientId")
     public String getPatientId() {
         return patientId;

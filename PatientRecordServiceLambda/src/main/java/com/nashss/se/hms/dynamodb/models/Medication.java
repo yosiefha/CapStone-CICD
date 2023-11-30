@@ -14,8 +14,7 @@ public class Medication {
     private String instructions;
     private String patientId;
 
-    @DynamoDBRangeKey(attributeName = "medicationId")
-    @DynamoDBIndexRangeKey(globalSecondaryIndexName = SEARCH_ByPatientId_INDEX, attributeName = "medicationId")
+    @DynamoDBHashKey(attributeName = "medicationId")
     public String getMedicationId() {
         return medicationId;
     }
@@ -63,7 +62,8 @@ public class Medication {
     public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
-    @DynamoDBHashKey(attributeName = "patientId")
+
+
     @DynamoDBIndexHashKey(globalSecondaryIndexNames = SEARCH_ByPatientId_INDEX, attributeName = "patientId")
     public String getPatientId() {
         return patientId;
