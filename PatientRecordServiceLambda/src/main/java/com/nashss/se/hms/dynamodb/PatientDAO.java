@@ -54,6 +54,7 @@ public class PatientDAO {
     }
 
     public void deletePatient(Patient patient){
+
         dynamoDBMapper.delete(patient);
     }
 

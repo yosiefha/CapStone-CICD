@@ -16,7 +16,7 @@ export default class PatientRecordClient extends BindingClass {
     constructor(props = {}) {
         super();
 
-        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'addPatient','search','getPatient','addDiagnosis'];
+        const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'addPatient','search','getPatient','addDiagnosis','addMedication'];
         this.bindClassMethods(methodsToBind, this);
 
         this.authenticator = new Authenticator();;
@@ -113,29 +113,29 @@ export default class PatientRecordClient extends BindingClass {
           }
    }
 
-//   async addMedication(medicationName,dosage,startDate,endDate,instructions,patientId, errorCallback) {
-//             try {
-//                 const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
-//                 const response = await this.axiosClient.post(`medication`, {
-//                     medicationName: medicationName,
-//                     dosage: dosage,
-//                     startDate: startDate,
-//                     endDate: endDate,
-//                     instructions: instructions,
-//                     patientId: patientId,
-//
-//                 }
-//                 , {
-//                     headers: {
-//                         Authorization: `Bearer ${token}`
-//                     }
-//                 }
-//                 );
-//                 return response.data.medicationModel;
-//             } catch (error) {
-//                 this.handleError(error, errorCallback)
-//             }
-//      }
+   async addMedication(medicationName,dosage,startDate,endDate,instructions,patientId, errorCallback) {
+             try {
+                 const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
+                 const response = await this.axiosClient.post(`medication`, {
+                     medicationName: medicationName,
+                     dosage: dosage,
+                     startDate: startDate,
+                     endDate: endDate,
+                     instructions: instructions,
+                     patientId: patientId,
+
+                 }
+                 , {
+                     headers: {
+                         Authorization: `Bearer ${token}`
+                     }
+                 }
+                 );
+                 return response.data.medicationModel;
+             } catch (error) {
+                 this.handleError(error, errorCallback)
+             }
+      }
 
    async search(firstName, lastName,errorCallback) {
            try {

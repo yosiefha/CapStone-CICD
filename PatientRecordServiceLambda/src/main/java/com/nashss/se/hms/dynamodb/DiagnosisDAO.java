@@ -3,11 +3,13 @@ package com.nashss.se.hms.dynamodb;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.WriteRequest;
 import com.nashss.se.hms.dynamodb.models.Diagnosis;
 import com.nashss.se.hms.dynamodb.models.Patient;
 
 import static com.nashss.se.hms.dynamodb.models.Diagnosis.SEARCH_ByPatientId_INDEX;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,5 +45,11 @@ public class DiagnosisDAO {
 
         dynamoDBMapper.delete(diagnosis);
     }
+
+    public void deleteDiagnosisBatch(List<Diagnosis> diagnosisList){
+
+        dynamoDBMapper.batchDelete(diagnosisList);
+    }
+
 
 }

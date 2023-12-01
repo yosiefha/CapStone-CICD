@@ -90,9 +90,9 @@ class ViewPatientDetail extends BindingClass {
         errorMessageDisplay.innerText = ``;
         errorMessageDisplay.classList.add('hidden');
 
-        const showButton = document.getElementById('Show-Diagnosis-details');
-        const origButtonText = showButton.innerText;
-        showButton.innerText = 'Adding...';
+        const showButtonDiagnosis = document.getElementById('Show-Diagnosis-details');
+        const origButtonText = showButtonDiagnosis.innerText;
+        showButtonDiagnosis.innerText = 'Adding...';
 
         const urlParams = new URLSearchParams(window.location.search);
         const searchCriteria = urlParams.get('id');
@@ -112,11 +112,12 @@ class ViewPatientDetail extends BindingClass {
             this.dataStore.setState({
                                 [SEARCH_CRITERIA_KEY]: searchCriteria,
                                 [SEARCH_RESULTS_KEY_DIAGNOSIS]: results,
+                                [SEARCH_RESULTS_KEY_MEDICATION]: [],
                             });
          }else{
               this.dataStore.setState(EMPTY_DATASTORE_STATE);
          }
-         showButton.innerText = 'Show Diagnosis Details'
+         showButtonDiagnosis.innerText = 'Show Diagnosis Details'
        // const searchResultsDisplay = document.getElementById('diagnosis-details');
         this.displaySearchResults();
 
@@ -134,7 +135,7 @@ class ViewPatientDetail extends BindingClass {
 
             const urlParams = new URLSearchParams(window.location.search);
             const searchCriteria = urlParams.get('id');
-            const previousSearchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
+            const previousSearchCriteria = this.dataStore.get(SEARCH_RESULTS_KEY_MEDICATION);
 
              if (previousSearchCriteria === searchCriteria ) {
                         return;
@@ -149,7 +150,9 @@ class ViewPatientDetail extends BindingClass {
 
                 this.dataStore.setState({
                                     [SEARCH_CRITERIA_KEY]: searchCriteria,
-                                    [SEARCH_RESULTS_KEY]: results,
+                                    [SEARCH_RESULTS_KEY_DIAGNOSIS]: [],
+                                    [SEARCH_RESULTS_KEY_MEDICATION]: results,
+
                                 });
              }else{
                   this.dataStore.setState(EMPTY_DATASTORE_STATE);
@@ -175,7 +178,7 @@ class ViewPatientDetail extends BindingClass {
             }
         }
 
-          getHTMLForSearchResults(searchResults) {
+       getHTMLForSearchResults(searchResults) {
                 if (searchResults.length === 0) {
                     return '<h4>No results found</h4>';
                 }
@@ -203,48 +206,48 @@ class ViewPatientDetail extends BindingClass {
                 return html;
             }
 
-//             displaySearchResultsMedication() {
-//                        const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
-//                        const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY);
-//
-//                        const searchResultsDisplay = document.getElementById('medication-details');
-//
-//                        if (searchCriteria === '') {
-//                            searchResultsDisplay.innerHTML = '';
-//                        } else {
-//                          searchResultsDisplay.innerHTML = this.getHTMLForSearchResults(searchResults);
-//                        }
-//                    }
-//
-//                      getHTMLForSearchResults(searchResults) {
-//                            if (searchResults.length === 0) {
-//                                return '<h4>No results found</h4>';
-//                            }
-//
-//                            let html = '<table><tr><th>medicationName</th><th>Dosage</th><th>Start Date </th><th>End Date</th><th>Instructions</th></tr>';
-//                            let i = 0;
-//
-//                            for (const res of searchResults) {
-//
-//
-//                                html += `
-//                                <tr>
-//                                    <td>${res.medicationName}</td>
-//                                    <td>${res.dosage}</td>
-//                                    <td>${res.startDate}</td>
-//                                    <td>${res.endDate}</td>
-//                                    <td>${res.instructions}</td>
-//
-//                                </tr>`;
-//                                i+=1;
-//                            }
-//                            html += '</table>';
-//
-//
-//
-//                            return html;
-//                        }
-//
+             displaySearchResultsMedication() {
+                        const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
+                        const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY_MEDICATION);
+
+                        const searchResultsDisplay = document.getElementById('medication-details');
+
+                        if (searchCriteria === '') {
+                            searchResultsDisplay.innerHTML = '';
+                        } else {
+                          searchResultsDisplay.innerHTML = this.getHTMLForSearchResultsMedication(searchResults);
+                        }
+               }
+
+                      getHTMLForSearchResultsMedication(searchResults) {
+                            if (searchResults.length === 0) {
+                                return '<h4>No results found</h4>';
+                            }
+
+                            let html = '<table><tr><th>medicationName</th><th>Dosage</th><th>Start Date </th><th>End Date</th><th>Instructions</th></tr>';
+                            let i = 0;
+
+                            for (const res of searchResults) {
+
+
+                                html += `
+                                <tr>
+                                    <td>${res.medicationName}</td>
+                                    <td>${res.dosage}</td>
+                                    <td>${res.startDate}</td>
+                                    <td>${res.endDate}</td>
+                                    <td>${res.instructions}</td>
+
+                                </tr>`;
+                                i+=1;
+                            }
+                            html += '</table>';
+
+
+
+                            return html;
+                        }
+
 
     async addDiagnosis(evt) {
             evt.preventDefault();
@@ -270,37 +273,37 @@ class ViewPatientDetail extends BindingClass {
             this.dataStore.set('diagnoses', diagnosisResult);
             addButtonDiagnosis.innerText = 'Add diagnosis'
 
-        }
+    }
 
-        async addMedication(evt) {
-                    evt.preventDefault();
-                    const errorMessageDisplay = document.getElementById('error-message');
-                    errorMessageDisplay.innerText = ``;
-                    errorMessageDisplay.classList.add('hidden');
+    async addMedication(evt) {
+                evt.preventDefault();
+                const errorMessageDisplay = document.getElementById('error-message');
+                errorMessageDisplay.innerText = ``;
+                errorMessageDisplay.classList.add('hidden');
 
-                    const addButtonMedication = document.getElementById('add-medication');
-                    const origButtonTextMedication = addButtonMedication.innerText;
-                    addButtonMedication.innerText = 'Adding...';
+                const addButtonMedication = document.getElementById('add-medication');
+                const origButtonTextMedication = addButtonMedication.innerText;
+                addButtonMedication.innerText = 'Adding...';
 
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const patientId = urlParams.get('id');
-                    const medicationName = document.getElementById('medicationName').value;
-                    const dosage = document.getElementById('dosage').value;
-                    const startDate = document.getElementById('startDate').value;
-                    const endDate = document.getElementById('endDate').value;
-                    const instruction = document.getElementById('instruction').value;
+                const urlParams = new URLSearchParams(window.location.search);
+                const patientId = urlParams.get('id');
+                const medicationName = document.getElementById('medicationName').value;
+                const dosage = document.getElementById('dosage').value;
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const instruction = document.getElementById('instruction').value;
 
 
-                    const medicationResult = await this.client.addMedication(medicationName,dosage,startDate,endDate,instruction,patientId, (error) => {
-                        addButtonMedication.innerText = origButtonTextMedication;
-                        errorMessageDisplay.innerText = `Error: ${error.message}`;
-                        errorMessageDisplay.classList.remove('hidden');
-                    });
+                const medicationResult = await this.client.addMedication(medicationName,dosage,startDate,endDate,instruction,patientId, (error) => {
+                    addButtonMedication.innerText = origButtonTextMedication;
+                    errorMessageDisplay.innerText = `Error: ${error.message}`;
+                    errorMessageDisplay.classList.remove('hidden');
+                });
 
-                    this.dataStore.set('medication', medicationResult);
-                    addButtonMedication.innerText = 'Add Medication'
+                this.dataStore.set('medication', medicationResult);
+                addButtonMedication.innerText = 'Add Medication'
 
-                }
+    }
 
 }
 

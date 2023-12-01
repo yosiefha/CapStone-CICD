@@ -28,18 +28,13 @@ public class DeletePatientActivity {
     public DeletePatientResult handleRequest(final DeletePatientRequest deletePatientRequest){
         Patient patient = new Patient();
 
-       List<Diagnosis> diagnosisList =diagnosisDAO.getDiagnoses(deletePatientRequest.getPatientId());
-       for(Diagnosis diagnosis : diagnosisList){
-           diagnosisDAO.deleteDiagnosis(diagnosis);
-           System.out.println("Diagnosis Id : " +diagnosis.getDiagnosisId());
-       }
-//        Medication medication = new Medication();
-        patient.setPatientId(deletePatientRequest.getPatientId());
-//        diagnosis.setPatientId(deletePatientRequest.getPatientId());
-//        medication.setPatientId(deletePatientRequest.getPatientId());
-        patientDAO.deletePatient(patient);
-//        diagnosisDAO.deleteDiagnosis(diagnosis);
-//        medicationDAO.deleteMedication(medication);
+       List<Diagnosis> diagnosisList = diagnosisDAO.getDiagnoses(deletePatientRequest.getPatientId());
+       List<Medication> medicationList =medicationDAO.getMedications(deletePatientRequest.getPatientId());
+       diagnosisDAO.deleteDiagnosisBatch(diagnosisList);
+       medicationDAO.deleteMedicationBatch(medicationList);
+       patient.setPatientId(deletePatientRequest.getPatientId());
+       patientDAO.deletePatient(patient);
+
 
         PatientModel patientModel = new ModelConverter().toPatientModel(patient);
         return DeletePatientResult.builder()
