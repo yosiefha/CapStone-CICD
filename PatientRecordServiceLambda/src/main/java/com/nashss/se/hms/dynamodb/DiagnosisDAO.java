@@ -5,7 +5,10 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.WriteRequest;
 import com.nashss.se.hms.dynamodb.models.Diagnosis;
+import com.nashss.se.hms.dynamodb.models.Medication;
 import com.nashss.se.hms.dynamodb.models.Patient;
+import com.nashss.se.hms.exceptions.DiagnosisNotFoundException;
+import com.nashss.se.hms.exceptions.MedicationNotFoundException;
 
 import static com.nashss.se.hms.dynamodb.models.Diagnosis.SEARCH_ByPatientId_INDEX;
 import javax.inject.Inject;
@@ -39,6 +42,13 @@ public class DiagnosisDAO {
 
         return this.dynamoDBMapper.query(Diagnosis.class, queryExpression);
 
+    }
+    public Diagnosis getDiagnosis(String diagnosisId){
+        Diagnosis diagnosis = this.dynamoDBMapper.load(Diagnosis.class,diagnosisId);
+        if(diagnosis == null){
+            throw new DiagnosisNotFoundException("Could not find diagnosis with id " + diagnosisId);
+        }
+        return diagnosis;
     }
 
     public void deleteDiagnosis(Diagnosis diagnosis){

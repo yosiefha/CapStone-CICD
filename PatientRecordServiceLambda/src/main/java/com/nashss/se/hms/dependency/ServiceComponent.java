@@ -36,5 +36,10 @@ public interface ServiceComponent {
 
     DeleteMedicationActivity provideDeleteMedicationActivity();
 
+    UpdatePatientActivity provideUpdatePatientActivity();
+
+    UpdateMedicationActivity provideUpdateMedicationActivity();
+    UpdateDiagnosisActivity provideUpdateDiagnosisActivity();
+
 
 }

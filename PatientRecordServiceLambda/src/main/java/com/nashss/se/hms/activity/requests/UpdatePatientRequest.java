@@ -1,9 +1,10 @@
-package com.nashss.se.hms.models;
+package com.nashss.se.hms.activity.requests;
 
-import java.time.LocalDate;
-import java.util.Objects;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-public class PatientModel {
+@JsonDeserialize(builder = UpdatePatientRequest.Builder.class)
+public class UpdatePatientRequest {
     private final String patientId;
     private final String firstName;
     private final String lastName;
@@ -12,11 +13,11 @@ public class PatientModel {
     private final String emailAddress;
     private final String address;
 
-    public PatientModel(String patientId,String firstName,String lastName,String dateOfBirth, String contactNumber,String emailAddress,String address){
+    public UpdatePatientRequest(String patientId, String firstName, String lastName, String dateOfBirth, String contactNumber, String emailAddress, String address) {
         this.patientId = patientId;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
+        this.dateOfBirth =  dateOfBirth;
         this.contactNumber = contactNumber;
         this.emailAddress = emailAddress;
         this.address = address;
@@ -45,50 +46,39 @@ public class PatientModel {
     public String getEmailAddress() {
         return emailAddress;
     }
+
     public String getAddress() {
         return address;
     }
 
     @Override
     public String toString() {
-        return "PatientModel{" +
+        return "UpdatePatientRequest{" +
                 "patientId='" + patientId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", contactNumber=" + contactNumber +
+                ",  dateOfBirth='" + dateOfBirth+ '\'' +
+                ", contactNumber='" + contactNumber + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
                 ", address='" + address + '\'' +
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PatientModel)) return false;
-        PatientModel that = (PatientModel) o;
-        return Objects.equals(getPatientId(), that.getPatientId()) && Objects.equals(getFirstName(), that.getFirstName()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getDOB(), that.getDOB());
+    public static  Builder builder(){
+        return new UpdatePatientRequest.Builder();
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPatientId(), getFirstName(), getLastName(), getDOB());
-    }
-
-    public static Builder builder() {
-        return  new Builder();
-    }
-    public static class Builder {
+    @JsonPOJOBuilder
+    public static class Builder{
 
         private String patientId;
         private String firstName;
         private String lastName;
-        private String dateOfBirth;
+        private  String dateOfBirth;
         private String contactNumber;
         private String emailAddress;
         private String address;
 
-        public  Builder withPatientId(String patientId){
+        public Builder withPatientId(String patientId){
             this.patientId = patientId;
             return this;
         }
@@ -97,33 +87,34 @@ public class PatientModel {
             this.firstName = firstName;
             return this;
         }
-        public Builder withLastName(String lastName){
+
+        public Builder withLastName (String lastName){
             this.lastName = lastName;
             return this;
         }
+
         public Builder withDOB(String dateOfBirth){
             this.dateOfBirth = dateOfBirth;
             return this;
         }
-
         public Builder withContactNumber(String contactNumber){
             this.contactNumber = contactNumber;
             return this;
         }
 
-        public Builder withEmailAddress(String emailAddress){
+        public Builder withEmailAddress(String  emailAddress){
             this.emailAddress = emailAddress;
             return this;
         }
 
-        public Builder withAddress(String address){
+        public Builder withAddress (String address){
             this.address = address;
-            return this;
+            return  this;
         }
-
-        public PatientModel build() {
-            return  new PatientModel(patientId, firstName, lastName, dateOfBirth, contactNumber, emailAddress, address);
+        public UpdatePatientRequest build(){
+            return  new UpdatePatientRequest(patientId, firstName, lastName,dateOfBirth, contactNumber, emailAddress, address);
         }
 
     }
+
 }

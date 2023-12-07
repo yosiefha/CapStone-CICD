@@ -3,6 +3,7 @@ package com.nashss.se.hms.activity.results;
 
 import com.nashss.se.hms.models.PatientModel;
 
+
 public class AddPatientToPatientsResult {
     private final PatientModel patient;
     private AddPatientToPatientsResult(PatientModel patient) {
