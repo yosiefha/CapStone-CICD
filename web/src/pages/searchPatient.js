@@ -29,17 +29,30 @@ const EMPTY_DATASTORE_STATE = {
  * Logic needed for the view playlist page of the website.
  */
 class SearchPatient extends BindingClass {
+
+
+
+
+
+
     constructor() {
         super();
 
-        this.bindClassMethods(['mount', 'search', 'displaySearchResults', 'getHTMLForSearchResults'], this);
+        this.bindClassMethods(['mount', 'search', 'displaySearchResults', 'getHTMLForSearchResults','updatePatientRow'], this);
 
         // Create a enw datastore with an initial "empty" state.
         this.dataStore = new DataStore(EMPTY_DATASTORE_STATE);
         this.header = new Header(this.dataStore);
         this.dataStore.addChangeListener(this.displaySearchResults);
         console.log("searchPatient constructor");
+
+
     }
+
+
+
+
+
 
     /**
      * Add the header to the page and load the MusicPlaylistClient.
@@ -49,10 +62,22 @@ class SearchPatient extends BindingClass {
         document.getElementById('search-patient-form').addEventListener('submit', this.search);
         document.getElementById('search-btn').addEventListener('click', this.search);
 
+       // Set up event delegation for the update buttons
+        document.getElementById('search-results-display').addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.tagName === 'BUTTON' && target.classList.contains('update-button')) {
+                const rowId = target.dataset.id;
+                this.updatePatientRow(event);
+            }else if (target.tagName === 'BUTTON' && target.classList.contains('delete-button')){
+                  const rowId = target.dataset.id;
+                  this.deletePatientRow(event);
+            }
+        });
+
         this.header.addHeaderToPage();
 
         this.client = new PatientRecordClient();
-        this.s
+
     }
 
     /**
@@ -119,46 +144,209 @@ class SearchPatient extends BindingClass {
         }
     }
 
-    /**
-     * Create appropriate HTML for displaying searchResults on the page.
-     * @param searchResults An array of playlists objects to be displayed on the page.
-     * @returns A string of HTML suitable for being dropped on the page.
-     */
-   getHTMLForSearchResults(searchResults) {
-        if (searchResults.length === 0) {
-            return '<h4>No results found</h4>';
-        }
+/**
+ * Create appropriate HTML for displaying searchResults on the page.
+ * @param searchResults An array of playlists objects to be displayed on the page.
+ * @returns A string of HTML suitable for being dropped on the page.
+ */
+getHTMLForSearchResults(searchResults) {
+                if (searchResults.length === 0) {
+                    return '<h4>No results found</h4>';
+                }
 
-        let html = '<table><tr><th>PatientId</th><th>First Name</th><th>Last Name</th><th>Date of Birth</th><th>Contact Number</th><th>emailAddress</th><th>Address</th></tr>';
-        let i = 0;
+                let html = '<table><tr><th>PatientId</th><th>First Name</th><th>Last Name</th><th>Date of Birth</th><th>Contact Number</th><th>emailAddress</th><th>Address</th></tr>';
+                let i = 0;
 
-        for (const res of searchResults) {
-
-
-            html += `
-            <tr>
-                <td>
-                    <a href="viewPatientHistory.html?id=${res.patientId}">${res.patientId}</a>
-                </td>
-                <td>${res.firstName}</td>
-                <td>${res.lastName}</td>
-                <td>${res.dob}</td>
-                <td>${res.contactNumber}</td>
-                <td>${res.emailAddress}</td>
-                <td>${res.address}</td>
-            </tr>`;
-            i+=1;
-        }
-        html += '</table>';
+                for (const res of searchResults) {
 
 
+                    html += `
+                    <tr data-id="${res.patientId}">
+                        <td>
+                            <a href="viewPatientHistory.html?id=${res.patientId}">${res.patientId}</a>
+                        </td>
+                        <td>${res.firstName}</td>
+                        <td>${res.lastName}</td>
+                        <td>${res.dob}</td>
+                        <td>${res.contactNumber}</td>
+                        <td>${res.emailAddress}</td>
+                        <td>${res.address}</td>
+                        <td>
+                           <button class="update-button" data-id="${res.patientId}">Update</button>
+                           <button class="delete-button"  data-id="${res.patientId}">Delete</button>
 
-        return html;
-    }
+                        </td>
+                    </tr>`;
+                    i+=1;
+                }
+                html += '</table>';
+
+
+
+                return html;
+}
+
+
+ updatePatientRow = (event) => {
+
+     const target = event.target;
+
+     // Check if the clicked element is a button with the 'update-button' class
+     if (target.tagName === 'BUTTON' && target.classList.contains('update-button')) {
+         const rowId = target.dataset.id;
+
+
+         // Select the row using a more specific selector
+         const row = document.querySelector(`tr[data-id="${rowId}"]`);
+
+         // Check if the row is found before proceeding
+         if (row) {
+             const isEditMode = row.classList.toggle('edit-mode');
+
+             if (isEditMode) {
+                 const cells = row.querySelectorAll('td:not(:last-child)');
+                 cells.forEach(cell => {
+                     const value = cell.textContent;
+                     cell.innerHTML = `<input type="text" value="${value}">`;
+                 });
+
+                 const updateButton = row.querySelector('button');
+                 updateButton.textContent = 'Save';
+                 updateButton.onclick = () => {
+                     this.saveRow(rowId);
+                 };
+             } else {
+                 const cells = row.querySelectorAll('td:not(:last-child)');
+                 cells.forEach(cell => {
+                     const value = cell.querySelector('input').value;
+                     cell.textContent = value;
+                 });
+
+                 const updateButton = row.querySelector('button');
+                 updateButton.textContent = 'Update';
+                 updateButton.onclick = () => {
+                     this.updateRow(rowId);
+                 };
+             }
+
+
+         } else {
+             // Handle the case where the row is not found
+             alert(`Row with data-id "${rowId}" not found.`);
+         }
+     }
+ }
+
+async saveRow(rowId){
+
+            const row = document.querySelector(`tr[data-id="${rowId}"]`);
+            const cells = row.querySelectorAll('td:not(:last-child) input');
+
+           // Collect the updated values from the input fields
+           const updatedValues = Array.from(cells).map(input => input.value);
+
+
+            //  logic to save the updated values
+            const errorMessageDisplay = document.getElementById('error-message');
+            errorMessageDisplay.innerText = '';
+            errorMessageDisplay.classList.add('hidden');
+
+
+            const patientId = rowId;
+            const firstName = updatedValues[1];
+            const lastName = updatedValues[2];
+            const dob = updatedValues[3];
+            const contactNumber = updatedValues[4];
+            const emailAddress = updatedValues[5];
+            const address = updatedValues[6];
+
+
+            try {
+                   const result = await this.client.updatePatient(patientId, firstName, lastName, dob, contactNumber, emailAddress, address);
+                   this.dataStore.set('updatePatient/{patientId}', result);
+
+                   // Restore original content
+                   cells.forEach((cell, index) => {
+                       cell.textContent = updatedValues[index];
+                   });
+
+                   // Update button text and event handler
+                   const updateButton = row.querySelector('button');
+                   updateButton.textContent = 'Update';
+                   updateButton.onclick = () => {
+                       this.updateRow(rowId); // Use arrow function to maintain 'this'
+                   };
+               } catch (error) {
+                   errorMessageDisplay.innerText = `Error: ${error.message}`;
+                   errorMessageDisplay.classList.remove('hidden');
+               }
+
+//             const result = await this.client.updatePatient(patientId,firstName,lastName, dob,contactNumber,emailAddress,address,(error) => {
+//
+//                       errorMessageDisplay.innerText = `Error: ${error.message}`;
+//                       errorMessageDisplay.classList.remove('hidden');
+//                   });
+//                   this.dataStore.set('updatePatient/{patientId}', result);
+//
+//
+//              // Restore original content
+//             cells.forEach((cell, index) => {
+//                 cell.textContent = updatedValues[index];
+//             });
+//
+//             // Update button text and event handler
+//             const updateButton = row.querySelector('button');
+//             updateButton.textContent = 'Update';
+//             updateButton.onclick = () => {
+//                 this.updateRow(rowId); // Use arrow function to maintain 'this'
+//             };
 
 
 
 }
+async deletePatientRow(event) {
+
+    const target = event.target;
+    const rowId = target.dataset.id; // Get the rowId from the clicked button's dataset
+    alert(rowId);
+    const confirmation = confirm("Are you sure you want to delete this record?");
+    if (!confirmation) {
+        return;
+    }
+
+    const errorMessageDisplay = document.getElementById('error-message');
+    errorMessageDisplay.innerText = '';
+    errorMessageDisplay.classList.add('hidden');
+
+    try {
+        // Determine whether it's a diagnosis or medication based on some condition
+        //const isDiagnosis = true; // Set this condition based on your logic
+
+//        if (isDiagnosis) {
+            // Delete a diagnosis
+            const result = await this.client. deletePatient(rowId, (error) => {
+                errorMessageDisplay.innerText = `Error: ${error.message}`;
+                errorMessageDisplay.classList.remove('hidden');
+            });
+
+            this.dataStore.set('deletePatient/{patientId}', result);
+//        }
+
+        // Remove the deleted row from the UI
+        const row = document.querySelector(`tr[data-id="${rowId}"]`);
+        if (row) {
+            row.remove();
+        }
+    } catch (error) {
+        errorMessageDisplay.innerText = `Error: ${error.message}`;
+        errorMessageDisplay.classList.remove('hidden');
+    }
+}
+
+
+}
+
+
 
 /**
  * Main method to run when the page contents have loaded.

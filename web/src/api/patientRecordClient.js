@@ -13,7 +13,7 @@ import Authenticator from "./authenticator";
   */
 
 export default class PatientRecordClient extends BindingClass {
-    constructor(props = {}) {
+        constructor(props = {}) {
         super();
 
         const methodsToBind = ['clientLoaded', 'getIdentity', 'login', 'logout', 'addPatient','search','getPatient','addDiagnosis','addMedication'];
@@ -25,16 +25,16 @@ export default class PatientRecordClient extends BindingClass {
         axios.defaults.baseURL = process.env.API_BASE_URL;
         this.axiosClient = axios;
         this.clientLoaded();
-    }
-      /**
-         * Run any functions that are supposed to be called once the client has loaded successfully.
-         */
+        }
+/**
+ * Run any functions that are supposed to be called once the client has loaded successfully.
+ */
         clientLoaded() {
             if (this.props.hasOwnProperty("onReady")) {
                 this.props.onReady(this);
             }
         }
-   async getIdentity(errorCallback) {
+        async getIdentity(errorCallback) {
            try {
                const isLoggedIn = await this.authenticator.isUserLoggedIn();
 
@@ -46,34 +46,34 @@ export default class PatientRecordClient extends BindingClass {
            } catch (error) {
                this.handleError(error)
            }
-       }
+        }
 
-   async login() {
-       this.authenticator.login();
-    }
+        async login() {
+        this.authenticator.login();
+        }
 
-   async logout() {
-       this.authenticator.logout();
-   }
+        async logout() {
+        this.authenticator.logout();
+        }
 
-   async getTokenOrThrow(unauthenticatedErrorMessage) {
-       const isLoggedIn = await this.authenticator.isUserLoggedIn();
-       if (!isLoggedIn) {
+        async getTokenOrThrow(unauthenticatedErrorMessage) {
+        const isLoggedIn = await this.authenticator.isUserLoggedIn();
+        if (!isLoggedIn) {
          throw new Error(unauthenticatedErrorMessage);
-       }
+        }
 
-       return await this.authenticator.getUserToken();
-   }
+        return await this.authenticator.getUserToken();
+        }
 
-   /**
+        /**
         * Create a new playlist owned by the current user.
         * @param name The name of the playlist to create.
         * @param tags Metadata tags to associate with a playlist.
         * @param errorCallback (Optional) A function to execute if the call fails.
         * @returns The playlist that has been created.
         */
-   async addPatient(firstName, lastName,contactNumber,dob,emailAddress,address, errorCallback) {
-       try {
+        async addPatient(firstName, lastName,contactNumber,dob,emailAddress,address, errorCallback) {
+        try {
            const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
            const response = await this.axiosClient.post(`patients`, {
                firstName: firstName,
@@ -89,12 +89,12 @@ export default class PatientRecordClient extends BindingClass {
                }
            });
            return response.data.patients;
-       } catch (error) {
+        } catch (error) {
            this.handleError(error, errorCallback)
-       }
-   }
+        }
+        }
 
-   async addDiagnosis(patientId, description, errorCallback) {
+        async addDiagnosis(patientId, description, errorCallback) {
           try {
               const token = await this.getTokenOrThrow("Only authenticated users can create diagnosis.");
               const response = await this.axiosClient.post(`diagnoses`, {
@@ -111,16 +111,131 @@ export default class PatientRecordClient extends BindingClass {
           } catch (error) {
               this.handleError(error, errorCallback)
           }
-   }
+        }
 
-   async addMedication(medicationName,dosage,startDate,endDate,instructions,patientId, errorCallback) {
+        async updatePatient(patientId,firstName,lastName, dob,contactNumber,emailAddress,address, errorCallback) {
+                     try {
+                         const token = await this.getTokenOrThrow("Only authenticated users can create diagnosis.");
+                         const response = await this.axiosClient.put(`updatePatient/{patientId}`, {
+
+                             patientId : patientId,
+                             firstName : firstName,
+                             lastName : lastName,
+                             dob : dob,
+                             contactNumber : contactNumber,
+                             emailAddress : emailAddress,
+                             address : address,
+                         }
+                         , {
+                             headers: {
+                                 Authorization: `Bearer ${token}`
+                             }
+                         }
+                         );
+                         return response.data.patientModel;
+                     } catch (error) {
+                         this.handleError(error, errorCallback)
+                     }
+                }
+
+        async updateDiagnosis(diagnosisId,patientId, dateCreated,description, errorCallback) {
+             try {
+                 const token = await this.getTokenOrThrow("Only authenticated users can create diagnosis.");
+                 const response = await this.axiosClient.put(`updateDiagnosis`, {
+
+                     diagnosisId: diagnosisId,
+                     dateCreated: dateCreated,
+                     patientId: patientId,
+                     description: description,
+                 }
+                 , {
+                     headers: {
+                         Authorization: `Bearer ${token}`
+                     }
+                 }
+                 );
+                 return response.data.diagnosisModel;
+             } catch (error) {
+                 this.handleError(error, errorCallback)
+             }
+        }
+
+        async updateMedication(medicationId,medicationName, dosage,startDate,endDate,instructions,patientId, errorCallback) {
+                try {
+                    const token = await this.getTokenOrThrow("Only authenticated users can create diagnosis.");
+                    const response = await this.axiosClient.put(`updateMedication`, {
+                        medicationId : medicationId,
+                        medicationName : medicationName,
+                        dosage : dosage,
+                        startDate : startDate,
+                        endDated : endDate,
+                        instructions : instructions,
+                        patientId: patientId,
+
+                    }
+                    , {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                    );
+                    return response.data.medicationModel;
+                } catch (error) {
+                    this.handleError(error, errorCallback)
+                }
+         }
+
+        async deletePatient(patientId,  errorCallback) {
+                 try {
+                     const token = await this.getTokenOrThrow("Only authenticated users can delete Patient.");
+                     const response = await this.axiosClient.delete(`deletePatient/${patientId}`, {
+                         headers: {
+                            Authorization: `Bearer ${token}`
+                     }}
+                     );
+                     return response.data.patientModel;
+                 } catch (error) {
+                     this.handleError(error, errorCallback)
+                 }
+               }
+        async deleteDiagnosis(diagnosisId,  errorCallback) {
+          try {
+              const token = await this.getTokenOrThrow("Only authenticated users can delete Diagnosis.");
+              const response = await this.axiosClient.delete(`deleteDiagnosis/${diagnosisId}`, {
+                  headers: {
+                     Authorization: `Bearer ${token}`
+              }}
+              );
+              return response.data.diagnosisModel;
+          } catch (error) {
+              this.handleError(error, errorCallback)
+          }
+        }
+
+        async deleteMedication(medicationId,  errorCallback) {
+                try {
+                    const token = await this.getTokenOrThrow("Only authenticated users can delete Diagnosis.");
+                    const response = await this.axiosClient.delete(`deleteMedication/${medicationId}`, {
+                        headers: {
+                           Authorization: `Bearer ${token}`
+                    }}
+                    );
+                    return response.data.medicationModel;
+                } catch (error) {
+                    this.handleError(error, errorCallback)
+                }
+            }
+
+
+
+        async addMedication(medicationName,dosage,startDate,endDated,instructions,patientId, errorCallback) {
              try {
                  const token = await this.getTokenOrThrow("Only authenticated users can create playlists.");
                  const response = await this.axiosClient.post(`medication`, {
                      medicationName: medicationName,
                      dosage: dosage,
                      startDate: startDate,
-                     endDate: endDate,
+                     endDate: endDated,
                      instructions: instructions,
                      patientId: patientId,
 
@@ -135,9 +250,9 @@ export default class PatientRecordClient extends BindingClass {
              } catch (error) {
                  this.handleError(error, errorCallback)
              }
-      }
+        }
 
-   async search(firstName, lastName,errorCallback) {
+        async search(firstName, lastName,errorCallback) {
            try {
 
               const response = await this.axiosClient.get(`patients/${firstName}/${lastName}`);
@@ -148,10 +263,10 @@ export default class PatientRecordClient extends BindingClass {
                this.handleError(error, errorCallback);
            }
 
-       }
+        }
 
 
-    async getPatient(patientId,errorCallback) {
+        async getPatient(patientId,errorCallback) {
               try {
 
                  const response = await this.axiosClient.get(`patient/${patientId}`);
@@ -164,7 +279,7 @@ export default class PatientRecordClient extends BindingClass {
 
           }
 
-     async getPatientDiagnosis(patientId,errorCallback) {
+        async getPatientDiagnosis(patientId,errorCallback) {
                   try {
 
                      const response = await this.axiosClient.get(`diagnoses/${patientId}`);
@@ -176,7 +291,7 @@ export default class PatientRecordClient extends BindingClass {
                   }
 
               }
-      async getPatientMedication(patientId,errorCallback) {
+        async getPatientMedication(patientId,errorCallback) {
                        try {
 
                           const response = await this.axiosClient.get(`medications/${patientId}`);
@@ -188,4 +303,5 @@ export default class PatientRecordClient extends BindingClass {
                        }
 
                    }
+
 }

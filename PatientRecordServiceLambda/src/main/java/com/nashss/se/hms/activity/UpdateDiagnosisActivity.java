@@ -36,6 +36,9 @@ public class UpdateDiagnosisActivity {
 
         diagnosis.setDiagnosisId(diagnosisId);
         diagnosis.setPatientId(patientId);
+        diagnosis.setDateCreated(dateCreated);
+        diagnosis.setHealthcareProfessionalId(healthcareProfessionalId);
+        diagnosis.setDescription(description);
         diagnosis = diagnosisDAO.savePatientDiagnoses(diagnosis);
         return UpdateDiagnosisResult.builder()
                 .withDiagnosisModel(new ModelConverter().toDiagnosisModel(diagnosis))

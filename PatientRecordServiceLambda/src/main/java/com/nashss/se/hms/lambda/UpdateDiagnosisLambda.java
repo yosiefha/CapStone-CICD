@@ -25,6 +25,7 @@ public class UpdateDiagnosisLambda  extends LambdaActivityRunner<UpdateDiagnosis
                                     .withPatientId(unauthenticatedRequest.getPatientId())
                                     .withDateCreated(unauthenticatedRequest.getDateCreated())
                                     .withDescription(unauthenticatedRequest.getDescription())
+                                    .withHealthcareProfessionalId(claims.get("email"))
                                     .build());
                 },
                 (request, serviceComponent) ->

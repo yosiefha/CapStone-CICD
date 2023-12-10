@@ -16,185 +16,163 @@ import DataStore from "../util/DataStore";
      [SEARCH_RESULTS_KEY_MEDICATION]: [],
 
  };
+ let viewPatientDetail;
 class ViewPatientDetail extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['clientLoaded', 'mount','addDiagnosis','showDiagnosisDetails','addMedication','showMedicationDetails'], this);
+        this.bindClassMethods(['clientLoaded', 'mount','addDiagnosis','addMedication','updateRow','saveRow'], this);
         this.dataStore = new DataStore();
         this.header = new Header(this.dataStore);
 
-    }
-
-    /**
-     * Once the client is loaded, get the playlist metadata and song list.
-     */
-    async clientLoaded() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const patientId = urlParams.get('id');
-        document.getElementById('patient-name').innerText = "Loading Patient Details ...";
-       const patient = await this.client.getPatient(patientId , (error)=>{
-                                                    errorMessageDisplay.innerText = `Error: ${error.message}`;
-                                                            errorMessageDisplay.classList.remove('hidden');
-                                                            });
-       document.getElementById('patient-full-name').innerText = patient.firstName+" "+patient.lastName;
 
     }
 
 
+async clientLoaded() {
+            this.client = new PatientRecordClient();
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientId = urlParams.get('id');
+            document.getElementById('patient-name').innerText = "Loading Patient Details ...";
+            const patient = await this.client.getPatient(patientId , (error)=>{
+                                        errorMessageDisplay.innerText = `Error: ${error.message}`;
+                                                errorMessageDisplay.classList.remove('hidden');
+                                                });
+            document.getElementById('patient-full-name').innerText = patient.firstName+" "+patient.lastName;
 
-    /**
-     * Add the header to the page and load the MusicPlaylistClient.
-     */
-    mount() {
-        document.getElementById('add-diagnosis').addEventListener('click', this.addDiagnosis);
-        document.getElementById('Show-Diagnosis-details').addEventListener('click', this.showDiagnosisDetails);
-        document.getElementById('add-medication').addEventListener('click', this.addMedication);
-        document.getElementById('Show-Medication-details').addEventListener('click', this.showMedicationDetails);
-        this.header.addHeaderToPage();
+            // -----------------------Load the Diagnosis Details--------------------------------
+            const results = await this.client.getPatientDiagnosis(patientId, (error)=>{
+                     errorMessageDisplay.innerText = `Error: ${error.message}`;
+                     errorMessageDisplay.classList.remove('hidden');
+                     } );
+            if(patientId){
+            this.dataStore.setState({
+                       [SEARCH_CRITERIA_KEY]: patientId,
+                       [SEARCH_RESULTS_KEY_DIAGNOSIS]: results,
+                       [SEARCH_RESULTS_KEY_MEDICATION]: [],
+                   });
+            }else{
+            this.dataStore.setState(EMPTY_DATASTORE_STATE);
+            }
 
-        this.client = new PatientRecordClient();
-        this.clientLoaded();
-    }
+            this.displaySearchResults();
+            //-------------------------------  Load the medication Details----------------------------------
 
+            if(patientId){
 
-    /**
-     * When the songs are updated in the datastore, update the list of songs on the page.
-     */
-//    addSongsToPage() {
-//        const songs = this.dataStore.get('songs')
-//
-//        if (songs == null) {
-//            return;
-//        }
-//
-//        let songHtml = '';
-//        let song;
-//        for (song of songs) {
-//            songHtml += `
-//                <li class="song">
-//                    <span class="title">${song.title}</span>
-//                    <span class="album">${song.album}</span>
-//                </li>
-//            `;
-//        }
-//        document.getElementById('songs').innerHTML = songHtml;
-//    }
-
-    /**
-     * Method to run when the add song playlist submit button is pressed. Call the MusicPlaylistService to add a song to the
-     * playlist.
-     */
-    async showDiagnosisDetails(evt) {
-        evt.preventDefault();
-        const errorMessageDisplay = document.getElementById('error-message');
-        errorMessageDisplay.innerText = ``;
-        errorMessageDisplay.classList.add('hidden');
-
-        const showButtonDiagnosis = document.getElementById('Show-Diagnosis-details');
-        const origButtonText = showButtonDiagnosis.innerText;
-        showButtonDiagnosis.innerText = 'Adding...';
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const searchCriteria = urlParams.get('id');
-        const previousSearchCriteria = this.dataStore.get(SEARCH_RESULTS_KEY_DIAGNOSIS);
-
-         if (previousSearchCriteria === searchCriteria ) {
-                    return;
-         }
-
-         if(searchCriteria){
-
-            const results = await this.client.getPatientDiagnosis(searchCriteria, (error)=>{
-                           errorMessageDisplay.innerText = `Error: ${error.message}`;
-                           errorMessageDisplay.classList.remove('hidden');
-                           } );
+            const results = await this.client.getPatientMedication(patientId, (error)=>{
+                          errorMessageDisplay.innerText = `Error: ${error.message}`;
+                          errorMessageDisplay.classList.remove('hidden');
+                          } );
 
             this.dataStore.setState({
-                                [SEARCH_CRITERIA_KEY]: searchCriteria,
-                                [SEARCH_RESULTS_KEY_DIAGNOSIS]: results,
-                                [SEARCH_RESULTS_KEY_MEDICATION]: [],
-                            });
-         }else{
-              this.dataStore.setState(EMPTY_DATASTORE_STATE);
-         }
-         showButtonDiagnosis.innerText = 'Show Diagnosis Details'
-       // const searchResultsDisplay = document.getElementById('diagnosis-details');
-        this.displaySearchResults();
+                               [SEARCH_CRITERIA_KEY]: patientId,
+                               [SEARCH_RESULTS_KEY_DIAGNOSIS]: [],
+                               [SEARCH_RESULTS_KEY_MEDICATION]: results,
 
-    }
+                           });
+            }else{
+             this.dataStore.setState(EMPTY_DATASTORE_STATE);
+            }
 
-      async showMedicationDetails(evt) {
-            evt.preventDefault();
-            const errorMessageDisplay = document.getElementById('error-message');
-            errorMessageDisplay.innerText = ``;
-            errorMessageDisplay.classList.add('hidden');
-
-            const showButton = document.getElementById('add-medication');
-            const origButtonText = showButton.innerText;
-            showButton.innerText = 'Adding...';
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const searchCriteria = urlParams.get('id');
-            const previousSearchCriteria = this.dataStore.get(SEARCH_RESULTS_KEY_MEDICATION);
-
-             if (previousSearchCriteria === searchCriteria ) {
-                        return;
-             }
-
-             if(searchCriteria){
-
-                const results = await this.client.getPatientMedication(searchCriteria, (error)=>{
-                               errorMessageDisplay.innerText = `Error: ${error.message}`;
-                               errorMessageDisplay.classList.remove('hidden');
-                               } );
-
-                this.dataStore.setState({
-                                    [SEARCH_CRITERIA_KEY]: searchCriteria,
-                                    [SEARCH_RESULTS_KEY_DIAGNOSIS]: [],
-                                    [SEARCH_RESULTS_KEY_MEDICATION]: results,
-
-                                });
-             }else{
-                  this.dataStore.setState(EMPTY_DATASTORE_STATE);
-             }
-           // const searchResultsDisplay = document.getElementById('medication-details');
             this.displaySearchResultsMedication();
 
-        }
+}
 
-    /**
-         * Pulls search results from the datastore and displays them on the html page.
-         */
-        displaySearchResults() {
-            const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
-            const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY_DIAGNOSIS);
+/**
+* Add the header to the page and load the MusicPlaylistClient.
+*/
+mount() {
+           document.getElementById('add-diagnosis').addEventListener('click', this.addDiagnosis);
+           document.getElementById('add-medication').addEventListener('click', this.addMedication);
+           this.header.addHeaderToPage();
+           this.client = new PatientRecordClient();
+           this.clientLoaded();
+}
 
-            const searchResultsDisplay = document.getElementById('diagnosis-details');
+/**
+* Pulls search results from the datastore and displays them on the html page.
+*/
+displaySearchResults() {
+                const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
+                const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY_DIAGNOSIS);
 
-            if (searchCriteria === '') {
-                searchResultsDisplay.innerHTML = '';
-            } else {
-              searchResultsDisplay.innerHTML = this.getHTMLForSearchResults(searchResults);
-            }
-        }
+                const searchResultsDisplay = document.getElementById('diagnosis-details');
 
-       getHTMLForSearchResults(searchResults) {
+                if (searchCriteria === '') {
+                    searchResultsDisplay.innerHTML = '';
+                } else {
+                  searchResultsDisplay.innerHTML = this.getHTMLForSearchResults(searchResults);
+                }
+}
+
+//---------------------------------Diagnosis Details HTML------------------------
+getHTMLForSearchResults(searchResults) {
                 if (searchResults.length === 0) {
                     return '<h4>No results found</h4>';
                 }
 
-                let html = '<table><tr><th>diagnosisId</th><th>healthcareProfessionalId</th><th>Date Created</th><th>description</th></tr>';
+                let html = '<table><tr><th>diagnosisId</th><th>healthcareProfessionalId</th><th>Date Created</th><th>description</th><th>Action</th></tr>';
+                let i = 0;
+
+                 for (const res of searchResults) {
+
+                       html += `
+                           <tr data-id="${res.diagnosisId}">
+                               <td>${res.diagnosisId}</td>
+                               <td>${res.healthcareProfessionalId}</td>
+                               <td>${res.dateCreated}</td>
+                               <td>${res.description}</td>
+                               <td>
+                                   <button onclick="viewPatientDetail.updateRow('${res.diagnosisId}')">Update</button>
+                                   <button onclick="viewPatientDetail.deleteRow('${res.diagnosisId}')">Delete</button>
+                               </td>
+                           </tr>`;
+                   }
+
+                   html += '</table>';
+                   return html;
+}
+
+
+displaySearchResultsMedication() {
+                const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
+                const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY_MEDICATION);
+
+                const searchResultsDisplay = document.getElementById('medication-details');
+
+                if (searchCriteria === '') {
+                    searchResultsDisplay.innerHTML = '';
+                } else {
+                  searchResultsDisplay.innerHTML = this.getHTMLForSearchResultsMedication(searchResults);
+                }
+}
+
+
+//-----------------------------------------------Medication details HTML-----------------------
+
+getHTMLForSearchResultsMedication(searchResults) {
+                if (searchResults.length === 0) {
+                    return '<h4>No results found</h4>';
+                }
+
+                let html = '<table><tr><th>medicationName</th><th>Dosage</th><th>Start Date </th><th>End Date</th><th>Instructions</th><th>Action</th></tr>';
                 let i = 0;
 
                 for (const res of searchResults) {
 
 
                     html += `
-                    <tr>
-                        <td>${res.diagnosisId}</td>
-                        <td>${res.healthcareProfessionalId}</td>
-                        <td>${res.dateCreated}</td>
-                        <td>${res.description}</td>
+                    <tr data-id="${res.medicationId}">
+                        <td>${res.medicationName}</td>
+                        <td>${res.dosage}</td>
+                        <td>${res.startDate}</td>
+                        <td>${res.endDate}</td>
+                        <td>${res.instructions}</td>
+                        <td>
+
+                              <button onclick="viewPatientDetail.updateMedicationRow('${res.medicationId}')">Update</button>
+                              <button onclick="viewPatientDetail.deleteRowMedication('${res.medicationId}')">Delete</button>
+                        </td>
 
                     </tr>`;
                     i+=1;
@@ -204,106 +182,318 @@ class ViewPatientDetail extends BindingClass {
 
 
                 return html;
-            }
+}
 
-             displaySearchResultsMedication() {
-                        const searchCriteria = this.dataStore.get(SEARCH_CRITERIA_KEY);
-                        const searchResults = this.dataStore.get(SEARCH_RESULTS_KEY_MEDICATION);
+//------------------------- Create Diagnosis-------------------------------------------------
 
-                        const searchResultsDisplay = document.getElementById('medication-details');
-
-                        if (searchCriteria === '') {
-                            searchResultsDisplay.innerHTML = '';
-                        } else {
-                          searchResultsDisplay.innerHTML = this.getHTMLForSearchResultsMedication(searchResults);
-                        }
-               }
-
-                      getHTMLForSearchResultsMedication(searchResults) {
-                            if (searchResults.length === 0) {
-                                return '<h4>No results found</h4>';
-                            }
-
-                            let html = '<table><tr><th>medicationName</th><th>Dosage</th><th>Start Date </th><th>End Date</th><th>Instructions</th></tr>';
-                            let i = 0;
-
-                            for (const res of searchResults) {
-
-
-                                html += `
-                                <tr>
-                                    <td>${res.medicationName}</td>
-                                    <td>${res.dosage}</td>
-                                    <td>${res.startDate}</td>
-                                    <td>${res.endDate}</td>
-                                    <td>${res.instructions}</td>
-
-                                </tr>`;
-                                i+=1;
-                            }
-                            html += '</table>';
-
-
-
-                            return html;
-                        }
-
-
-    async addDiagnosis(evt) {
-            evt.preventDefault();
-            const errorMessageDisplay = document.getElementById('error-message');
-            errorMessageDisplay.innerText = ``;
-            errorMessageDisplay.classList.add('hidden');
-
-            const addButtonDiagnosis = document.getElementById('add-diagnosis');
-            const origButtonTextDiagnosis = addButtonDiagnosis.innerText;
-            addButtonDiagnosis.innerText = 'Adding...';
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const patientId = urlParams.get('id');
-            const description = document.getElementById('description').value;
-
-
-            const diagnosisResult = await this.client.addDiagnosis(patientId,description, (error) => {
-                addButton.innerText = origButtonText;
-                errorMessageDisplay.innerText = `Error: ${error.message}`;
-                errorMessageDisplay.classList.remove('hidden');
-            });
-
-            this.dataStore.set('diagnoses', diagnosisResult);
-            addButtonDiagnosis.innerText = 'Add diagnosis'
-
-    }
-
-    async addMedication(evt) {
+async addDiagnosis(evt) {
                 evt.preventDefault();
                 const errorMessageDisplay = document.getElementById('error-message');
                 errorMessageDisplay.innerText = ``;
                 errorMessageDisplay.classList.add('hidden');
 
-                const addButtonMedication = document.getElementById('add-medication');
-                const origButtonTextMedication = addButtonMedication.innerText;
-                addButtonMedication.innerText = 'Adding...';
+                const addButtonDiagnosis = document.getElementById('add-diagnosis');
+                const origButtonTextDiagnosis = addButtonDiagnosis.innerText;
+                addButtonDiagnosis.innerText = 'Adding...';
 
                 const urlParams = new URLSearchParams(window.location.search);
                 const patientId = urlParams.get('id');
-                const medicationName = document.getElementById('medicationName').value;
-                const dosage = document.getElementById('dosage').value;
-                const startDate = document.getElementById('startDate').value;
-                const endDate = document.getElementById('endDate').value;
-                const instruction = document.getElementById('instruction').value;
+                const description = document.getElementById('description').value;
 
 
-                const medicationResult = await this.client.addMedication(medicationName,dosage,startDate,endDate,instruction,patientId, (error) => {
-                    addButtonMedication.innerText = origButtonTextMedication;
+                const diagnosisResult = await this.client.addDiagnosis(patientId,description, (error) => {
+                    addButton.innerText = origButtonText;
                     errorMessageDisplay.innerText = `Error: ${error.message}`;
                     errorMessageDisplay.classList.remove('hidden');
                 });
 
-                this.dataStore.set('medication', medicationResult);
-                addButtonMedication.innerText = 'Add Medication'
+                this.dataStore.set('diagnoses', diagnosisResult);
+                addButtonDiagnosis.innerText = 'Add diagnosis'
 
-    }
+}
+
+//-----------------------------Create Medication------------------------------------------
+
+async addMedication(evt) {
+            evt.preventDefault();
+            const errorMessageDisplay = document.getElementById('error-message');
+            errorMessageDisplay.innerText = ``;
+            errorMessageDisplay.classList.add('hidden');
+
+            const addButtonMedication = document.getElementById('add-medication');
+            const origButtonTextMedication = addButtonMedication.innerText;
+            addButtonMedication.innerText = 'Adding...';
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientId = urlParams.get('id');
+            const medicationName = document.getElementById('medicationName').value;
+            const dosage = document.getElementById('dosage').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const instruction = document.getElementById('instruction').value;
+
+
+            const medicationResult = await this.client.addMedication(medicationName,dosage,startDate,endDate,instruction,patientId, (error) => {
+                addButtonMedication.innerText = origButtonTextMedication;
+                errorMessageDisplay.innerText = `Error: ${error.message}`;
+                errorMessageDisplay.classList.remove('hidden');
+            });
+
+            this.dataStore.set('medication', medicationResult);
+            addButtonMedication.innerText = 'Add Medication'
+
+}
+
+//----------------------------Toggle edit Mode--------------------------------
+updateRow(rowId) {
+               const row = document.querySelector(`tr[data-id="${rowId}"]`);
+               const isEditMode = row.classList.toggle('edit-mode');
+
+               if (isEditMode) {
+                   const cells = row.querySelectorAll('td:not(:last-child)');
+                   cells.forEach(cell => {
+                       const value = cell.textContent;
+                       cell.innerHTML = `<input type="text" value="${value}">`;
+                   });
+
+                   const updateButton = row.querySelector('button');
+                   updateButton.textContent = 'Save';
+                   updateButton.onclick = () => {
+                       this.saveRow(rowId); // Use arrow function to preserve 'this'
+                   };
+               } else {
+                   // Restore original content
+                   const cells = row.querySelectorAll('td:not(:last-child)');
+                   cells.forEach(cell => {
+                       const value = cell.querySelector('input').value;
+                       cell.textContent = value;
+                   });
+
+                   const updateButton = row.querySelector('button');
+                   updateButton.textContent = 'Update';
+                   updateButton.onclick = () => {
+                       this.updateRow(rowId); // Use arrow function to preserve 'this'
+                   };
+               }
+}
+
+
+updateMedicationRow(rowId) {
+               alert("Inside update medication")
+               const row = document.querySelector(`tr[data-id="${rowId}"]`);
+               const isEditMode = row.classList.toggle('edit-mode');
+
+               if (isEditMode) {
+               alert("Inside if");
+                   const cells = row.querySelectorAll('td:not(:last-child)');
+                   cells.forEach(cell => {
+                       const value = cell.textContent;
+                       cell.innerHTML = `<input type="text" value="${value}">`;
+                   });
+
+                   const updateButton = row.querySelector('button');
+                   updateButton.textContent = 'Save';
+                   updateButton.onclick = () => {
+                       this.saveRowMedication(rowId); // Use arrow function to preserve 'this'
+                   };
+               } else {
+                   // Restore original content
+                   const cells = row.querySelectorAll('td:not(:last-child)');
+                   cells.forEach(cell => {
+                       const value = cell.querySelector('input').value;
+                       cell.textContent = value;
+                   });
+
+                   const updateButton = row.querySelector('button');
+                   updateButton.textContent = 'Update';
+                   updateButton.onclick = () => {
+                       this.updateRow(rowId); // Use arrow function to preserve 'this'
+                   };
+               }
+               alert("end update");
+}
+
+
+async saveRow(rowId){
+            const row = document.querySelector(`tr[data-id="${rowId}"]`);
+            const cells = row.querySelectorAll('td:not(:last-child) input');
+
+            // Collect the updated values from the input fields
+            const updatedValues = Array.from(cells).map(input => input.value);
+
+
+            //  logic to save the updated values
+            const errorMessageDisplay = document.getElementById('error-message');
+            errorMessageDisplay.innerText = '';
+            errorMessageDisplay.classList.add('hidden');
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientId = urlParams.get('id');
+            const diagnosisId = rowId;
+            const description = updatedValues[3];
+            const dateCreated = updatedValues[2];
+
+             const result = await this.client.updateDiagnosis(diagnosisId, patientId, dateCreated, description,(error) => {
+
+                       errorMessageDisplay.innerText = `Error: ${error.message}`;
+                       errorMessageDisplay.classList.remove('hidden');
+                   });
+                   this.dataStore.set('updateDiagnosis', result);
+
+
+              // Restore original content
+             cells.forEach((cell, index) => {
+                 cell.textContent = updatedValues[index];
+             });
+
+             // Update button text and event handler
+             const updateButton = row.querySelector('button');
+             updateButton.textContent = 'Update';
+             updateButton.onclick = () => {
+                 this.updateRow(rowId); // Use arrow function to maintain 'this'
+             };
+
+
+}
+async saveRowMedication(rowId){
+             alert("inside SAve medication");
+             alert(rowId);
+            const row = document.querySelector(`tr[data-id="${rowId}"]`);
+            const cells = row.querySelectorAll('td:not(:last-child) input');
+
+            // Collect the updated values from the input fields
+            const updatedValues = Array.from(cells).map(input => input.value);
+
+
+            //  logic to save the updated values
+            const errorMessageDisplay = document.getElementById('error-message');
+            errorMessageDisplay.innerText = '';
+            errorMessageDisplay.classList.add('hidden');
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const patientId = urlParams.get('id');
+            const medicationId = rowId;
+            const medicationName = updatedValues[0];
+            const dosage = updatedValues[1];
+            const startDate = updatedValues[2]
+            const endDated = updatedValues[3];
+            const instructions = updatedValues[4];
+
+             const result = await this.client.updateMedication(medicationId,medicationName, dosage,startDate,endDated,instructions,patientId,(error) => {
+
+                       errorMessageDisplay.innerText = `Error: ${error.message}`;
+                       errorMessageDisplay.classList.remove('hidden');
+                   });
+                   this.dataStore.set('updateMedication', result);
+
+
+              // Restore original content
+             cells.forEach((cell, index) => {
+                 cell.textContent = updatedValues[index];
+             });
+
+             // Update button text and event handler
+             const updateButton = row.querySelector('button');
+             updateButton.textContent = 'Update';
+             updateButton.onclick = () => {
+                 this.updateRow(rowId); // Use arrow function to maintain 'this'
+             };
+              alert("End SAve medication")
+
+
+}
+
+
+//-------------------------------------Delete Row functionality ------------------------------
+
+/**
+ * Delete a diagnosis or medication based on the provided ID.
+ * @param {string} rowId - The ID of the diagnosis or medication to be deleted.
+ */
+async deleteRow(rowId) {
+            const confirmation = confirm("Are you sure you want to delete this record?");
+            if (!confirmation) {
+            return;
+            }
+
+            const errorMessageDisplay = document.getElementById('error-message');
+            errorMessageDisplay.innerText = '';
+            errorMessageDisplay.classList.add('hidden');
+
+            try {
+            // Determine whether it's a diagnosis or medication based on some condition
+            const isDiagnosis = true; // Set this condition based on your logic
+
+            if (isDiagnosis) {
+                // Delete a diagnosis
+                const result=  await this.client.deleteDiagnosis(rowId, (error) => {
+                    errorMessageDisplay.innerText = `Error: ${error.message}`;
+                    errorMessageDisplay.classList.remove('hidden');
+                });
+
+                this.dataStore.set('deleteDiagnosis/{diagnosisId}', result);
+            } else {
+                // Delete a medication
+                await this.client.deleteMedication(rowId, (error) => {
+                    errorMessageDisplay.innerText = `Error: ${error.message}`;
+                    errorMessageDisplay.classList.remove('hidden');
+                });
+            }
+
+            // Remove the deleted row from the UI
+            const row = document.querySelector(`tr[data-id="${rowId}"]`);
+            if (row) {
+                row.remove();
+            }
+            } catch (error) {
+            errorMessageDisplay.innerText = `Error: ${error.message}`;
+            errorMessageDisplay.classList.remove('hidden');
+            }
+}
+
+async deleteRowMedication(rowId) {
+
+            const confirmation = confirm("Are you sure you want to delete this record?");
+            alert(rowId);
+            if (!confirmation) {
+            return;
+            }
+
+            const errorMessageDisplay = document.getElementById('error-message');
+            errorMessageDisplay.innerText = '';
+            errorMessageDisplay.classList.add('hidden');
+
+            try {
+            // Determine whether it's a diagnosis or medication based on some condition
+            const isDiagnosis = true; // Set this condition based on your logic
+
+            if (isDiagnosis) {
+                // Delete a diagnosis
+                const result=  await this.client.deleteMedication(rowId, (error) => {
+                    errorMessageDisplay.innerText = `Error: ${error.message}`;
+                    errorMessageDisplay.classList.remove('hidden');
+                });
+
+                this.dataStore.set('deleteMedication/{medicationId}', result);
+            } else {
+                // Delete a medication
+                await this.client.deleteMedication(rowId, (error) => {
+                    errorMessageDisplay.innerText = `Error: ${error.message}`;
+                    errorMessageDisplay.classList.remove('hidden');
+                });
+            }
+
+            // Remove the deleted row from the UI
+            const row = document.querySelector(`tr[data-id="${rowId}"]`);
+            if (row) {
+                row.remove();
+            }
+            } catch (error) {
+            errorMessageDisplay.innerText = `Error: ${error.message}`;
+            errorMessageDisplay.classList.remove('hidden');
+            }
+}
+
 
 }
 
@@ -311,8 +501,9 @@ class ViewPatientDetail extends BindingClass {
  * Main method to run when the page contents have loaded.
  */
 const main = async () => {
-    const viewPatientDetail = new ViewPatientDetail();
-    viewPatientDetail.mount();
+            const viewPatientDetail = new ViewPatientDetail();
+            window.viewPatientDetail = viewPatientDetail;
+            viewPatientDetail.mount();
 };
 
 window.addEventListener('DOMContentLoaded', main);
