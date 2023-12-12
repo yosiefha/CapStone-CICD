@@ -2,24 +2,31 @@
 <html>
 
 <head>
-    <script type="text/javascript" src="assets/searchPlaylists.js"></script>
+    <script type="text/javascript" src="assets/searchPatient.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body class="background">
     <header class="header" id="header"></header>
     <div class="card">
-        <h2>Search Playlists</h2>
-        <form class="card-content" id="search-playlists-form">
+        <h2>Create Patient Profile</h2>
+        <form class="card-content" id="search-patient-form">
+            <p class="hidden error" id="error-message"> </p>
             <p class="form-field">
-                <label>Search by name or tag</label>
-                <input type="text" class="validated-field" id="search-criteria" placeholder="smooth-jamz" autofocus>
-                <sub>Search is case-sensitive and tags must match exactly.</sub>
+                <label>First Name</label>
+                <input type="text" class="validated-field" id="firstName" placeholder="First Name" autofocus>
+<!--                <sub>Search is case-sensitive and tags must match exactly.</sub>-->
+            </p>
+
+            <p class="form-field">
+                <label>Last Name</label>
+                <input type="text" class="validated-field" id="lastName" placeholder="Last Name" autofocus>
+<!--                <sub>Search is case-sensitive and tags must match exactly.</sub>-->
             </p>
         </form>
         <p class="button-group">
-            <a href="#" class="button" id="search-btn">Search</a>
-            <a href="createPlaylist.html" class="button">New Playlist</a>
+            <a href="#" class="button" id="search-btn">search patient</a>
+            <a href="createPatient.html" class="button">New Patient</a>
         </p>
     </div>
     <div class="card hidden" id='search-results-container'>

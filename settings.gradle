@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'Hospital Managment System'
-include('app')
+include('PatientRecordServiceLambda')
