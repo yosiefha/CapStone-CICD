@@ -57,6 +57,9 @@ public class DiagnosisDAO {
     }
 
     public void deleteDiagnosisBatch(List<Diagnosis> diagnosisList){
+        if (diagnosisList != null && diagnosisList.contains(null)) {
+            throw new IllegalArgumentException("Input list must not contain null values");
+        }
 
         dynamoDBMapper.batchDelete(diagnosisList);
     }

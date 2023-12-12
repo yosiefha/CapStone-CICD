@@ -45,7 +45,7 @@ public class PatientDAO {
 
         Patient patient = this.dynamoDBMapper.load(Patient.class,patientId);
         if (patient == null) {
-            throw new PatientNotFoundException("Could not find playlist with id " + patientId);
+            throw new PatientNotFoundException("Could not find Patient with id " + patientId);
         }
         return patient;
 

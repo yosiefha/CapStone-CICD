@@ -19,6 +19,12 @@ public class UpdateDiagnosisActivity {
 
     public UpdateDiagnosisResult handleRequest(final UpdateDiagnosisRequest updateDiagnosisRequest){
         Diagnosis diagnosis = diagnosisDAO.getDiagnosis(updateDiagnosisRequest.getDiagnosisId());
+        if(diagnosis == null){
+            return UpdateDiagnosisResult.builder()
+                    .withDiagnosisModel(new ModelConverter().toDiagnosisModel(diagnosis))
+                    .build();
+
+        }
         String diagnosisId = updateDiagnosisRequest.getDiagnosisId();
         String description = updateDiagnosisRequest.getDescription();
         String dateCreated = updateDiagnosisRequest.getDateCreated();

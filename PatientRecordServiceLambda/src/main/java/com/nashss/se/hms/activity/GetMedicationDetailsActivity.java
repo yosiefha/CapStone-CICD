@@ -1,6 +1,5 @@
 package com.nashss.se.hms.activity;
 
-import com.nashss.se.hms.activity.requests.GetDiagnosisDetailsRequest;
 import com.nashss.se.hms.activity.requests.GetMedicationDetailsRequest;
 import com.nashss.se.hms.activity.results.GetMedicationDetailsResult;
 import com.nashss.se.hms.converters.ModelConverter;

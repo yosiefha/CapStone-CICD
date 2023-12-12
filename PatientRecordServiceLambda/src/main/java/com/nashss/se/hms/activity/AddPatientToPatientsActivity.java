@@ -6,12 +6,12 @@ import com.nashss.se.hms.converters.ModelConverter;
 import com.nashss.se.hms.dynamodb.PatientDAO;
 import com.nashss.se.hms.dynamodb.models.Patient;
 import com.nashss.se.hms.models.PatientModel;
-import org.apache.logging.log4j.LogManager;
+
 
 
 import javax.inject.Inject;
 import java.util.UUID;
-import java.util.logging.Logger;
+
 
 
 public class AddPatientToPatientsActivity {

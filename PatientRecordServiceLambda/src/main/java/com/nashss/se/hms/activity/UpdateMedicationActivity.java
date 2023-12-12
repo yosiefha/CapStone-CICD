@@ -1,6 +1,7 @@
 package com.nashss.se.hms.activity;
 
 import com.nashss.se.hms.activity.requests.UpdateMedicationRequest;
+import com.nashss.se.hms.activity.results.UpdateDiagnosisResult;
 import com.nashss.se.hms.activity.results.UpdateMedicationResult;
 import com.nashss.se.hms.converters.ModelConverter;
 import com.nashss.se.hms.dynamodb.MedicationDAO;
@@ -19,6 +20,12 @@ public class UpdateMedicationActivity {
 
     public UpdateMedicationResult handleRequest(final UpdateMedicationRequest updateMedicationRequest){
         Medication medication =medicationDAO.getMedication(updateMedicationRequest.getMedicationId());
+        if(medication == null){
+            return UpdateMedicationResult.builder()
+                    .withMedicationModel(new ModelConverter().toMedicationModel(medication))
+                    .build();
+
+        }
         String medicationId = updateMedicationRequest.getMedicationId();
         String medicationName = updateMedicationRequest.getMedicationName();
         String dosage = updateMedicationRequest.getDosage();

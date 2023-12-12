@@ -1,17 +1,18 @@
 package com.nashss.se.hms.converters;
-
 import com.nashss.se.hms.dynamodb.models.Diagnosis;
-import com.nashss.se.hms.dynamodb.models.Goal;
 import com.nashss.se.hms.dynamodb.models.Medication;
 import com.nashss.se.hms.dynamodb.models.Patient;
 import com.nashss.se.hms.models.DiagnosisModel;
-import com.nashss.se.hms.models.GoalModel;
 import com.nashss.se.hms.models.MedicationModel;
 import com.nashss.se.hms.models.PatientModel;
 
 public class ModelConverter {
 
     public PatientModel toPatientModel(Patient patient){
+
+            if (patient == null) {
+                return null; // Return null if the patient is null
+            }
         return PatientModel.builder()
                 .withPatientId(patient.getPatientId())
                 .withFirstName(patient.getFirstName())
@@ -24,6 +25,9 @@ public class ModelConverter {
     }
 
     public DiagnosisModel toDiagnosisModel(Diagnosis diagnosis){
+        if (diagnosis == null) {
+            return null; // Return null if the patient is null
+        }
         return DiagnosisModel.builder()
                 .withDiagnosisId(diagnosis.getDiagnosisId())
                 .withDescription(diagnosis.getDescription())
@@ -35,7 +39,9 @@ public class ModelConverter {
 
 
     public MedicationModel toMedicationModel(Medication medication) {
-
+        if (medication == null) {
+            return null; // Return null if the patient is null
+        }
 
         return  MedicationModel.builder()
                 .withMedicationId(medication.getMedicationId())

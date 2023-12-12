@@ -1,6 +1,7 @@
 package com.nashss.se.hms.activity;
 
 import com.nashss.se.hms.activity.requests.UpdatePatientRequest;
+import com.nashss.se.hms.activity.results.UpdateMedicationResult;
 import com.nashss.se.hms.activity.results.UpdatePatientResult;
 import com.nashss.se.hms.converters.ModelConverter;
 import com.nashss.se.hms.dynamodb.PatientDAO;
@@ -21,6 +22,12 @@ public class UpdatePatientActivity {
    public UpdatePatientResult handleRequest(final UpdatePatientRequest updatePatientRequest){
 
        Patient patient = patientDAO.getPatientByPatientId(updatePatientRequest.getPatientId());
+       if(patient == null){
+           return UpdatePatientResult.builder()
+                   .withPatientModel(new ModelConverter().toPatientModel(patient))
+                   .build();
+
+       }
        String patientId = updatePatientRequest.getPatientId();
        String firstName = updatePatientRequest.getFirstName();
        String lastName = updatePatientRequest.getLastName();
