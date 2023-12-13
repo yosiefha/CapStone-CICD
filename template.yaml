@@ -274,8 +274,7 @@ Resources:
           Properties:
             Path: /patients/{firstName}/{lastName}
             Method: get
-            Auth:
-              Authorizer: 'NONE'
+
 
   CreatePatientDiagnosisLambda:
     Type: AWS::Serverless::Function
@@ -338,8 +337,7 @@ Resources:
           Properties:
             Path: /patient/{patientId}
             Method: GET
-            Auth:
-              Authorizer: 'NONE'
+
 
   GetDiagnosisDetailsLambda:
     Type: AWS::Serverless::Function
@@ -360,8 +358,7 @@ Resources:
           Properties:
             Path: /diagnoses/{patientId}
             Method: GET
-            Auth:
-              Authorizer: 'NONE'
+
 
   GetMedicationDetailsLambda:
     Type: AWS::Serverless::Function
@@ -382,8 +379,7 @@ Resources:
           Properties:
             Path: /medications/{patientId}
             Method: GET
-            Auth:
-              Authorizer: 'NONE'
+
 
 
   DeletePatientLambda:
