@@ -453,7 +453,7 @@ async deleteRow(rowId) {
 async deleteRowMedication(rowId) {
 
             const confirmation = confirm("Are you sure you want to delete this record?");
-       
+
             if (!confirmation) {
             return;
             }

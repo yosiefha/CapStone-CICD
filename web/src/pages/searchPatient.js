@@ -281,26 +281,6 @@ async saveRow(rowId){
                    errorMessageDisplay.classList.remove('hidden');
                }
 
-//             const result = await this.client.updatePatient(patientId,firstName,lastName, dob,contactNumber,emailAddress,address,(error) => {
-//
-//                       errorMessageDisplay.innerText = `Error: ${error.message}`;
-//                       errorMessageDisplay.classList.remove('hidden');
-//                   });
-//                   this.dataStore.set('updatePatient/{patientId}', result);
-//
-//
-//              // Restore original content
-//             cells.forEach((cell, index) => {
-//                 cell.textContent = updatedValues[index];
-//             });
-//
-//             // Update button text and event handler
-//             const updateButton = row.querySelector('button');
-//             updateButton.textContent = 'Update';
-//             updateButton.onclick = () => {
-//                 this.updateRow(rowId); // Use arrow function to maintain 'this'
-//             };
-
 
 
 }
@@ -308,7 +288,7 @@ async deletePatientRow(event) {
 
     const target = event.target;
     const rowId = target.dataset.id; // Get the rowId from the clicked button's dataset
-    alert(rowId);
+
     const confirmation = confirm("Are you sure you want to delete this record?");
     if (!confirmation) {
         return;
