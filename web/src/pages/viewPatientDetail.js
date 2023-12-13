@@ -279,12 +279,12 @@ updateRow(rowId) {
 
 
 updateMedicationRow(rowId) {
-               alert("Inside update medication")
+
                const row = document.querySelector(`tr[data-id="${rowId}"]`);
                const isEditMode = row.classList.toggle('edit-mode');
 
                if (isEditMode) {
-               alert("Inside if");
+
                    const cells = row.querySelectorAll('td:not(:last-child)');
                    cells.forEach(cell => {
                        const value = cell.textContent;
@@ -310,7 +310,7 @@ updateMedicationRow(rowId) {
                        this.updateRow(rowId); // Use arrow function to preserve 'this'
                    };
                }
-               alert("end update");
+
 }
 
 
@@ -356,8 +356,7 @@ async saveRow(rowId){
 
 }
 async saveRowMedication(rowId){
-             alert("inside SAve medication");
-             alert(rowId);
+
             const row = document.querySelector(`tr[data-id="${rowId}"]`);
             const cells = row.querySelectorAll('td:not(:last-child) input');
 
@@ -398,7 +397,7 @@ async saveRowMedication(rowId){
              updateButton.onclick = () => {
                  this.updateRow(rowId); // Use arrow function to maintain 'this'
              };
-              alert("End SAve medication")
+
 
 
 }
@@ -454,7 +453,7 @@ async deleteRow(rowId) {
 async deleteRowMedication(rowId) {
 
             const confirmation = confirm("Are you sure you want to delete this record?");
-            alert(rowId);
+       
             if (!confirmation) {
             return;
             }

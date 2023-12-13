@@ -3,13 +3,22 @@ package com.nashss.se.hms.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-@JsonDeserialize(builder =DeletePatientRequest.Builder.class)
+/**
+ * DeletePatientRequest represents a request to delete a patient.
+ * It contains the patient ID.
+ */
+@JsonDeserialize(builder = DeletePatientRequest.Builder.class)
 public class DeletePatientRequest {
 
     private final String patientId;
 
-    public DeletePatientRequest(String patientId){
-        this.patientId =patientId;
+    /**
+     * Constructs a new DeletePatientRequest object with the specified patient ID.
+     *
+     * @param patientId the ID of the patient to be deleted
+     */
+    public DeletePatientRequest(String patientId) {
+        this.patientId = patientId;
     }
 
     public String getPatientId() {
@@ -23,6 +32,7 @@ public class DeletePatientRequest {
                 '}';
     }
 
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }
@@ -32,16 +42,12 @@ public class DeletePatientRequest {
 
         private String patientId;
 
-
-
         public Builder withPatientId(String patientId) {
             this.patientId = patientId;
             return this;
         }
 
-
-
-        public DeletePatientRequest  build() {
+        public DeletePatientRequest build() {
             return new DeletePatientRequest(patientId);
         }
     }

@@ -3,6 +3,9 @@ package com.nashss.se.hms.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+/**
+ * Represents a request to update a diagnosis.
+ */
 @JsonDeserialize(builder = UpdateDiagnosisRequest.Builder.class)
 public class UpdateDiagnosisRequest {
 
@@ -12,8 +15,16 @@ public class UpdateDiagnosisRequest {
     private final String healthcareProfessionalId;
     private final String patientId;
 
-
-    public UpdateDiagnosisRequest(String diagnosisId, String description, String dateCreated, String healthcareProfessionalId, String patientId) {
+    /**
+     * Constructs a new UpdateDiagnosisRequest object with the specified parameters.
+     * @param diagnosisId The ID of the diagnosis.
+     * @param description The description of the diagnosis.
+     * @param dateCreated The date when the diagnosis was created.
+     * @param healthcareProfessionalId The ID of the healthcare professional associated with the diagnosis.
+     * @param patientId The ID of the patient associated with the diagnosis.
+     */
+    public UpdateDiagnosisRequest(String diagnosisId, String description, String dateCreated,
+                                  String healthcareProfessionalId, String patientId) {
         this.diagnosisId = diagnosisId;
         this.description = description;
         this.dateCreated = dateCreated;
@@ -52,6 +63,7 @@ public class UpdateDiagnosisRequest {
                 '}';
     }
 
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){
         return new Builder();
     }

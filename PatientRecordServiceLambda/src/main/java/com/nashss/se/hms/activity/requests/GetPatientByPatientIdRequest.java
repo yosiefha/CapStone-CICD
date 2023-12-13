@@ -3,10 +3,20 @@ package com.nashss.se.hms.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-@JsonDeserialize(builder =GetPatientByPatientIdRequest.Builder.class)
+
+/**
+ * This class represents a request to get a patient by their ID.
+ */
+@JsonDeserialize(builder = GetPatientByPatientIdRequest.Builder.class)
 public class GetPatientByPatientIdRequest {
 
     private final String patientId;
+
+    /**
+     * Creates a new instance of GetPatientByPatientIdRequest with the given patient ID.
+     *
+     * @param patientId the ID of the patient
+     */
     public GetPatientByPatientIdRequest(String patientId) {
         this.patientId = patientId;
     }
@@ -22,6 +32,7 @@ public class GetPatientByPatientIdRequest {
                 '}';
     }
 
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }
@@ -29,10 +40,12 @@ public class GetPatientByPatientIdRequest {
     @JsonPOJOBuilder
     public static class Builder {
         private String patientId;
+
         public Builder withPatientId(String patientId) {
             this.patientId = patientId;
             return this;
         }
+
         public GetPatientByPatientIdRequest build() {
             return new GetPatientByPatientIdRequest(patientId);
         }

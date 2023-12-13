@@ -3,6 +3,10 @@ package com.nashss.se.hms.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+
+/**
+ * The UpdateMedicationRequest class represents a request to update medication details.
+ */
 @JsonDeserialize(builder = UpdateMedicationRequest.Builder.class)
 public class UpdateMedicationRequest {
     private final String medicationId;
@@ -13,7 +17,18 @@ public class UpdateMedicationRequest {
     private final String instructions;
     private final  String patientId;
 
-    public UpdateMedicationRequest(String medicationId, String medicationName, String dosage, String startDate, String endDate, String instructions, String patientId) {
+    /**
+     * Represents a medication update request.
+     * @param medicationId   the ID of the medication
+     * @param medicationName the name of the medication
+     * @param dosage         the dosage of the medication
+     * @param startDate      the start date of the medication
+     * @param endDate        the end date of the medication
+     * @param instructions   the instructions for taking the medication
+     * @param patientId      the ID of the patient
+     */
+    public UpdateMedicationRequest(String medicationId, String medicationName, String dosage, String startDate,
+                                   String endDate, String instructions, String patientId) {
         this.medicationId = medicationId;
         this.medicationName = medicationName;
         this.dosage = dosage;
@@ -64,6 +79,7 @@ public class UpdateMedicationRequest {
                 '}';
     }
 
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder(){
         return new UpdateMedicationRequest.Builder();
     }

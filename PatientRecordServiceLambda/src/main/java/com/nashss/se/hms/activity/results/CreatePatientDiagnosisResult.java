@@ -2,14 +2,28 @@ package com.nashss.se.hms.activity.results;
 
 import com.nashss.se.hms.models.DiagnosisModel;
 
+/**
+ * The CreatePatientDiagnosisResult class represents the result of creating a patient diagnosis.
+ * It encapsulates a DiagnosisModel object.
+ */
 public class CreatePatientDiagnosisResult {
 
     private final DiagnosisModel diagnosisModel;
-    private CreatePatientDiagnosisResult( DiagnosisModel diagnosisModel) {
+
+    /**
+     * Creates a new CreatePatientDiagnosisResult object with the given DiagnosisModel.
+     * @param diagnosisModel the DiagnosisModel object to be encapsulated in
+     *                       the CreatePatientDiagnosisResult
+     */
+    private CreatePatientDiagnosisResult(DiagnosisModel diagnosisModel) {
         this.diagnosisModel = diagnosisModel;
 
     }
 
+    /**
+     * Retrieves the DiagnosisModel object.
+     * @return the DiagnosisModel object
+     */
     public DiagnosisModel getDiagnosisModel() {
         return diagnosisModel;
     }
@@ -26,6 +40,7 @@ public class CreatePatientDiagnosisResult {
 
         return new CreatePatientDiagnosisResult.Builder();
     }
+
     public static class Builder {
         private DiagnosisModel diagnosisModel;
 

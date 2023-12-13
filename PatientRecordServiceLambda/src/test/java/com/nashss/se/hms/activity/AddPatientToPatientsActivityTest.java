@@ -38,7 +38,7 @@ public class AddPatientToPatientsActivityTest {
         // Arrange
         AddPatientToPatientsRequest request = AddPatientToPatientsRequest.builder()
                 .withFirstName("John")
-                .withLastName("Doe")
+                .withLastName("Abraham")
                 .build();
 
         // Mocking behavior of PatientDAO

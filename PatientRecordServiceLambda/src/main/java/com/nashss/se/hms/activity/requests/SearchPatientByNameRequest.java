@@ -3,6 +3,10 @@ package com.nashss.se.hms.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+
+/**
+ * This class represents a request to search patients by name.
+ */
 @JsonDeserialize(builder = SearchPatientByNameRequest.Builder.class)
 public class SearchPatientByNameRequest {
 
@@ -10,7 +14,11 @@ public class SearchPatientByNameRequest {
     private final String firstName;
     private final String lastName;
 
-
+    /**
+     * Constructs a new SearchPatientByNameRequest object.
+     * @param firstName The first name of the patient to be searched by.
+     * @param lastName The last name of the patient to be searched by.
+     */
     public SearchPatientByNameRequest(String firstName, String lastName) {
 
         this.firstName = firstName;
@@ -36,6 +44,7 @@ public class SearchPatientByNameRequest {
                 '}';
     }
 
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }
@@ -55,7 +64,6 @@ public class SearchPatientByNameRequest {
             this.lastName = lastName;
             return this;
         }
-
 
 
         public SearchPatientByNameRequest build() {

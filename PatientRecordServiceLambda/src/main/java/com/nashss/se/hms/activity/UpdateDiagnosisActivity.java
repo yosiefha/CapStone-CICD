@@ -8,18 +8,36 @@ import com.nashss.se.hms.dynamodb.models.Diagnosis;
 
 import javax.inject.Inject;
 
+/**
+ * Represents an activity for updating a diagnosis.
+ */
 public class UpdateDiagnosisActivity {
 
     private final DiagnosisDAO diagnosisDAO;
 
+    /**
+     * Updates a diagnosis in the system.
+     *
+     * @param diagnosisDAO the DiagnosisDAO instance used to interact
+     *                     with the database.
+     */
     @Inject
     public UpdateDiagnosisActivity(DiagnosisDAO diagnosisDAO) {
         this.diagnosisDAO = diagnosisDAO;
     }
 
-    public UpdateDiagnosisResult handleRequest(final UpdateDiagnosisRequest updateDiagnosisRequest){
+    /**
+     * Handles a request to update a diagnosis.
+     *
+     * @param updateDiagnosisRequest The UpdateDiagnosisRequest object
+     *                               containing the updated diagnosis information.
+     * @return The UpdateDiagnosisResult object containing the
+     * updated diagnosis model.
+     */
+    public UpdateDiagnosisResult handleRequest(final UpdateDiagnosisRequest
+                                                       updateDiagnosisRequest) {
         Diagnosis diagnosis = diagnosisDAO.getDiagnosis(updateDiagnosisRequest.getDiagnosisId());
-        if(diagnosis == null){
+        if (diagnosis == null) {
             return UpdateDiagnosisResult.builder()
                     .withDiagnosisModel(new ModelConverter().toDiagnosisModel(diagnosis))
                     .build();
@@ -30,13 +48,13 @@ public class UpdateDiagnosisActivity {
         String dateCreated = updateDiagnosisRequest.getDateCreated();
         String healthcareProfessionalId = updateDiagnosisRequest.getHealthcareProfessionalId();
         String patientId = updateDiagnosisRequest.getPatientId();
-        if(description != null){
+        if (description != null) {
             diagnosis.setDiagnosisId(description);
         }
-        if(dateCreated != null){
+        if (dateCreated != null) {
             diagnosis.setDateCreated(dateCreated);
         }
-        if(healthcareProfessionalId != null){
+        if (healthcareProfessionalId != null) {
             diagnosis.setHealthcareProfessionalId(healthcareProfessionalId);
         }
 

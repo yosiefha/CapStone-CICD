@@ -9,18 +9,34 @@ import com.nashss.se.hms.models.PatientModel;
 
 import javax.inject.Inject;
 
+/**
+ * This class represents an activity to get a patient by their ID.
+ */
 public class GetPatientByPatientIdActivity {
 
     private final PatientDAO patientDAO;
+
+    /**
+     * Initializes a new instance of the GetPatientByPatientIdActivity class.
+     *
+     * @param patientDAO The PatientDAO object used to interact
+     * with the patient data.
+     */
     @Inject
     public GetPatientByPatientIdActivity(PatientDAO patientDAO) {
         this.patientDAO = patientDAO;
     }
 
-    public GetPatientByPatientIdResult handleRequest(final GetPatientByPatientIdRequest getPatientByPatientIdRequest){
-       String patientId = getPatientByPatientIdRequest.getPatientId();
-       Patient patient = patientDAO.getPatientByPatientId(patientId);
-       PatientModel patientModel = new ModelConverter().toPatientModel(patient);
+    /**
+     * Handles a request to get a patient by their ID.
+     * @param getPatientByPatientIdRequest The request object containing
+     * the patient ID.
+     * @return The result object containing the patient details.
+     */
+    public GetPatientByPatientIdResult handleRequest(final GetPatientByPatientIdRequest getPatientByPatientIdRequest) {
+        String patientId = getPatientByPatientIdRequest.getPatientId();
+        Patient patient = patientDAO.getPatientByPatientId(patientId);
+        PatientModel patientModel = new ModelConverter().toPatientModel(patient);
 
         return GetPatientByPatientIdResult.builder()
                 .withPatientId(patientModel)

@@ -1,14 +1,13 @@
 package com.nashss.se.hms.lambda;
-
-import com.amazonaws.services.lambda.runtime.Context;
 import com.nashss.se.hms.activity.requests.UpdatePatientRequest;
 import com.nashss.se.hms.activity.results.UpdatePatientResult;
+
+import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
-import java.nio.charset.StandardCharsets;
 
 public class UpdatePatientLambda extends LambdaActivityRunner<UpdatePatientRequest, UpdatePatientResult>
-        implements RequestHandler<AuthenticatedLambdaRequest<UpdatePatientRequest>, LambdaResponse>{
+        implements RequestHandler<AuthenticatedLambdaRequest<UpdatePatientRequest>, LambdaResponse> {
 
     /**
      * @param input   The Lambda Function input
@@ -17,27 +16,22 @@ public class UpdatePatientLambda extends LambdaActivityRunner<UpdatePatientReque
      */
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<UpdatePatientRequest> input, Context context) {
-        return  super.runActivity(
-                () ->{
-                    UpdatePatientRequest unauthenticatedRequest = input.fromBody(UpdatePatientRequest.class);
+        return super.runActivity(
+            () -> {
+                UpdatePatientRequest unauthenticatedRequest = input.fromBody(UpdatePatientRequest.class);
 
-                   // UpdatePatientRequest unauthenticatedRequest = input.fromBody(UpdatePatientRequest.class);
-//                    UpdatePatientRequest  unauthenticatedRequest = input.fromPath(path -> UpdatePatientRequest.builder()
-//                            .withPatientId(java.net.URLDecoder.decode(path.get("patientId"), StandardCharsets.UTF_8))
-//                            .build());
 
-                    return input.fromUserClaims(claims ->
-                            UpdatePatientRequest.builder()
-                                    .withPatientId(unauthenticatedRequest.getPatientId())
-                                    .withFirstName(unauthenticatedRequest.getFirstName())
-                                    .withLastName(unauthenticatedRequest.getLastName())
-                                    .withDOB(unauthenticatedRequest.getDOB())
-                                    .withContactNumber(unauthenticatedRequest.getContactNumber())
-                                    .withEmailAddress(unauthenticatedRequest.getEmailAddress())
-                                    .withAddress(unauthenticatedRequest.getAddress())
-                                    .build());
-                },
-                (request, serviceComponent) ->
-                        serviceComponent.provideUpdatePatientActivity().handleRequest(request));
+                return input.fromUserClaims(claims ->
+                        UpdatePatientRequest.builder()
+                                .withPatientId(unauthenticatedRequest.getPatientId())
+                                .withFirstName(unauthenticatedRequest.getFirstName())
+                                .withLastName(unauthenticatedRequest.getLastName())
+                                .withDOB(unauthenticatedRequest.getDOB())
+                                .withContactNumber(unauthenticatedRequest.getContactNumber())
+                                .withEmailAddress(unauthenticatedRequest.getEmailAddress())
+                                .withAddress(unauthenticatedRequest.getAddress())
+                                .build());
+            },
+            (request, serviceComponent) -> serviceComponent.provideUpdatePatientActivity().handleRequest(request));
     }
 }

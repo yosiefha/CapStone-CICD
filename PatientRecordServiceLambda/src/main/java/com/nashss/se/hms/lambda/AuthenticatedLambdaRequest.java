@@ -10,12 +10,14 @@ import java.util.function.Function;
 
 /**
  * Represents a generic, authenticated "APIGateway" request made to a lambda function.
+ *
  * @param <T> The type of the concrete request that should be created from this LambdaRequest
  */
 public class AuthenticatedLambdaRequest<T> extends LambdaRequest<T> {
 
     /**
      * Use the given converter to create an instance of T from the claims included in the request's JWT token.
+     *
      * @param converter Contains the conversion code
      * @return A instance of T that contains data from the request's claims.
      */
@@ -26,6 +28,7 @@ public class AuthenticatedLambdaRequest<T> extends LambdaRequest<T> {
             throw new RuntimeException("Unable to get user information from request.", e);
         }
     }
+
 
     private Map<String, String> getClaims() throws JsonProcessingException {
         // If we are running locally using SAM, we have to manually decode claims from the JWT Token.

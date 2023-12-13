@@ -9,21 +9,41 @@ import com.nashss.se.hms.models.DiagnosisModel;
 
 import javax.inject.Inject;
 
+/**
+ * Constructs a new DeleteDiagnosisActivity instance.
+ *
+ * @param diagnosisDAO the DiagnosisDAO object used to interact with the
+ *                     diagnosis database
+ */
 public class DeleteDiagnosisActivity {
 
     private final DiagnosisDAO diagnosisDAO;
+
+    /**
+     * Constructs a new DeleteDiagnosisActivity instance.
+     *
+     * @param diagnosisDAO the DiagnosisDAO object used to interact
+     *                     with the diagnosis database
+     */
     @Inject
     public DeleteDiagnosisActivity(DiagnosisDAO diagnosisDAO) {
         this.diagnosisDAO = diagnosisDAO;
     }
 
-    public DeleteDiagnosisResult handleRequest(final DeleteDiagnosisRequest deleteDiagnosisRequest){
+    /**
+     * Handles a delete diagnosis request.
+     * @param deleteDiagnosisRequest The request object containing the
+     * diagnosis ID to delete.
+     * @return The result object containing the deleted diagnosis model.
+     */
+    public DeleteDiagnosisResult handleRequest(final DeleteDiagnosisRequest
+                                                       deleteDiagnosisRequest) {
         Diagnosis newDiagnosis = new Diagnosis();
         newDiagnosis.setDiagnosisId(deleteDiagnosisRequest.getDiagnosisId());
         diagnosisDAO.deleteDiagnosis(newDiagnosis);
         DiagnosisModel diagnosisModel = new ModelConverter().toDiagnosisModel(newDiagnosis);
 
-        return  DeleteDiagnosisResult.builder()
+        return DeleteDiagnosisResult.builder()
                 .withDiagnosisModel(diagnosisModel)
                 .build();
     }

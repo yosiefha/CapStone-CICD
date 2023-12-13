@@ -3,10 +3,20 @@ package com.nashss.se.hms.activity.requests;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+
+/**
+ * Represents a request to delete a medication.
+ */
 @JsonDeserialize(builder = DeleteMedicationRequest.Builder.class)
 public class DeleteMedicationRequest {
     private final String medicationId;
 
+    /**
+     * Represents a request to delete a medication.
+     * This class is used to construct a DeleteMedicationRequest object with
+     * the specified medication ID.
+     * @param medicationId The ID of the medication to be deleted.
+     */
     public DeleteMedicationRequest(String medicationId) {
         this.medicationId = medicationId;
     }
@@ -21,6 +31,8 @@ public class DeleteMedicationRequest {
                 "medicationId='" + medicationId + '\'' +
                 '}';
     }
+
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }

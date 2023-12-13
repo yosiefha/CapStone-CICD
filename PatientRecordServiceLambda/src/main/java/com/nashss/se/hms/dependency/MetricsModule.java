@@ -27,4 +27,5 @@ public class MetricsModule {
                 .withRegion(Regions.US_EAST_2)
                 .build();
     }
+
 }

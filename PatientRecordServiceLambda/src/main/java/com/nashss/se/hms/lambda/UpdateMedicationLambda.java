@@ -1,12 +1,15 @@
 package com.nashss.se.hms.lambda;
+import com.nashss.se.hms.activity.requests.UpdateMedicationRequest;
+import com.nashss.se.hms.activity.results.UpdateMedicationResult;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.nashss.se.hms.activity.requests.UpdateMedicationRequest;
-import com.nashss.se.hms.activity.requests.UpdatePatientRequest;
-import com.nashss.se.hms.activity.results.UpdateMedicationResult;
 
-public class UpdateMedicationLambda  extends LambdaActivityRunner<UpdateMedicationRequest, UpdateMedicationResult>
+
+/**
+ * The UpdateMedicationLambda class is responsible for handling requests to update medication details.
+ */
+public class UpdateMedicationLambda extends LambdaActivityRunner<UpdateMedicationRequest, UpdateMedicationResult>
         implements RequestHandler<AuthenticatedLambdaRequest<UpdateMedicationRequest>, LambdaResponse> {
     /**
      * @param input   The Lambda Function input
@@ -15,22 +18,22 @@ public class UpdateMedicationLambda  extends LambdaActivityRunner<UpdateMedicati
      */
     @Override
     public LambdaResponse handleRequest(AuthenticatedLambdaRequest<UpdateMedicationRequest> input, Context context) {
-        return  super.runActivity(
-                () ->{
-                    UpdateMedicationRequest unauthenticatedRequest = input.fromBody(UpdateMedicationRequest.class);
+        return super.runActivity(
+            () -> {
+                UpdateMedicationRequest unauthenticatedRequest = input.fromBody(UpdateMedicationRequest.class);
 
-                    return input.fromUserClaims(claims ->
-                            UpdateMedicationRequest.builder()
-                                    .withPatientId(unauthenticatedRequest.getPatientId())
-                                    .withMedicationId(unauthenticatedRequest.getMedicationId())
-                                    .withMedicationName(unauthenticatedRequest.getMedicationName())
-                                    .withStartDate(unauthenticatedRequest.getStartDate())
-                                    .withEndDated(unauthenticatedRequest.getEndDate())
-                                    .withDosage(unauthenticatedRequest.getDosage())
-                                    .withInstructions(unauthenticatedRequest.getInstructions())
-                                    .build());
-                },
-                (request, serviceComponent) ->
-                        serviceComponent.provideUpdateMedicationActivity().handleRequest(request));
+                return input.fromUserClaims(claims ->
+                        UpdateMedicationRequest.builder()
+                                .withPatientId(unauthenticatedRequest.getPatientId())
+                                .withMedicationId(unauthenticatedRequest.getMedicationId())
+                                .withMedicationName(unauthenticatedRequest.getMedicationName())
+                                .withStartDate(unauthenticatedRequest.getStartDate())
+                                .withEndDated(unauthenticatedRequest.getEndDate())
+                                .withDosage(unauthenticatedRequest.getDosage())
+                                .withInstructions(unauthenticatedRequest.getInstructions())
+                                .build());
+            },
+            (request, serviceComponent) ->
+                    serviceComponent.provideUpdateMedicationActivity().handleRequest(request));
     }
 }

@@ -1,16 +1,27 @@
 package com.nashss.se.hms.activity.results;
 
-import com.nashss.se.hms.dynamodb.models.Patient;
 import com.nashss.se.hms.models.PatientModel;
 
+/**
+ * A class representing the result of a delete patient operation.
+ */
 public class DeletePatientResult {
 
     private final PatientModel patientModel;
 
+    /**
+     * Deletes a patient from the system.
+     *
+     * @param patientModel the patient model to be deleted.
+     */
     public DeletePatientResult(PatientModel patientModel) {
         this.patientModel = patientModel;
     }
 
+    /**
+     * Retrieves the PatientModel object from the DeletePatientResult.
+     * @return the PatientModel object representing the patient
+     */
     public PatientModel getPatientModel() {
         return patientModel;
     }
@@ -22,6 +33,7 @@ public class DeletePatientResult {
                 '}';
     }
 
+    //CHECKSTYLE:OFF:Builder
     public static Builder builder() {
         return new Builder();
     }
@@ -35,6 +47,8 @@ public class DeletePatientResult {
             return this;
         }
 
-        public DeletePatientResult build() {return new DeletePatientResult(patientModel);}
+        public DeletePatientResult build() {
+            return new DeletePatientResult(patientModel);
+        }
     }
 }
