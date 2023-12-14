@@ -115,18 +115,32 @@ getHTMLForSearchResults(searchResults) {
                 let i = 0;
 
                  for (const res of searchResults) {
-
-                       html += `
-                           <tr data-id="${res.diagnosisId}">
+                        const prefix = 'delete';
+                        const suffix = res.diagnosisId;
+                        const eleId = prefix+""+suffix;
+                       // alert(eleId);
+                        html += `<tr data-id="${res.diagnosisId}">
                                <td>${res.diagnosisId}</td>
                                <td>${res.healthcareProfessionalId}</td>
                                <td>${res.dateCreated}</td>
                                <td>${res.description}</td>
                                <td>
                                    <button onclick="viewPatientDetail.updateRow('${res.diagnosisId}')">Update</button>
-                                   <button onclick="viewPatientDetail.deleteRow('${res.diagnosisId}')">Delete</button>
+                                   <button id="${eleId}" onclick="viewPatientDetail.deleteRow('${res.diagnosisId}', '${eleId}')">Delete</button>
                                </td>
                            </tr>`;
+
+//                       html += `
+//                           <tr data-id="${res.diagnosisId}">
+//                               <td>${res.diagnosisId}</td>
+//                               <td>${res.healthcareProfessionalId}</td>
+//                               <td>${res.dateCreated}</td>
+//                               <td>${res.description}</td>
+//                               <td>
+//                                   <button onclick="viewPatientDetail.updateRow('${res.diagnosisId}')">Update</button>
+//                                   <button onclick="viewPatientDetail.deleteRow('${res.diagnosisId}')">Delete</button>
+//                               </td>
+//                           </tr>`;
                    }
 
                    html += '</table>';
@@ -160,6 +174,9 @@ getHTMLForSearchResultsMedication(searchResults) {
 
                 for (const res of searchResults) {
 
+                     const prefix = 'delete';
+                     const suffix = res.medicationId;
+                     const eleId = prefix+""+suffix;
 
                     html += `
                     <tr data-id="${res.medicationId}">
@@ -169,9 +186,9 @@ getHTMLForSearchResultsMedication(searchResults) {
                         <td>${res.endDate}</td>
                         <td>${res.instructions}</td>
                         <td>
+                            <button onclick="viewPatientDetail.updateMedicationRow('${res.medicationId}')">Update</button>
+                            <button id="${eleId}" onclick="viewPatientDetail.deleteRowMedication('${res.medicationId}', '${eleId}')">Delete</button>
 
-                              <button onclick="viewPatientDetail.updateMedicationRow('${res.medicationId}')">Update</button>
-                              <button onclick="viewPatientDetail.deleteRowMedication('${res.medicationId}')">Delete</button>
                         </td>
 
                     </tr>`;
@@ -209,6 +226,7 @@ async addDiagnosis(evt) {
 
                 this.dataStore.set('diagnoses', diagnosisResult);
                 addButtonDiagnosis.innerText = 'Add diagnosis'
+                window.location.reload();
 
 }
 
@@ -241,6 +259,7 @@ async addMedication(evt) {
 
             this.dataStore.set('medication', medicationResult);
             addButtonMedication.innerText = 'Add Medication'
+            window.location.reload();
 
 }
 
@@ -279,6 +298,7 @@ updateRow(rowId) {
 
 
 updateMedicationRow(rowId) {
+             
 
                const row = document.querySelector(`tr[data-id="${rowId}"]`);
                const isEditMode = row.classList.toggle('edit-mode');
@@ -307,7 +327,7 @@ updateMedicationRow(rowId) {
                    const updateButton = row.querySelector('button');
                    updateButton.textContent = 'Update';
                    updateButton.onclick = () => {
-                       this.updateRow(rowId); // Use arrow function to preserve 'this'
+                       this.updateMedicationRow(rowId); // Use arrow function to preserve 'this'
                    };
                }
 
@@ -338,7 +358,17 @@ async saveRow(rowId){
                        errorMessageDisplay.innerText = `Error: ${error.message}`;
                        errorMessageDisplay.classList.remove('hidden');
                    });
-                   this.dataStore.set('updateDiagnosis', result);
+             this.dataStore.set('updateDiagnosis', result);
+             const results = await this.client.search(diagnosisId, (error)=>{
+                                            errorMessageDisplay.innerText = `Error: ${error.message}`;
+                                            errorMessageDisplay.classList.remove('hidden');
+                                            } );
+
+
+            this.dataStore.setState({
+                [SEARCH_CRITERIA_KEY]: diagnosisId,
+                [SEARCH_RESULTS_KEY_DIAGNOSIS]: results,
+            });
 
 
               // Restore original content
@@ -383,8 +413,17 @@ async saveRowMedication(rowId){
                        errorMessageDisplay.innerText = `Error: ${error.message}`;
                        errorMessageDisplay.classList.remove('hidden');
                    });
-                   this.dataStore.set('updateMedication', result);
+             this.dataStore.set('updateMedication', result);
+             const results = await this.client.search(medicationId, (error)=>{
+                                                         errorMessageDisplay.innerText = `Error: ${error.message}`;
+                                                         errorMessageDisplay.classList.remove('hidden');
+                                                         } );
 
+
+             this.dataStore.setState({
+                 [SEARCH_CRITERIA_KEY]: medicationId,
+                 [SEARCH_RESULTS_KEY_MEDICATION]: results,
+             });
 
               // Restore original content
              cells.forEach((cell, index) => {
@@ -395,7 +434,7 @@ async saveRowMedication(rowId){
              const updateButton = row.querySelector('button');
              updateButton.textContent = 'Update';
              updateButton.onclick = () => {
-                 this.updateRow(rowId); // Use arrow function to maintain 'this'
+                 this.updateMedicationRow(rowId); // Use arrow function to maintain 'this'
              };
 
 
@@ -409,7 +448,7 @@ async saveRowMedication(rowId){
  * Delete a diagnosis or medication based on the provided ID.
  * @param {string} rowId - The ID of the diagnosis or medication to be deleted.
  */
-async deleteRow(rowId) {
+async deleteRow(rowId,eleId) {
             const confirmation = confirm("Are you sure you want to delete this record?");
             if (!confirmation) {
             return;
@@ -420,37 +459,32 @@ async deleteRow(rowId) {
             errorMessageDisplay.classList.add('hidden');
 
             try {
-            // Determine whether it's a diagnosis or medication based on some condition
-            const isDiagnosis = true; // Set this condition based on your logic
+                    // Determine whether it's a diagnosis or medication based on some condition
+                    const isDiagnosis = true; // Set this condition based on your logic
 
-            if (isDiagnosis) {
-                // Delete a diagnosis
-                const result=  await this.client.deleteDiagnosis(rowId, (error) => {
-                    errorMessageDisplay.innerText = `Error: ${error.message}`;
-                    errorMessageDisplay.classList.remove('hidden');
-                });
+                    const result=  await this.client.deleteDiagnosis(rowId, (error) => {
+                        errorMessageDisplay.innerText = `Error: ${error.message}`;
+                        errorMessageDisplay.classList.remove('hidden');
+                    });
 
-                this.dataStore.set('deleteDiagnosis/{diagnosisId}', result);
-            } else {
-                // Delete a medication
-                await this.client.deleteMedication(rowId, (error) => {
-                    errorMessageDisplay.innerText = `Error: ${error.message}`;
-                    errorMessageDisplay.classList.remove('hidden');
-                });
-            }
+                        this.dataStore.set('deleteDiagnosis/{diagnosisId}', result);
 
-            // Remove the deleted row from the UI
-            const row = document.querySelector(`tr[data-id="${rowId}"]`);
-            if (row) {
-                row.remove();
-            }
+
+                    // Remove the deleted row from the UI
+                    const row = document.querySelector(`tr[data-id="${rowId}"]`);
+                    if (row) {
+                                const deleteButton = document.getElementById(eleId);
+                                deleteButton.innerText = 'Deleting...';
+                                row.remove();
+                    }
+
             } catch (error) {
-            errorMessageDisplay.innerText = `Error: ${error.message}`;
-            errorMessageDisplay.classList.remove('hidden');
+                    errorMessageDisplay.innerText = `Error: ${error.message}`;
+                    errorMessageDisplay.classList.remove('hidden');
             }
 }
 
-async deleteRowMedication(rowId) {
+async deleteRowMedication(rowId,eleId) {
 
             const confirmation = confirm("Are you sure you want to delete this record?");
 
@@ -485,13 +519,19 @@ async deleteRowMedication(rowId) {
             // Remove the deleted row from the UI
             const row = document.querySelector(`tr[data-id="${rowId}"]`);
             if (row) {
-                row.remove();
-            }
+                        const deleteButton = document.getElementById(eleId);
+                        deleteButton.innerText = 'Deleting...';
+                        row.remove();
+             }
+
             } catch (error) {
-            errorMessageDisplay.innerText = `Error: ${error.message}`;
-            errorMessageDisplay.classList.remove('hidden');
+                errorMessageDisplay.innerText = `Error: ${error.message}`;
+                errorMessageDisplay.classList.remove('hidden');
             }
 }
+
+
+
 
 
 }
