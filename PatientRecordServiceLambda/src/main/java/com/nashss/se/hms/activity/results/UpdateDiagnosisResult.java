@@ -14,7 +14,7 @@ public class UpdateDiagnosisResult {
      * class with a DiagnosisModel object.
      * @param diagnosisModel model input.
      */
-    public UpdateDiagnosisResult(DiagnosisModel diagnosisModel) {
+    private UpdateDiagnosisResult(DiagnosisModel diagnosisModel) {
         this.diagnosisModel = diagnosisModel;
     }
 

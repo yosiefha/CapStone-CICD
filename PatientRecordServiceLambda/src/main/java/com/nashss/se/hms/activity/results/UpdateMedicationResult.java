@@ -13,7 +13,7 @@ public class UpdateMedicationResult {
      * UpdateMedicationResult represents the result of updating medication details.
      * @param medicationModel the MedicationModel object containing the updated medication details
      */
-    public UpdateMedicationResult(MedicationModel medicationModel) {
+    private UpdateMedicationResult(MedicationModel medicationModel) {
         this.medicationModel = medicationModel;
     }
 

@@ -4,6 +4,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
+import java.util.Objects;
+
 /**
  * Class representing a diagnosis in a medical system.
  * This class is annotated with @DynamoDBTable to specify the table name in DynamoDB.
@@ -109,5 +111,22 @@ public class Diagnosis {
      */
     public void setPatientId(String patientId) {
         this.patientId = patientId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Diagnosis)) {
+            return false;
+        }
+        Diagnosis diagnosis = (Diagnosis) o;
+        return Objects.equals(getDiagnosisId(), diagnosis.getDiagnosisId()) && Objects.equals(getDescription(), diagnosis.getDescription()) && Objects.equals(getDateCreated(), diagnosis.getDateCreated()) && Objects.equals(getHealthcareProfessionalId(), diagnosis.getHealthcareProfessionalId()) && Objects.equals(getPatientId(), diagnosis.getPatientId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDiagnosisId(), getDescription(), getDateCreated(), getHealthcareProfessionalId(), getPatientId());
     }
 }

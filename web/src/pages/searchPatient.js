@@ -239,11 +239,13 @@ getHTMLForSearchResults(searchResults) {
 
 async saveRow(rowId){
 
+
             const row = document.querySelector(`tr[data-id="${rowId}"]`);
             const cells = row.querySelectorAll('td:not(:last-child) input');
 
            // Collect the updated values from the input fields
-           const updatedValues = Array.from(cells).map(input => input.value);
+            const updatedValues = Array.from(cells).map(input => input.value);
+
 
 
             //  logic to save the updated values
@@ -259,23 +261,52 @@ async saveRow(rowId){
             const contactNumber = updatedValues[4];
             const emailAddress = updatedValues[5];
             const address = updatedValues[6];
+            const results = [
+              {"patientId": patientId},
+              {"firstName": firstName},
+              {"lastName": lastName},
+              {"dob": dob},
+              {"contactNumber": contactNumber},
+              {"emailAddress": emailAddress},
+              {"address": address}
+
+            ];
 
 
             try {
                    const result = await this.client.updatePatient(patientId, firstName, lastName, dob, contactNumber, emailAddress, address);
-                   this.dataStore.set('updatePatient/{patientId}', result);
+                   this.dataStore.set('patients', result);
 
-                   // Restore original content
+                 const results = await this.client.search(firstName,lastName, (error)=>{
+                               errorMessageDisplay.innerText = `Error: ${error.message}`;
+                               errorMessageDisplay.classList.remove('hidden');
+                               } );
+
+
+                               this.dataStore.setState({
+                                   [SEARCH_CRITERIA_KEY]: firstName,
+                                   [SEARCH_CRITERIA_KEY1]: lastName,
+                                   [SEARCH_RESULTS_KEY]: results,
+                               });
+
+
+
+
+                   //Restore original content
                    cells.forEach((cell, index) => {
                        cell.textContent = updatedValues[index];
                    });
 
-                   // Update button text and event handler
-                   const updateButton = row.querySelector('button');
-                   updateButton.textContent = 'Update';
-                   updateButton.onclick = () => {
-                       this.updateRow(rowId); // Use arrow function to maintain 'this'
-                   };
+
+                 // Update button text and event handler
+                    const updateButton = row.querySelector('button.update-button');
+                    updateButton.textContent = 'Update';
+                    updateButton.onclick = (event) => this.updatePatientRow(this);
+
+                // Display the updated results
+                 this.displaySearchResults();
+
+
                } catch (error) {
                    errorMessageDisplay.innerText = `Error: ${error.message}`;
                    errorMessageDisplay.classList.remove('hidden');
@@ -286,6 +317,7 @@ async saveRow(rowId){
 }
 async deletePatientRow(event) {
 
+
     const target = event.target;
     const rowId = target.dataset.id; // Get the rowId from the clicked button's dataset
 
@@ -294,23 +326,21 @@ async deletePatientRow(event) {
         return;
     }
 
+
+
     const errorMessageDisplay = document.getElementById('error-message');
     errorMessageDisplay.innerText = '';
     errorMessageDisplay.classList.add('hidden');
 
     try {
-        // Determine whether it's a diagnosis or medication based on some condition
-        //const isDiagnosis = true; // Set this condition based on your logic
 
-//        if (isDiagnosis) {
-            // Delete a diagnosis
             const result = await this.client. deletePatient(rowId, (error) => {
                 errorMessageDisplay.innerText = `Error: ${error.message}`;
                 errorMessageDisplay.classList.remove('hidden');
             });
 
             this.dataStore.set('deletePatient/{patientId}', result);
-//        }
+
 
         // Remove the deleted row from the UI
         const row = document.querySelector(`tr[data-id="${rowId}"]`);

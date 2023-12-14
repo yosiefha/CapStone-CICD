@@ -15,7 +15,7 @@ public class DeleteDiagnosisRequest {
      *
      * @param diagnosisId the ID of the diagnosis to be deleted
      */
-    public DeleteDiagnosisRequest(String diagnosisId) {
+    private DeleteDiagnosisRequest(String diagnosisId) {
         this.diagnosisId = diagnosisId;
     }
 

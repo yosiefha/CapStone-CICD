@@ -27,7 +27,7 @@ public class UpdatePatientRequest {
      * @param emailAddress  the email address of the patient
      * @param address       the address of the patient
      */
-    public UpdatePatientRequest(String patientId, String firstName, String lastName, String dateOfBirth,
+    private UpdatePatientRequest(String patientId, String firstName, String lastName, String dateOfBirth,
                                 String contactNumber, String emailAddress, String address) {
         this.patientId = patientId;
         this.firstName = firstName;

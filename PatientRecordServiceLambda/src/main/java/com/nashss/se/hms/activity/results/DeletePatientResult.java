@@ -14,7 +14,7 @@ public class DeletePatientResult {
      *
      * @param patientModel the patient model to be deleted.
      */
-    public DeletePatientResult(PatientModel patientModel) {
+    private DeletePatientResult(PatientModel patientModel) {
         this.patientModel = patientModel;
     }
 

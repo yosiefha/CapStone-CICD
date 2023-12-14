@@ -14,7 +14,7 @@ public class DeleteDiagnosisResult {
      * Initializes a new instance of the DeleteDiagnosisResult class.
      * @param diagnosisModel The DiagnosisModel object representing the diagnosis to be deleted.
      */
-    public DeleteDiagnosisResult(DiagnosisModel diagnosisModel) {
+    private DeleteDiagnosisResult(DiagnosisModel diagnosisModel) {
         this.diagnosisModel = diagnosisModel;
     }
 

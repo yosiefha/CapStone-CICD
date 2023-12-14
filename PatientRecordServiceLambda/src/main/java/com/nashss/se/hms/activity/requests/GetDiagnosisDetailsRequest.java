@@ -17,7 +17,7 @@ public class GetDiagnosisDetailsRequest {
      *
      * @param patientId The ID of the patient.
      */
-    public GetDiagnosisDetailsRequest(String patientId) {
+    private GetDiagnosisDetailsRequest(String patientId) {
         this.patientId = patientId;
     }
 

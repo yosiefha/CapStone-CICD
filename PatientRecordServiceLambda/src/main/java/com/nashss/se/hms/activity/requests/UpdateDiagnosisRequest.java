@@ -23,7 +23,7 @@ public class UpdateDiagnosisRequest {
      * @param healthcareProfessionalId The ID of the healthcare professional associated with the diagnosis.
      * @param patientId The ID of the patient associated with the diagnosis.
      */
-    public UpdateDiagnosisRequest(String diagnosisId, String description, String dateCreated,
+    private UpdateDiagnosisRequest(String diagnosisId, String description, String dateCreated,
                                   String healthcareProfessionalId, String patientId) {
         this.diagnosisId = diagnosisId;
         this.description = description;

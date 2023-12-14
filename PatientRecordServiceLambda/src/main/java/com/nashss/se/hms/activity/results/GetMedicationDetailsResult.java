@@ -14,7 +14,7 @@ public class GetMedicationDetailsResult {
     /**
      * @param medicationModelList input list.
      */
-    public GetMedicationDetailsResult(List<MedicationModel> medicationModelList) {
+    private GetMedicationDetailsResult(List<MedicationModel> medicationModelList) {
         this.medicationModelList = medicationModelList;
     }
 

@@ -27,7 +27,7 @@ public class UpdateMedicationRequest {
      * @param instructions   the instructions for taking the medication
      * @param patientId      the ID of the patient
      */
-    public UpdateMedicationRequest(String medicationId, String medicationName, String dosage, String startDate,
+    private UpdateMedicationRequest(String medicationId, String medicationName, String dosage, String startDate,
                                    String endDate, String instructions, String patientId) {
         this.medicationId = medicationId;
         this.medicationName = medicationName;

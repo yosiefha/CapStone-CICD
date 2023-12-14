@@ -17,7 +17,7 @@ public class GetPatientByPatientIdRequest {
      *
      * @param patientId the ID of the patient
      */
-    public GetPatientByPatientIdRequest(String patientId) {
+    private GetPatientByPatientIdRequest(String patientId) {
         this.patientId = patientId;
     }
 

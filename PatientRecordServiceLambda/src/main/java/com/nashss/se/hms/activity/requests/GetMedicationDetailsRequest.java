@@ -15,7 +15,7 @@ public class GetMedicationDetailsRequest {
      * Creates a GetMedicationDetailsRequest object with the specified patient ID.
      * @param patientId the ID of the patient
      */
-    public GetMedicationDetailsRequest(String patientId) {
+    private GetMedicationDetailsRequest(String patientId) {
         this.patientId = patientId;
     }
 

@@ -13,7 +13,7 @@ public class GetPatientByPatientIdResult {
      * Constructs a new GetPatientByPatientIdResult object with the provided PatientModel.
      * @param patientModel the PatientModel object representing the patient information
      */
-    public GetPatientByPatientIdResult(PatientModel patientModel) {
+    private GetPatientByPatientIdResult(PatientModel patientModel) {
         this.patientModel = patientModel;
     }
 

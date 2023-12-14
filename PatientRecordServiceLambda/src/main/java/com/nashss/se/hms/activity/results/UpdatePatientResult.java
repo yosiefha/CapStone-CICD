@@ -14,7 +14,7 @@ public class UpdatePatientResult {
      *
      * @param patientModel the patient model containing the updated information
      */
-    public UpdatePatientResult(PatientModel patientModel) {
+    private UpdatePatientResult(PatientModel patientModel) {
         this.patientModel = patientModel;
     }
 

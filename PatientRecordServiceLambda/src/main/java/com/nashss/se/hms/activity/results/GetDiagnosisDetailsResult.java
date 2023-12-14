@@ -16,7 +16,7 @@ public class GetDiagnosisDetailsResult {
      * the specified diagnosis model list.
      * @param diagnosisModelList The list of diagnosis models.
      */
-    public GetDiagnosisDetailsResult(List<DiagnosisModel> diagnosisModelList) {
+    private GetDiagnosisDetailsResult(List<DiagnosisModel> diagnosisModelList) {
         this.diagnosisModelList = diagnosisModelList;
     }
 

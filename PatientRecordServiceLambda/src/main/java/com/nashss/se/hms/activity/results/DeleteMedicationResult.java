@@ -12,7 +12,7 @@ public class DeleteMedicationResult {
     /**
      * @param medicationModel input model.
      */
-    public DeleteMedicationResult(MedicationModel medicationModel) {
+    private DeleteMedicationResult(MedicationModel medicationModel) {
 
         this.medicationModel = medicationModel;
     }

@@ -22,7 +22,7 @@ public class CreatePatientDiagnosisRequest {
      * @param healthcareProfessionalId the ID of the healthcare professional
      * @param patientId                 the ID of the patient
      */
-    public CreatePatientDiagnosisRequest(String diagnosisId, String description, String dateCreated,
+    private CreatePatientDiagnosisRequest(String diagnosisId, String description, String dateCreated,
                                          String healthcareProfessionalId, String patientId) {
         this.diagnosisId = diagnosisId;
         this.description = description;

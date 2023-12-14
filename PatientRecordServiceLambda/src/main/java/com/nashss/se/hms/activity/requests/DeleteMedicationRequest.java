@@ -17,7 +17,7 @@ public class DeleteMedicationRequest {
      * the specified medication ID.
      * @param medicationId The ID of the medication to be deleted.
      */
-    public DeleteMedicationRequest(String medicationId) {
+    private DeleteMedicationRequest(String medicationId) {
         this.medicationId = medicationId;
     }
 

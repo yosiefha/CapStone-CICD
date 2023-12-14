@@ -4,6 +4,8 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
+import java.util.Objects;
+
 
 /**
  * The Medication class represents a medication record in the database.
@@ -153,5 +155,22 @@ public class Medication {
      */
     public void setPatientId(String patientId) {
         this.patientId = patientId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Medication)) {
+            return false;
+        }
+        Medication that = (Medication) o;
+        return Objects.equals(getMedicationId(), that.getMedicationId()) && Objects.equals(getMedicationName(), that.getMedicationName()) && Objects.equals(getDosage(), that.getDosage()) && Objects.equals(getStartDate(), that.getStartDate()) && Objects.equals(getEndDate(), that.getEndDate()) && Objects.equals(getInstructions(), that.getInstructions()) && Objects.equals(getPatientId(), that.getPatientId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMedicationId(), getMedicationName(), getDosage(), getStartDate(), getEndDate(), getInstructions(), getPatientId());
     }
 }

@@ -62,7 +62,7 @@ public class CreatePatientMedicationRequest {
      * @param instructions     the instructions for taking the medication
      * @param patientId        the ID of the patient
      */
-    public CreatePatientMedicationRequest(String medicationId, String medicationName, String dosage,
+    private CreatePatientMedicationRequest(String medicationId, String medicationName, String dosage,
                                           String startDate, String endDate, String instructions,
                                           String patientId) {
         this.medicationId = medicationId;

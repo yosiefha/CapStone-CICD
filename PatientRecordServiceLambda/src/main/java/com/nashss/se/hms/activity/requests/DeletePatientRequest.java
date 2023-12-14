@@ -17,7 +17,7 @@ public class DeletePatientRequest {
      *
      * @param patientId the ID of the patient to be deleted
      */
-    public DeletePatientRequest(String patientId) {
+    private DeletePatientRequest(String patientId) {
         this.patientId = patientId;
     }
 

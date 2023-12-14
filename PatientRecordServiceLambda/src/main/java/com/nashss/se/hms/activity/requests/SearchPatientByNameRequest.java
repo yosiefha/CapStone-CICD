@@ -19,7 +19,7 @@ public class SearchPatientByNameRequest {
      * @param firstName The first name of the patient to be searched by.
      * @param lastName The last name of the patient to be searched by.
      */
-    public SearchPatientByNameRequest(String firstName, String lastName) {
+    private SearchPatientByNameRequest(String firstName, String lastName) {
 
         this.firstName = firstName;
         this.lastName = lastName;
