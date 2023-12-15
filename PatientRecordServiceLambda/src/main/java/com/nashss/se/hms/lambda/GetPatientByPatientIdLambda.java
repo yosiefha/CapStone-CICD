@@ -11,7 +11,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
  * Represents a Lambda function that gets a patient by their ID.
  */
 public class GetPatientByPatientIdLambda extends LambdaActivityRunner<GetPatientByPatientIdRequest,
-        GetPatientByPatientIdResult> implements RequestHandler<LambdaRequest<GetPatientByPatientIdRequest>,
+        GetPatientByPatientIdResult> implements RequestHandler<AuthenticatedLambdaRequest<GetPatientByPatientIdRequest>,
         LambdaResponse> {
 
 
@@ -21,7 +21,7 @@ public class GetPatientByPatientIdLambda extends LambdaActivityRunner<GetPatient
      * @return
      */
     @Override
-    public LambdaResponse handleRequest(LambdaRequest<GetPatientByPatientIdRequest> input, Context context) {
+    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetPatientByPatientIdRequest> input, Context context) {
         return super.runActivity(
             () -> input.fromPath(path ->
                     GetPatientByPatientIdRequest.builder()

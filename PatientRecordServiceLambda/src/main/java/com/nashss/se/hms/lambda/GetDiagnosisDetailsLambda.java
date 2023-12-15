@@ -11,7 +11,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
  * for a patient. It implements the RequestHandler interface and extends the LambdaActivityRunner class.
  */
 public class GetDiagnosisDetailsLambda extends LambdaActivityRunner<GetDiagnosisDetailsRequest,
-        GetDiagnosisDetailsResult> implements RequestHandler<LambdaRequest<GetDiagnosisDetailsRequest>,
+        GetDiagnosisDetailsResult> implements RequestHandler<AuthenticatedLambdaRequest<GetDiagnosisDetailsRequest>,
         LambdaResponse> {
 
 
@@ -21,7 +21,7 @@ public class GetDiagnosisDetailsLambda extends LambdaActivityRunner<GetDiagnosis
      * @return
      */
     @Override
-    public LambdaResponse handleRequest(LambdaRequest<GetDiagnosisDetailsRequest> input, Context context) {
+    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetDiagnosisDetailsRequest> input, Context context) {
         return super.runActivity(
             () -> input.fromPath(path ->
                     GetDiagnosisDetailsRequest.builder()

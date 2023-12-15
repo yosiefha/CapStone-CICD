@@ -1,4 +1,5 @@
 package com.nashss.se.hms.lambda;
+import com.nashss.se.hms.activity.requests.AddPatientToPatientsRequest;
 import com.nashss.se.hms.activity.requests.SearchPatientByNameRequest;
 import com.nashss.se.hms.activity.results.SearchPatientByNameResult;
 
@@ -13,7 +14,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
  */
 public class SearchPatientByNameLambda
         extends LambdaActivityRunner<SearchPatientByNameRequest, SearchPatientByNameResult>
-        implements RequestHandler<LambdaRequest<SearchPatientByNameRequest>, LambdaResponse> {
+        implements RequestHandler<AuthenticatedLambdaRequest<SearchPatientByNameRequest>, LambdaResponse> {
 
 
     /**
@@ -24,7 +25,9 @@ public class SearchPatientByNameLambda
      * @return A LambdaResponse object representing the response of the Lambda function.
      */
     @Override
-    public LambdaResponse handleRequest(LambdaRequest<SearchPatientByNameRequest> input, Context context) {
+    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<SearchPatientByNameRequest> input, Context context) {
+
+
         return super.runActivity(
             () -> input.fromPath(path ->
                     SearchPatientByNameRequest.builder()

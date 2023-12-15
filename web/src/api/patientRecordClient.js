@@ -254,8 +254,11 @@ export default class PatientRecordClient extends BindingClass {
 
         async search(firstName, lastName,errorCallback) {
            try {
-
-              const response = await this.axiosClient.get(`patients/${firstName}/${lastName}`);
+               const token = await this.getTokenOrThrow("Only authenticated users can delete Patient.");
+              const response = await this.axiosClient.get(`patients/${firstName}/${lastName}`,{
+                  headers: {
+                      Authorization: `Bearer ${token}`
+                  }});
               console.log(response);
 
                return response.data.patientModelList;
@@ -268,8 +271,11 @@ export default class PatientRecordClient extends BindingClass {
 
         async getPatient(patientId,errorCallback) {
               try {
-
-                 const response = await this.axiosClient.get(`patient/${patientId}`);
+                  const token = await this.getTokenOrThrow("Only authenticated users can delete patient profile.");
+                 const response = await this.axiosClient.get(`patient/${patientId}`,{
+                     headers: {
+                         Authorization: `Bearer ${token}`
+                     }});
                  console.log(response);
 
                   return response.data.patientModel;
@@ -281,8 +287,11 @@ export default class PatientRecordClient extends BindingClass {
 
         async getPatientDiagnosis(patientId,errorCallback) {
                   try {
-
-                     const response = await this.axiosClient.get(`diagnoses/${patientId}`);
+                      const token = await this.getTokenOrThrow("Only authenticated users can get Diagnosis.");
+                     const response = await this.axiosClient.get(`diagnoses/${patientId}`,{
+                         headers: {
+                             Authorization: `Bearer ${token}`
+                         }});
                      console.log(response);
 
                       return response.data.diagnosisModelList;
@@ -293,8 +302,11 @@ export default class PatientRecordClient extends BindingClass {
               }
         async getPatientMedication(patientId,errorCallback) {
                        try {
-
-                          const response = await this.axiosClient.get(`medications/${patientId}`);
+                           const token = await this.getTokenOrThrow("Only authenticated users can get Patient Medication.");
+                          const response = await this.axiosClient.get(`medications/${patientId}`,{
+                              headers: {
+                                  Authorization: `Bearer ${token}`
+                              }});
                           console.log(response);
 
                            return response.data.medicationModelList;

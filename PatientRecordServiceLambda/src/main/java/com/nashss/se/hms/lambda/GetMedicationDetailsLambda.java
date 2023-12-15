@@ -10,7 +10,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
  * Represents a Lambda function for retrieving medication details for a patient.
  */
 public class GetMedicationDetailsLambda extends LambdaActivityRunner<GetMedicationDetailsRequest,
-        GetMedicationDetailsResult> implements RequestHandler<LambdaRequest<GetMedicationDetailsRequest>,
+        GetMedicationDetailsResult> implements RequestHandler<AuthenticatedLambdaRequest<GetMedicationDetailsRequest>,
         LambdaResponse> {
     /**
      * @param input   The Lambda Function input
@@ -18,7 +18,7 @@ public class GetMedicationDetailsLambda extends LambdaActivityRunner<GetMedicati
      * @return
      */
     @Override
-    public LambdaResponse handleRequest(LambdaRequest<GetMedicationDetailsRequest> input, Context context) {
+    public LambdaResponse handleRequest(AuthenticatedLambdaRequest<GetMedicationDetailsRequest> input, Context context) {
         return super.runActivity(
             () -> input.fromPath(path ->
                     GetMedicationDetailsRequest.builder()
