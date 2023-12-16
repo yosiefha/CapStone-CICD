@@ -38,7 +38,7 @@ export default class Header extends BindingClass {
         const homeButton = document.createElement('a');
         homeButton.classList.add('header_home');
         homeButton.href = 'index.html';
-        homeButton.innerText = 'Hospital Management System';
+        homeButton.innerText = 'Patient Record Service';
 
         const siteTitle = document.createElement('div');
         siteTitle.classList.add('site-title');

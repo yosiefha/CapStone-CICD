@@ -257,7 +257,7 @@ async addMedication(evt) {
                 errorMessageDisplay.classList.remove('hidden');
             });
 
-            this.dataStore.set('medication', medicationResult);
+            this.dataStore.set('medications', medicationResult);
             addButtonMedication.innerText = 'Add Medication'
             window.location.reload();
 
