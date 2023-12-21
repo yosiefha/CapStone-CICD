@@ -112,7 +112,7 @@ getHTMLForSearchResults(searchResults) {
                     return '<h4>No results found</h4>';
                 }
 
-                let html = '<table><tr><th>diagnosisId</th><th>healthcareProfessionalId</th><th>Date Created</th><th>description</th><th>Action</th></tr>';
+                let html = '<table><tr><th>Diagnosis Id</th><th>Healthcare Professional Id</th><th>Date Created</th><th>Description</th><th>Action</th></tr>';
                 let i = 0;
 
                  for (const res of searchResults) {
@@ -120,12 +120,14 @@ getHTMLForSearchResults(searchResults) {
                         const suffix = res.diagnosisId;
                         const eleId = prefix+""+suffix;
                        // alert(eleId);
-                        html += `<tr data-id="${res.diagnosisId}">
+                        html += `<tr data-id="${res.diagnosisId}" >
                                <td>${res.diagnosisId}</td>
                                <td>${res.healthcareProfessionalId}</td>
-                               <td>${res.dateCreated}</td>
-                               <td>${res.description}</td>
-                               <td>
+                               <td class="action-column" >${res.dateCreated}</td>
+                                <td class="vertical-cell">
+                                  <div>${res.description}</div>
+                                </td>
+                               <td class="action-column" >
                                    <button onclick="viewPatientDetail.updateRow('${res.diagnosisId}')">Update</button>
                                    <button id="${eleId}" onclick="viewPatientDetail.deleteRow('${res.diagnosisId}', '${eleId}')">Delete</button>
                                </td>
@@ -160,7 +162,7 @@ getHTMLForSearchResultsMedication(searchResults) {
                     return '<h4>No results found</h4>';
                 }
 
-                let html = '<table><tr><th>medicationName</th><th>Dosage</th><th>Start Date </th><th>End Date</th><th>Instructions</th><th>Action</th></tr>';
+                let html = '<table><tr><th>Medication Name</th><th>Dosage</th><th>Start Date </th><th>End Date</th><th>Instructions</th><th>Action</th></tr>';
                 let i = 0;
 
                 for (const res of searchResults) {
@@ -176,7 +178,7 @@ getHTMLForSearchResultsMedication(searchResults) {
                         <td>${res.startDate}</td>
                         <td>${res.endDate}</td>
                         <td>${res.instructions}</td>
-                        <td>
+                        <td class = "action-column">
                             <button onclick="viewPatientDetail.updateMedicationRow('${res.medicationId}')">Update</button>
                             <button id="${eleId}" onclick="viewPatientDetail.deleteRowMedication('${res.medicationId}', '${eleId}')">Delete</button>
                         </td>
@@ -254,6 +256,8 @@ async addMedication(evt) {
 }
 
 //----------------------------Toggle edit Mode--------------------------------
+
+
 updateRow(rowId) {
                const row = document.querySelector(`tr[data-id="${rowId}"]`);
                const isEditMode = row.classList.toggle('edit-mode');
@@ -366,7 +370,9 @@ async saveRow(rowId){
                  cell.textContent = updatedValues[index];
              });
 
-             // Update button text and event handler
+
+
+            // Update button text and event handler
              const updateButton = row.querySelector('button');
              updateButton.textContent = 'Update';
              updateButton.onclick = () => {

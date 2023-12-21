@@ -5,7 +5,7 @@
     --tertiary-color:  #3498db;
     --error-color: #EE3A23;
 }
-
+/**/
 .background {
     background-color: #8A8C8F;
     margin: 0;
@@ -52,6 +52,12 @@
     background-color: var(--secondary-color);
     margin: 20px;
     padding: 10px 20px;
+}
+.card-add-medication{
+    color: var(--primary-color);
+    background-color: var(--secondary-color);
+    margin: 20px;
+    padding-bottom: 70px;
 }
 
 .error {
@@ -247,5 +253,50 @@ input {
 
 .container-fluid {
     margin: 0 auto;
-    max-width: 1200px; /* Adjust the max-width as needed */
+    /*max-width: 1200px; !* Adjust the max-width as needed *!*/
+}
+
+.vertical-cell {
+    white-space: normal;
+}
+
+.row-container {
+    display: flex;
+}
+
+.row-container > td {
+    flex: 1;
+    word-break: break-word; /* Allow words to break and wrap onto the next line */
+    white-space: nowrap; /* Prevent text from wrapping to the next line in the cells */
+}
+
+.row-container > td:last-child {
+    position: sticky;
+    right: 0;
+    background-color: #f9f9f9; /* Add a background color for better visibility */
+}
+/*.sticky-column {*/
+/*    word-break: break-word; !* Allow words to break and wrap onto the next line *!*/
+/*}*/
+
+/*.action-column {*/
+/*    position: sticky;*/
+/*    right: 0;*/
+/*    background-color: #f9f9f9;*/
+/*    z-index: 1;*/
+/*}*/
+.sticky-column {
+    white-space: nowrap; /* Prevent wrapping */
+    word-break: break-word; /* Allow words to break and wrap onto the next line */
+    overflow: hidden;    /* Hide content that overflows */
+    text-overflow: ellipsis; /* Display ellipsis (...) for overflowed content */
+}
+
+.action-column {
+    white-space: nowrap; /* Prevent wrapping */
+    text-align: right;  /* Align buttons to the right */
+}
+
+.action-column button {
+    margin-left: 8px; /* Adjust the value as needed */
 }
