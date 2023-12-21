@@ -471,6 +471,7 @@ async deleteRow(rowId,eleId) {
                     if (row) {
                                 const deleteButton = document.getElementById(eleId);
                                 deleteButton.innerText = 'Deleting...';
+                                await new Promise(resolve => setTimeout(resolve, 500));
                                 row.remove();
                     }
 
@@ -517,6 +518,7 @@ async deleteRowMedication(rowId,eleId) {
             if (row) {
                         const deleteButton = document.getElementById(eleId);
                         deleteButton.innerText = 'Deleting...';
+                        await new Promise(resolve => setTimeout(resolve, 500));
                         row.remove();
              }
 
