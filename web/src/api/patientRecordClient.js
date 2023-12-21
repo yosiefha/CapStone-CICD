@@ -13,6 +13,7 @@ import Authenticator from "./authenticator";
   */
 
 export default class PatientRecordClient extends BindingClass {
+
         constructor(props = {}) {
         super();
 
@@ -88,7 +89,7 @@ export default class PatientRecordClient extends BindingClass {
                    Authorization: `Bearer ${token}`
                }
            });
-           return response.data.patients;
+           return response.data.patient;
         } catch (error) {
            this.handleError(error, errorCallback)
         }

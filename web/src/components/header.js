@@ -1,4 +1,4 @@
-//import MusicPlaylistClient from '../api/musicPlaylistClient';
+
 import PatientRecordClient from '../api/patientRecordClient';
 
 import BindingClass from "../util/bindingClass";
@@ -12,11 +12,11 @@ export default class Header extends BindingClass {
 
         const methodsToBind = [
             'addHeaderToPage', 'createSiteTitle', 'createUserInfoForHeader',
-            'createLoginButton', 'createLoginButton', 'createLogoutButton'
+            'createLoginButton', 'createLoginButton', 'createLogoutButton','createNavbar'
         ];
         this.bindClassMethods(methodsToBind, this);
 
-        //this.client = new MusicPlaylistClient();
+
         this.client = new PatientRecordClient();
     }
 
@@ -37,7 +37,6 @@ export default class Header extends BindingClass {
     createSiteTitle() {
         const homeButton = document.createElement('a');
         homeButton.classList.add('header_home');
-        homeButton.href = 'index.html';
         homeButton.innerText = 'Patient Record Service';
 
         const siteTitle = document.createElement('div');
@@ -48,28 +47,35 @@ export default class Header extends BindingClass {
     }
 
     createUserInfoForHeader(currentUser) {
-        const userInfo = document.createElement('div');
+        const userInfo = document.createElement('nav');
         userInfo.classList.add('user');
+
+        // Apply CSS style to make child elements display in a row
+        userInfo.style.display = 'flex';
+        userInfo.style.alignItems = 'center';
 
         const childContent = currentUser
             ? this.createLogoutButton(currentUser)
             : this.createLoginButton();
-
+        const navbar = this.createNavbar();
+        userInfo.appendChild(navbar);
         userInfo.appendChild(childContent);
+
 
         return userInfo;
     }
 
     createLoginButton() {
-        return this.createButton('Login', this.client.login);
+        return this.createButton('Login', this.client.login,'login-button');
     }
 
     createLogoutButton(currentUser) {
-        return this.createButton(`Logout: ${currentUser.name}`, this.client.logout);
+        return this.createButton(`Logout: ${currentUser.name}`, this.client.logout,'logout-button');
     }
 
-    createButton(text, clickHandler) {
+    createButton(text, clickHandler,buttonClass) {
         const button = document.createElement('a');
+        button.classList.add('button', buttonClass);
         button.classList.add('button');
         button.href = '#';
         button.innerText = text;
@@ -79,5 +85,22 @@ export default class Header extends BindingClass {
         });
 
         return button;
+    }
+
+    createNavbar() {
+
+        const homeButton = document.createElement('a');
+        homeButton.classList.add('home');
+        homeButton.href = 'index.html';
+        homeButton.innerText = 'Home';
+        homeButton.classList.add('nav-button');
+
+        const siteTitle = document.createElement('div');
+        siteTitle.classList.add('site-title');
+        siteTitle.appendChild(homeButton);
+
+        return siteTitle;
+
+
     }
 }

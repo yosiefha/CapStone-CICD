@@ -16,6 +16,7 @@ import DataStore from "../util/DataStore";
      [SEARCH_RESULTS_KEY_MEDICATION]: [],
 
  };
+
  let viewPatientDetail;
 class ViewPatientDetail extends BindingClass {
     constructor() {
@@ -32,7 +33,7 @@ async clientLoaded() {
             this.client = new PatientRecordClient();
             const urlParams = new URLSearchParams(window.location.search);
             const patientId = urlParams.get('id');
-            document.getElementById('patient-name').innerText = "Loading Patient Details ...";
+            // document.getElementById('patient-name').innerText = "Loading...";
             const patient = await this.client.getPatient(patientId , (error)=>{
                                         errorMessageDisplay.innerText = `Error: ${error.message}`;
                                                 errorMessageDisplay.classList.remove('hidden');
@@ -130,17 +131,7 @@ getHTMLForSearchResults(searchResults) {
                                </td>
                            </tr>`;
 
-//                       html += `
-//                           <tr data-id="${res.diagnosisId}">
-//                               <td>${res.diagnosisId}</td>
-//                               <td>${res.healthcareProfessionalId}</td>
-//                               <td>${res.dateCreated}</td>
-//                               <td>${res.description}</td>
-//                               <td>
-//                                   <button onclick="viewPatientDetail.updateRow('${res.diagnosisId}')">Update</button>
-//                                   <button onclick="viewPatientDetail.deleteRow('${res.diagnosisId}')">Delete</button>
-//                               </td>
-//                           </tr>`;
+
                    }
 
                    html += '</table>';
@@ -188,7 +179,6 @@ getHTMLForSearchResultsMedication(searchResults) {
                         <td>
                             <button onclick="viewPatientDetail.updateMedicationRow('${res.medicationId}')">Update</button>
                             <button id="${eleId}" onclick="viewPatientDetail.deleteRowMedication('${res.medicationId}', '${eleId}')">Delete</button>
-
                         </td>
 
                     </tr>`;

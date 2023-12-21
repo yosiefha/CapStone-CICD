@@ -4,16 +4,6 @@ import Header from '../components/header';
 import BindingClass from "../util/bindingClass";
 import DataStore from "../util/DataStore";
 
-/*
-The code below this comment is equivalent to...
-const EMPTY_DATASTORE_STATE = {
-    'search-criteria': '',
-    'search-results': [],
-};
-
-...but uses the "KEY" constants instead of "magic strings".
-The "KEY" constants will be reused a few times below.
-*/
 
 const SEARCH_CRITERIA_KEY = 'firstName';
 const SEARCH_CRITERIA_KEY1 = 'lastName';
@@ -23,7 +13,7 @@ const EMPTY_DATASTORE_STATE = {
     [SEARCH_CRITERIA_KEY1]: '',
     [SEARCH_RESULTS_KEY]: [],
 };
-
+let searchPatient;
 
 /**
  * Logic needed for the view playlist page of the website.
@@ -38,12 +28,11 @@ class SearchPatient extends BindingClass {
     constructor() {
         super();
 
-        this.bindClassMethods(['mount', 'search', 'displaySearchResults', 'getHTMLForSearchResults','updatePatientRow'], this);
+        this.bindClassMethods(['mount', 'search', 'displaySearchResults', 'getHTMLForSearchResults','updatePatientRow','deletePatientRow'], this);
 
         // Create a enw datastore with an initial "empty" state.
         this.dataStore = new DataStore(EMPTY_DATASTORE_STATE);
         this.header = new Header(this.dataStore);
-        this.dataStore.addChangeListener(this.displaySearchResults);
         console.log("searchPatient constructor");
 
 
@@ -63,20 +52,26 @@ class SearchPatient extends BindingClass {
             document.getElementById('search-btn').addEventListener('click', this.search);
 
             // Set up event delegation for the update buttons
-            document.getElementById('search-results-display').addEventListener('click', (event) => {
-                const target = event.target;
-                if (target.tagName === 'BUTTON' && target.classList.contains('update-button')) {
-                    const rowId = target.dataset.id;
-                    this.updatePatientRow(event);
-                }else if (target.tagName === 'BUTTON' && target.classList.contains('delete-button')){
-                      const rowId = target.dataset.id;
-                      this.deletePatientRow(event);
-                }
-            });
+        document.getElementById('search-results-display').addEventListener('click', (event) => {
+            const target = event.target;
+            if (target.tagName === 'BUTTON' && target.classList.contains('update-button')) {
+                const rowId = target.dataset.id;
+                this.updatePatientRow(event);
+            } else if (target.tagName === 'BUTTON' && target.classList.contains('delete-button')) {
+                const rowId = target.dataset.id;
+                this.deletePatientRow(event);
+            }
+        });
 
             this.header.addHeaderToPage();
 
             this.client = new PatientRecordClient();
+        //     document.getElementById(eleId).addEventListener('click', (event) => {
+        //     const rowId = event.target.dataset.id;
+        //     const eleId = event.target.dataset.eleId;
+        //     this.deletePatientRow(rowId, eleId);
+        // });
+
 
     }
 
@@ -158,7 +153,9 @@ class SearchPatient extends BindingClass {
                     let i = 0;
 
                     for (const res of searchResults) {
-
+                        const prefix = 'delete';
+                        const suffix = res.patientId;
+                        const eleId = prefix+""+suffix;
 
                         html += `
                         <tr data-id="${res.patientId}">
@@ -173,7 +170,7 @@ class SearchPatient extends BindingClass {
                             <td>${res.address}</td>
                             <td>
                                <button class="update-button" data-id="${res.patientId}">Update</button>
-                               <button class="delete-button"  data-id="${res.patientId}">Delete</button>
+                               <button id="${eleId}" onclick="searchPatient.deletePatientRow('${res.patientId}', '${eleId}')">Delete</button>
 
                             </td>
                         </tr>`;
@@ -306,11 +303,11 @@ class SearchPatient extends BindingClass {
 
 
     }
-    async deletePatientRow(event) {
+    async deletePatientRow(rowId,eleId) {
 
 
-        const target = event.target;
-        const rowId = target.dataset.id; // Get the rowId from the clicked button's dataset
+        // const target = event.target;
+        // const rowId = target.dataset.id; // Get the rowId from the clicked button's dataset
 
         const confirmation = confirm("Are you sure you want to delete this record?");
         if (!confirmation) {
@@ -330,13 +327,18 @@ class SearchPatient extends BindingClass {
                     errorMessageDisplay.classList.remove('hidden');
                 });
 
-                this.dataStore.set('deletePatient/{patientId}', result);
+                this.dataStore.set('deletePatient/{rowId}', result);
 
 
             // Remove the deleted row from the UI
             const row = document.querySelector(`tr[data-id="${rowId}"]`);
             if (row) {
+                const deleteButton = document.getElementById(eleId);
+                deleteButton.innerText = 'Deleting...';
+                await new Promise(resolve => setTimeout(resolve, 500));
+
                 row.remove();
+
             }
         } catch (error) {
             errorMessageDisplay.innerText = `Error: ${error.message}`;
@@ -353,8 +355,9 @@ class SearchPatient extends BindingClass {
  * Main method to run when the page contents have loaded.
  */
 const main = async () => {
-    const searchPatient = new SearchPatient();
-    searchPatient.mount();
+     const searchPatient = new SearchPatient();
+     window.searchPatient = searchPatient;
+     searchPatient.mount();
 
 };
 

@@ -9,9 +9,9 @@ import DataStore from '../util/DataStore';
 class CreatePatientProfile extends BindingClass {
     constructor() {
         super();
-        this.bindClassMethods(['mount', 'submit', 'redirectToViewPlaylist'], this);
+        this.bindClassMethods(['mount', 'submit', 'redirectToViewPatientHistory'], this);
         this.dataStore = new DataStore();
-        this.dataStore.addChangeListener(this.redirectToViewPlaylist);
+        this.dataStore.addChangeListener(this.redirectToViewPatientHistory);
         this.header = new Header(this.dataStore);
     }
 
@@ -50,24 +50,23 @@ class CreatePatientProfile extends BindingClass {
 
 
 
-        const patients = await this.client.addPatient(firstName, lastName, contactNumber,dob ,emailAddress ,address , (error) => {
+        const patient = await this.client.addPatient(firstName, lastName, contactNumber,dob ,emailAddress ,address , (error) => {
             createButton.innerText = origButtonText;
-
             errorMessageDisplay.innerText = `Error: ${error.message}`;
             errorMessageDisplay.classList.remove('hidden');
 
         });
-        this.dataStore.set('patients', patients);
-         createButton.innerText = 'create patient profile';
+        this.dataStore.set('patient', patient);
+        //createButton.innerText = 'create patient profile';
     }
 
     /**
-     * When the playlist is updated in the datastore, redirect to the view playlist page.
+     * When the patient is updated in the datastore, redirect to the view patient page.
      */
-    redirectToViewPlaylist() {
-        const playlist = this.dataStore.get('playlist');
-        if (playlist != null) {
-            window.location.href = `/playlist.html?id=${playlist.id}`;
+    redirectToViewPatientHistory() {
+        const patient = this.dataStore.get('patient');
+        if (patient != null) {
+            window.location.href = `/viewPatientHistory.html?id=${patient.patientId}`;
         }
     }
 }

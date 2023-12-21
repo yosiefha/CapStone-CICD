@@ -4,12 +4,72 @@
 <head>
     <script type="text/javascript" src="assets/searchPatient.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
+<!--    <style>-->
+<!--        body {-->
+<!--            font-family: 'Arial', sans-serif;-->
+<!--        }-->
+
+
+<!--        h2 {-->
+<!--            text-align: center;-->
+<!--            color: #333;-->
+<!--        }-->
+
+<!--        .form-field {-->
+<!--            margin-bottom: 15px;-->
+<!--        }-->
+
+<!--        label {-->
+<!--            display: block;-->
+<!--            margin-bottom: 5px;-->
+<!--            color: #555;-->
+<!--        }-->
+
+<!--        input {-->
+<!--            width: 100%;-->
+<!--            padding: 10px;-->
+<!--            box-sizing: border-box;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 4px;-->
+<!--            font-size: 16px;-->
+<!--        }-->
+
+<!--        .button {-->
+<!--            display: inline-block;-->
+<!--            padding: 10px 20px;-->
+<!--            text-decoration: none;-->
+<!--            background-color: #3498db;-->
+<!--            color: #fff;-->
+<!--            border-radius: 4px;-->
+<!--            transition: background-color 0.3s;-->
+<!--        }-->
+
+<!--        .button:hover {-->
+<!--            background-color: #2980b9;-->
+<!--        }-->
+
+<!--        .footer {-->
+<!--            position: fixed;-->
+<!--            bottom: 0;-->
+<!--            width: 100%;-->
+<!--            background-color: #333;-->
+<!--            color: #fff;-->
+<!--            padding: 10px 0;-->
+<!--            text-align: center;-->
+<!--        }-->
+
+<!--        .container-fluid {-->
+<!--            margin: 0 auto;-->
+<!--            max-width: 1200px; /* Adjust the max-width as needed */-->
+<!--        }-->
+<!--    </style>-->
 </head>
 
 <body class="background">
     <header class="header" id="header"></header>
     <div class="card">
-        <h2>Search Patient</h2>
+        <h3>Search Patient</h3>
         <form class="card-content" id="search-patient-form">
             <p class="hidden error" id="error-message"> </p>
             <p class="form-field">
@@ -21,7 +81,7 @@
             <p class="form-field">
                 <label>Last Name</label>
                 <input type="text" class="validated-field" id="lastName" placeholder="Last Name" autofocus>
-<!--                <sub>Search is case-sensitive and tags must match exactly.</sub>-->
+
             </p>
         </form>
         <p class="button-group">
@@ -34,6 +94,16 @@
         <div id="search-results-display">
         </div>
     </div>
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p>&copy; 2023 The Orota Referral Hospital. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>
