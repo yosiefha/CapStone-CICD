@@ -6,11 +6,6 @@
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
-<!--  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
-<!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>-->
-<!--  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
-
-</head>
 
 
 </head>
@@ -19,96 +14,85 @@
 
 <header class="header" id="header"></header>
 <div class="card">
-  <h2 id="patient-name"></h2>
+<!--  <h3>Patient Details: <span id="patient-name"></span></h3>-->
   <h3>Patient Name: <span id="patient-full-name"></span></h3>
-
 </div>
-<div class="card">
-
-  <div class="container-fluid">
-    <div class="row">
-      <!-- First Column -->
-      <div class="col-md-4">
-        <h2>Add Diagnosis</h2>
-        <form class="card-content" id="add-diagnosis-form">
-          <p class="hidden error" id="error-message"> </p>
-          <p class="form-field">
-            <label>Description</label>
-            <input type="text" required class="validated-field" id="description" placeholder="B00000000" autofocus>
-          </p>
-
-        </form>
-
-        <p class="button-group">
-          <a href="#" class="button" id="add-diagnosis">Add diagnosis</a>
-        </p>
-      </div>
-
-      <!-- Second Column -->
-      <div class="col-md-8" id="diagnosis-details">
-<!--        <h2>Column 2</h2>-->
-<!--        <p>This is the content of the second column.</p>-->
-      </div>
-    </div>
-  </div>
-
-
-
-</div>
-
 <div class="card">
   <div class="container-fluid">
     <div class="row">
-      <!-- First Column -->
-      <div class="col-md-4">
-
-        <h2>Add Medication</h2>
-        <form class="card-content" id="add-song1">
-          <p class="hidden error" id="error-message1"> </p>
-          <p class="form-field">
-            <label>Medication Name</label>
-            <input type="text" required class="validated-field" id="medicationName">
+      <div class="col-md-12">
+        <div>
+          <h3>Add Diagnosis</h3>
+          <form class="card-content" id="add-diagnosis-form">
+            <p class="hidden error" id="error-message"> </p>
+            <p class="form-field">
+              <label>Description</label>
+              <input type="text" required class="form-control" id="description">
+            </p>
+          </form>
+          <p class="button-group">
+            <a href="#" class="button" id="add-diagnosis">Add diagnosis</a>
           </p>
-          <p class="form-field">
-            <label>Dosage</label>
-            <input type="text" id="dosage">
-          </p>
-          <p class="form-field">
-            <label>Start Date</label>
-            <input type="text" id="startDate">
-          </p>
-          <p class="form-field">
-            <label>endDate</label>
-            <input type="text" id="endDate">
-          </p>
-          <p class="form-field">
-            <label>Instruction</label>
-            <input type="text" id="instruction">
-          </p>
-
-        </form>
-
-        <p class="button-group">
-          <a href="#" class="button" id="add-medication">Add Medication</a>
-
-        </p>
-
-
+        </div>
+        <div id="diagnosis-details"></div>
       </div>
-
-      <!-- Second Column -->
-      <div class="col-md-8" id="medication-details">
-<!--        <h2>Column 2</h2>-->
-<!--        <p>This is the content of the second column.</p>-->
-      </div>
-
     </div>
-
   </div>
 </div>
-
-<!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
-
+<div class="card-add-medication">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div>
+          <h3>Add Medication</h3>
+          <form class="card-content" id="add-medication-form">
+            <p class="hidden error" id="error-message1"> </p>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label>Medication Name</label>
+                <input type="text" required class="form-control" id="medicationName">
+              </div>
+              <div class="form-group col-md-2">
+                <label>Dosage</label>
+                <input type="text" class="form-control" id="dosage">
+              </div>
+              <div class="form-group col-md-3">
+                <label>Start Date</label>
+                <input type="text" class="form-control" id="startDate">
+              </div>
+              <div class="form-group col-md-3">
+                <label>End Date</label>
+                <input type="text" class="form-control" id="endDate">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Instruction</label>
+              <input type="text" class="form-control" id="instruction">
+            </div>
+          </form>
+          <p class="button-group">
+            <a href="#" class="button" id="add-medication">Add Medication</a>
+          </p>
+        </div>
+        <div id="medication-details"></div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>&copy; 2023 The Orota Referral Hospital. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
 </html>
+
+
+
