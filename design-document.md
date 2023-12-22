@@ -2,7 +2,7 @@
 
 
 
-## _Hospital Management System_ Design
+## _Patient Record Service System_ Design
 
 ## 1. Problem Statement
 
@@ -27,24 +27,29 @@ _As a healthcare professional, I want to create electronic records for new patie
 #### U3. Search Patient using name
 _As a healthcare professional, I want to search for patient records using  name for quick and easy access._
 
-#### U4. Search Patient using DOB
-_As a healthcare professional, I want to search for patient records using date of birth for quick and easy access._
+#### U4. Update Patient profile
+_As a healthcare professional, I want to update patient profile._
 
-#### U5. Update patient diagnosis record
+#### U5. Delete Patient Record
+_As a healthcare professional, I want to delete patient record._
+
+#### U6. Create new patient diagnosis
+_As a healthcare professional, I want to create patient diagnosis record._
+
+#### U7. Update patient diagnosis record
 _As a healthcare professional, I want to be able to update patient records with new diagnoses._
 
-#### U6. Update patient medication record
+#### U8. Delete patient diagnosis record
+_As a healthcare professional, I want to be able to delete patient records._
+
+#### U9. Create patient medication record
+_As a healthcare professional, I want to be able to create  patient medication records._
+
+#### U10. Update patient medication record
 _As a healthcare professional, I want to be able to update patient records with changes to their medical history._
 
-#### U7. Delete patient diagnosis record
-_As a healthcare professional, I want to be able to delete  patient diagnoses records._
-
-#### U8. Delete patient medication record
+#### U11. Delete patient medication record
 _As a healthcare professional, I want to be able to delete  patient  medications records._
-
-#### U9. Search complete medical History
-_As a healthcare professional, I want to view a patient's complete medical history, including past diagnoses and treatments to make informed decisions._
-
 
 
 ## 4. Project Scope
@@ -90,7 +95,6 @@ Hospital managment system  will also provide a web interface for users to access
             String firstName;
             String lastName;
             Date dateOfBirth;
-            String gender;
             String contactNumber;
             String emailAddress;
             String address;
@@ -123,8 +127,8 @@ String madicationId      // Unique identifier for the medication
 
 ## 6.2. _Get Patient Profile Endpoint_
 
- * Accepts `GET` requests to `/patients/{patientId}`
- * Accepts a patientId and returns the corresponding patientModel
+ * Accepts `GET` requests to `/patients/{firstName}/{lastName}`
+ * Accepts a firstName and lastName returns the corresponding patientModel
      *  if the given patient is not found throws a PatientNotFoundException.
 
 ## 6.3 _Create Patient Profile Endpoint_
@@ -136,63 +140,63 @@ String madicationId      // Unique identifier for the medication
 
 ## 6.4. _Update Patient Profile Endpoint_
 
-  * Accepts `PUT`  requests to `/patients/{patientId}`
+  * Accepts `PUT`  requests to `/patients/patient/{patientId}`
   * Accepts data to update a patient profile including . Returns an updated patient profile.
       * if the given patient is not found throws a PatientNotFoundException.
 
 ## 6.5. _Delet Patient Profile Endpoint_
 
-  * Accepts `DELETE` requests to `/patients/{patientId}`
+  * Accepts `DELETE` requests to `/patients/patient/{patientId}`
   * Accepts data to delete patient  from patients table, returns success status
       * If the given patient is not found, it returns the PatientNotFoundException
   
 
 ## 6.6. _Get Patient medication Endpoint_
 
- * Accepts `GET` requests to `/patients/{patientId}/medications`
+ * Accepts `GET` requests to `/medications/{patientId}`
  * Accepts a patientId and returns the corresponding patient records from  medications  table
      *  if the given patient is not found throws a PatientNotFoundException.
 
 ## 6.7. _Get Patient diagnosis Endpoint_
 
-* Accepts `GET` requests to `/patients/{patientId}/diagnoses`
+* Accepts `GET` requests to `/diagnoses/{patientId}`
 * Accepts a patientId and returns the corresponding patient records from  diagnoses table
     *  if the given patient is not found throws a PatientNotFoundException.
 
 ## 6.8. _Create Patient diagnosis Endpoint_
 
-* Accepts `POST` requests to `/patients/{patientId}/diagnoses`
+* Accepts `POST` requests to `/diagnoses`
 * Accepts data to create a new patient diagnosis in the diagnoses table.
      *  if the given patient is not found throws a PatientNotFoundException.
 
 ## 6.9. _Create Patient medication Endpoint_
 
-* Accepts `POST` requests to `/patients/{patientId}/medications`
+* Accepts `POST` requests to `/medications`
 * Accepts data to create a new patient in the medication table.
     *  if the given patient is not found throws a PatientNotFoundException.
 
 ## 6.10. _Update Patient medication  Endpoint_
 
- * Accepts `PUT` requests to `/patients/{patientId}/medications/{medicationId}`
+ * Accepts `PUT` requests to `/medications`
  * Accepts data to update a  patient  medication record .
      *  if the given patient is not found throws a PatientNotFoundException.
 
-## 6.11. _Update Patient medication  Endpoint_
+## 6.11. _Update Patient diagnosis  Endpoint_
 
-* Accepts `PUT` requests to `/patients/{patientId}/diagnoses/{diagnosisId}`
+* Accepts `PUT` requests to `/diagnoses`
 * Accepts data to update a  patient  diagnosis record .
     *  if the given patient is not found throws a PatientNotFoundException.
 
 
-## 6.12. _Delete Patient Record Endpoint_
+## 6.12. _Delete Patient medication Record Endpoint_
 
- * Accepts `DELETE` requests to `/patients/{patientId}/medications/{medicationId}`
+ * Accepts `DELETE` requests to `/medications/medication/{medicationId}`
  * Accepts data to Delete a  patient  medication record.
      *  if the given patient is not found throws a PatientNotFoundException.
 
-## 6.13. _Delete Patient Record Endpoint_
+## 6.13. _Delete Patient Diagnosis Record Endpoint_
 
-* Accepts `DELETE` requests to `/patients/{patientId}/diagnoses/{diagnosisId}`
+* Accepts `DELETE` requests to `/diagnoses/diagnosis/{diagnosisId}`
 * Accepts data to Delete a  patient  diagnosis record.
     *  if the given patient is not found throws a PatientNotFoundException.
 
@@ -204,7 +208,7 @@ S patientId - hashkey
 S firstName 
 S lastName
 S dateOfBirth
-N contactNumber
+S contactNumber
 S emailAddress
 S address;
 ```
