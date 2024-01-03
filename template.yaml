@@ -399,7 +399,7 @@ Resources:
         PatientRecordService:
           Type: Api
           Properties:
-            Path: /patients/patient/{patientId}
+            Path: /patients/{patientId}
             Method: delete
 
 

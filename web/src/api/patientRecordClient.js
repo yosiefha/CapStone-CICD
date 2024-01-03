@@ -189,7 +189,7 @@ export default class PatientRecordClient extends BindingClass {
         async deletePatient(patientId,  errorCallback) {
                  try {
                      const token = await this.getTokenOrThrow("Only authenticated users can delete Patient.");
-                     const response = await this.axiosClient.delete(`patients/patient/${patientId}`, {
+                     const response = await this.axiosClient.delete(`patients/${patientId}`, {
                          headers: {
                             Authorization: `Bearer ${token}`
                      }}
