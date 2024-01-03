@@ -272,7 +272,7 @@ Resources:
         PatientRecordService:
           Type: Api
           Properties:
-            Path: /patients/{firstName}/{lastName}
+            Path: /patients/search/{firstName}/{lastName}
             Method: get
 
 
@@ -335,7 +335,7 @@ Resources:
         PatientRecordService:
           Type: Api
           Properties:
-            Path: /patients/search/{patientId}
+            Path: /patients/{patientId}
             Method: GET
 
 
@@ -421,7 +421,7 @@ Resources:
         PatientRecordService:
           Type: Api
           Properties:
-            Path: /diagnoses/diagnosis/{diagnosisId}
+            Path: /diagnoses/{diagnosisId}
             Method: delete
 
   DeleteMedicationLambda:
@@ -441,7 +441,7 @@ Resources:
         PatientRecordService:
           Type: Api
           Properties:
-            Path: /medications/medication/{medicationId}
+            Path: /medications/{medicationId}
             Method: delete
 
   UpdatePatientLambda:
@@ -461,7 +461,7 @@ Resources:
         PatientRecordService:
           Type: Api
           Properties:
-            Path: /patients/patient/{patientId}
+            Path: /patients/{patientId}
             Method: PUT
 
   UpdateMedicationLambda:

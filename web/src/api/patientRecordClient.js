@@ -117,7 +117,7 @@ export default class PatientRecordClient extends BindingClass {
         async updatePatient(patientId,firstName,lastName, dob,contactNumber,emailAddress,address, errorCallback) {
                      try {
                          const token = await this.getTokenOrThrow("Only authenticated users can create diagnosis.");
-                         const response = await this.axiosClient.put(`patients/patient/{patientId}`, {
+                         const response = await this.axiosClient.put(`patients/{patientId}`, {
 
                              patientId : patientId,
                              firstName : firstName,
@@ -202,7 +202,7 @@ export default class PatientRecordClient extends BindingClass {
         async deleteDiagnosis(diagnosisId,  errorCallback) {
           try {
               const token = await this.getTokenOrThrow("Only authenticated users can delete Diagnosis.");
-              const response = await this.axiosClient.delete(`diagnoses/diagnosis/${diagnosisId}`, {
+              const response = await this.axiosClient.delete(`diagnoses/${diagnosisId}`, {
                   headers: {
                      Authorization: `Bearer ${token}`
               }}
@@ -216,7 +216,7 @@ export default class PatientRecordClient extends BindingClass {
         async deleteMedication(medicationId,  errorCallback) {
                 try {
                     const token = await this.getTokenOrThrow("Only authenticated users can delete Diagnosis.");
-                    const response = await this.axiosClient.delete(`medications/medication/${medicationId}`, {
+                    const response = await this.axiosClient.delete(`medications/${medicationId}`, {
                         headers: {
                            Authorization: `Bearer ${token}`
                     }}
@@ -256,7 +256,7 @@ export default class PatientRecordClient extends BindingClass {
         async search(firstName, lastName,errorCallback) {
            try {
                const token = await this.getTokenOrThrow("Only authenticated users can delete Patient.");
-              const response = await this.axiosClient.get(`patients/${firstName}/${lastName}`,{
+              const response = await this.axiosClient.get(`patients/search/${firstName}/${lastName}`,{
                   headers: {
                       Authorization: `Bearer ${token}`
                   }});
@@ -273,7 +273,7 @@ export default class PatientRecordClient extends BindingClass {
         async getPatient(patientId,errorCallback) {
               try {
                   const token = await this.getTokenOrThrow("Only authenticated users can delete patient profile.");
-                 const response = await this.axiosClient.get(`patients/search/${patientId}`,{
+                 const response = await this.axiosClient.get(`patients/${patientId}`,{
                      headers: {
                          Authorization: `Bearer ${token}`
                      }});
