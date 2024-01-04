@@ -289,7 +289,7 @@ export default class PatientRecordClient extends BindingClass {
         async getPatientDiagnosis(patientId,errorCallback) {
                   try {
                       const token = await this.getTokenOrThrow("Only authenticated users can get Diagnosis.");
-                     const response = await this.axiosClient.get(`diagnoses/${patientId}`,{
+                     const response = await this.axiosClient.get(`/patients/${patientId}/diagnoses`,{
                          headers: {
                              Authorization: `Bearer ${token}`
                          }});
@@ -304,7 +304,7 @@ export default class PatientRecordClient extends BindingClass {
         async getPatientMedication(patientId,errorCallback) {
                        try {
                            const token = await this.getTokenOrThrow("Only authenticated users can get Patient Medication.");
-                          const response = await this.axiosClient.get(`medications/${patientId}`,{
+                          const response = await this.axiosClient.get(`/patients/${patientId}/medications`,{
                               headers: {
                                   Authorization: `Bearer ${token}`
                               }});

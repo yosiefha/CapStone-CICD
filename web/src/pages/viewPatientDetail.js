@@ -265,7 +265,7 @@ updateRow(rowId) {
                if (isEditMode) {
                    const cells = row.querySelectorAll('td:not(:last-child)');
                    cells.forEach(cell => {
-                       const value = cell.textContent;
+                       const value = cell.innerText;
                        cell.innerHTML = `<input type="text" value="${value}">`;
                    });
 
@@ -301,7 +301,7 @@ updateMedicationRow(rowId) {
 
                    const cells = row.querySelectorAll('td:not(:last-child)');
                    cells.forEach(cell => {
-                       const value = cell.textContent;
+                       const value = cell.innerText;
                        cell.innerHTML = `<input type="text" value="${value}">`;
                    });
 
@@ -333,7 +333,7 @@ async saveRow(rowId){
             const cells = row.querySelectorAll('td:not(:last-child) input');
 
             // Collect the updated values from the input fields
-            const updatedValues = Array.from(cells).map(input => input.value);
+            const updatedValues = Array.from(cells).map(input => input.value.trim());
 
 
             //  logic to save the updated values
@@ -367,14 +367,14 @@ async saveRow(rowId){
 
               // Restore original content
              cells.forEach((cell, index) => {
-                 cell.textContent = updatedValues[index];
+                 cell.innerHTML = updatedValues[index];
              });
 
 
 
             // Update button text and event handler
              const updateButton = row.querySelector('button');
-             updateButton.textContent = 'Update';
+             updateButton.innerText = 'Update';
              updateButton.onclick = () => {
                  this.updateRow(rowId); // Use arrow function to maintain 'this'
              };
@@ -387,7 +387,7 @@ async saveRowMedication(rowId){
             const cells = row.querySelectorAll('td:not(:last-child) input');
 
             // Collect the updated values from the input fields
-            const updatedValues = Array.from(cells).map(input => input.value);
+            const updatedValues = Array.from(cells).map(input => input.value.trim());
 
 
             //  logic to save the updated values
@@ -423,12 +423,12 @@ async saveRowMedication(rowId){
 
               // Restore original content
              cells.forEach((cell, index) => {
-                 cell.textContent = updatedValues[index];
+                 cell.innerText = updatedValues[index];
              });
 
              // Update button text and event handler
              const updateButton = row.querySelector('button');
-             updateButton.textContent = 'Update';
+             updateButton.innerText = 'Update';
              updateButton.onclick = () => {
                  this.updateMedicationRow(rowId); // Use arrow function to maintain 'this'
              };

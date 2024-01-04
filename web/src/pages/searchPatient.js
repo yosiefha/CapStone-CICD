@@ -19,12 +19,6 @@ let searchPatient;
  * Logic needed for the view playlist page of the website.
  */
 class SearchPatient extends BindingClass {
-
-
-
-
-
-
     constructor() {
         super();
 
@@ -38,42 +32,67 @@ class SearchPatient extends BindingClass {
 
     }
 
-
-
-
-
-
     /**
      * Add the header to the page and load the MusicPlaylistClient.
      */
-    mount() {
+     mount() {
             // Wire up the form's 'submit' event and the button's 'click' event to the search method.
             document.getElementById('search-patient-form').addEventListener('submit', this.search);
             document.getElementById('search-btn').addEventListener('click', this.search);
+            document.getElementById('new-patient-btn').addEventListener('click', () => {
+                // Navigate to createPatient.html
+                window.location.href = 'createPatient.html';
+            });
 
             // Set up event delegation for the update buttons
-        document.getElementById('search-results-display').addEventListener('click', (event) => {
-            const target = event.target;
-            if (target.tagName === 'BUTTON' && target.classList.contains('update-button')) {
-                const rowId = target.dataset.id;
-                this.updatePatientRow(event);
-            } else if (target.tagName === 'BUTTON' && target.classList.contains('delete-button')) {
-                const rowId = target.dataset.id;
-                this.deletePatientRow(event);
-            }
-        });
+            document.getElementById('search-results-display').addEventListener('click', (event) => {
+                const target = event.target;
+                if (target.tagName === 'BUTTON' && target.classList.contains('update-button')) {
+                    const rowId = target.dataset.id;
+                    this.updatePatientRow(event);
+                } else if (target.tagName === 'BUTTON' && target.classList.contains('delete-button')) {
+                    const rowId = target.dataset.id;
+                    this.deletePatientRow(event);
+                }
+            });
 
             this.header.addHeaderToPage();
-
             this.client = new PatientRecordClient();
-        //     document.getElementById(eleId).addEventListener('click', (event) => {
-        //     const rowId = event.target.dataset.id;
-        //     const eleId = event.target.dataset.eleId;
-        //     this.deletePatientRow(rowId, eleId);
-        // });
+            this.checkUserLogin();
+
 
 
     }
+
+
+
+    checkUserLogin() {
+
+        // Check if the user is logged in
+        this.client.getIdentity()
+            .then(currentUser => {
+                const searchButton = document.getElementById('search-btn');
+                const newPatientButton = document.getElementById('new-patient-btn');
+
+                if (currentUser) {
+                    // User is logged in, enable search and new patient buttons
+
+                    searchButton.removeAttribute('disabled');
+                    newPatientButton.removeAttribute('disabled');
+
+                } else {
+                     alert("user not logged in")
+                    // User is not logged in, disable search and new patient buttons
+                    searchButton.setAttribute('disabled', 'disabled');
+                    newPatientButton.setAttribute('disabled', 'disabled');
+                }
+            })
+            .catch(error => {
+                console.error('Error checking user login:', error);
+            });
+
+    }
+
 
     /**
      * Uses the client to perform the search,
@@ -358,6 +377,7 @@ const main = async () => {
      const searchPatient = new SearchPatient();
      window.searchPatient = searchPatient;
      searchPatient.mount();
+     //searchPatient.checkUserLogin();
 
 };
 

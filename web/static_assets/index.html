@@ -4,66 +4,6 @@
 <head>
     <script type="text/javascript" src="assets/searchPatient.js"></script>
     <link rel="stylesheet" type="text/css" href="css/style.css">
-
-<!--    <style>-->
-<!--        body {-->
-<!--            font-family: 'Arial', sans-serif;-->
-<!--        }-->
-
-
-<!--        h2 {-->
-<!--            text-align: center;-->
-<!--            color: #333;-->
-<!--        }-->
-
-<!--        .form-field {-->
-<!--            margin-bottom: 15px;-->
-<!--        }-->
-
-<!--        label {-->
-<!--            display: block;-->
-<!--            margin-bottom: 5px;-->
-<!--            color: #555;-->
-<!--        }-->
-
-<!--        input {-->
-<!--            width: 100%;-->
-<!--            padding: 10px;-->
-<!--            box-sizing: border-box;-->
-<!--            border: 1px solid #ccc;-->
-<!--            border-radius: 4px;-->
-<!--            font-size: 16px;-->
-<!--        }-->
-
-<!--        .button {-->
-<!--            display: inline-block;-->
-<!--            padding: 10px 20px;-->
-<!--            text-decoration: none;-->
-<!--            background-color: #3498db;-->
-<!--            color: #fff;-->
-<!--            border-radius: 4px;-->
-<!--            transition: background-color 0.3s;-->
-<!--        }-->
-
-<!--        .button:hover {-->
-<!--            background-color: #2980b9;-->
-<!--        }-->
-
-<!--        .footer {-->
-<!--            position: fixed;-->
-<!--            bottom: 0;-->
-<!--            width: 100%;-->
-<!--            background-color: #333;-->
-<!--            color: #fff;-->
-<!--            padding: 10px 0;-->
-<!--            text-align: center;-->
-<!--        }-->
-
-<!--        .container-fluid {-->
-<!--            margin: 0 auto;-->
-<!--            max-width: 1200px; /* Adjust the max-width as needed */-->
-<!--        }-->
-<!--    </style>-->
 </head>
 
 <body class="background">
@@ -85,8 +25,8 @@
             </p>
         </form>
         <p class="button-group">
-            <a href="#" class="button" id="search-btn">search patient</a>
-            <a href="createPatient.html" class="button">New Patient</a>
+            <button href="#" type="button" class="button" id="search-btn" disabled>search patient</button>
+            <button href="createPatient.html" type="button" class="button" id="new-patient-btn" disabled>New Patient</button>
         </p>
     </div>
     <div class="card hidden" id='search-results-container'>
@@ -104,6 +44,8 @@
             </div>
         </div>
     </footer>
+
+
 </body>
 
 </html>

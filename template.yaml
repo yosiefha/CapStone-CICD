@@ -356,7 +356,7 @@ Resources:
         PatientRecordService:
           Type: Api
           Properties:
-            Path: /diagnoses/{patientId}
+            Path: /patients/{patientId}/diagnoses
             Method: GET
 
 
@@ -377,7 +377,7 @@ Resources:
         PatientRecordService:
           Type: Api
           Properties:
-            Path: /medications/{patientId}
+            Path: /patients/{patientId}/medications
             Method: GET
 
 
