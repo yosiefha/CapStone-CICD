@@ -1,32 +1,43 @@
-name: Deploy-patient-record
+name: Deploy AWS SAM Application
 
 on:
   push:
     branches:
-      - 'main'
-      - 'feature**'
+      - main  # Change to your main branch name
 
 jobs:
-  productionDeployment:
-    name: production-deployment
+  deploy:
+    name: Deploy
     runs-on: macos-latest
-    environment:
-      name: Production
-      url: https://test.com
-    strategy:
-      matrix:
-        node-version: [14.x]
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - name: serverless deploy
-        uses: serverless/github-action@v2
-        with:
-          args: deploy
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: <YOUR_AWS_REGION>
+
+      - name: Install SAM CLI
+        run: |
+          sudo apt update
+          sudo apt install unzip -y
+          curl -Lo /tmp/sam-installation.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+          sudo unzip -d /usr/local/bin /tmp/sam-installation.zip
+
+      - name: Validate SAM template
+        run: sam validate -t YOUR_TEMPLATE_FILE.yml
+
+      - name: Deploy SAM application
+        run: sam deploy --stack-name hospital-managment-system --s3-bucket capstone-cicd-yosief.abraham --parameter-overrides CognitoDomain=project-cicd-capstone-yosief-abraham S3Bucket=capstone-cicd-yosief.abraham FrontendDeployment=local --capabilities CAPABILITY_IAM
+
+      # Add more steps as needed for testing, monitoring, etc.
+
+
+
+
+
+
+
