@@ -28,7 +28,7 @@ jobs:
           sudo unzip -d /usr/local/bin /tmp/sam-installation.zip
 
       - name: Validate SAM template
-        run: sam validate -t YOUR_TEMPLATE_FILE.yml
+        run: sam validate -t template.yaml
 
       - name: Deploy SAM application
         run: sam deploy --stack-name hospital-managment-system --s3-bucket capstone-cicd-yosief.abraham --parameter-overrides CognitoDomain=project-cicd-capstone-yosief-abraham S3Bucket=capstone-cicd-yosief.abraham FrontendDeployment=local --capabilities CAPABILITY_IAM
