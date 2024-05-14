@@ -20,13 +20,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
 
-      - name: Install SAM CLI
-        run: |
-          sudo apt update
-          sudo apt install unzip -y
-          curl -Lo /tmp/sam-installation.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
-          sudo unzip -d /usr/local/bin /tmp/sam-installation.zip
-
+     
       - name: Validate SAM template
         run: sam validate -t template.yaml
 
