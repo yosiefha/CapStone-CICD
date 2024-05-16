@@ -22,14 +22,14 @@ import static com.nashss.se.hms.dynamodb.models.Diagnosis.SEARCH_ByPatientId_IND
  */
 public class DiagnosisDAO {
 
-    private final DynamoDBMapper dynamoDBMapper1;
+    private final DynamoDBMapper dynamoDBMapper;
 
     /**
      * @param dynamoDbMapper a mapper.
      */
     @Inject
     public DiagnosisDAO(DynamoDBMapper dynamoDbMapper) {
-        this.dynamoDBMapper1 = dynamoDbMapper;
+        this.dynamoDBMapper = dynamoDbMapper;
     }
 
     /**
@@ -39,7 +39,7 @@ public class DiagnosisDAO {
      * @return The saved diagnosis object.
      */
     public Diagnosis savePatientDiagnoses(Diagnosis diagnosis) {
-        this.dynamoDBMapper1.save(diagnosis);
+        this.dynamoDBMapper.save(diagnosis);
         return diagnosis;
     }
 
@@ -59,7 +59,7 @@ public class DiagnosisDAO {
                 .withKeyConditionExpression("patientId = :patientId")
                 .withExpressionAttributeValues(valueMap);
 
-        return this.dynamoDBMapper1.query(Diagnosis.class, queryExpression);
+        return this.dynamoDBMapper.query(Diagnosis.class, queryExpression);
 
     }
 
@@ -71,7 +71,7 @@ public class DiagnosisDAO {
      * @throws DiagnosisNotFoundException If no diagnosis is found with the given diagnosisId.
      */
     public Diagnosis getDiagnosis(String diagnosisId) {
-        Diagnosis diagnosis = this.dynamoDBMapper1.load(Diagnosis.class, diagnosisId);
+        Diagnosis diagnosis = this.dynamoDBMapper.load(Diagnosis.class, diagnosisId);
         if (diagnosis == null) {
             throw new DiagnosisNotFoundException("Could not find diagnosis with id " + diagnosisId);
         }
@@ -85,7 +85,7 @@ public class DiagnosisDAO {
      */
     public void deleteDiagnosis(Diagnosis diagnosis) {
 
-        dynamoDBMapper1.delete(diagnosis);
+        dynamoDBMapper.delete(diagnosis);
     }
 
     /**
@@ -99,7 +99,7 @@ public class DiagnosisDAO {
             throw new IllegalArgumentException("Input list must not contain null values");
         }
 
-        dynamoDBMapper1.batchDelete(diagnosisList);
+        dynamoDBMapper.batchDelete(diagnosisList);
     }
 
 
