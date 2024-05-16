@@ -2,8 +2,12 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "hospital-managment-system"
+stack_name = "PatientRecordManagementSystem"
 region = "us-east-2"
-confirm_changeset = false
+confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
+resolve_s3 = true
+s3_prefix = "PatientRecordManagementSystem"
+disable_rollback = true
+parameter_overrides = "CognitoDomain=\"cicd-capstone-joe\" S3Bucket=\"capstone-cicd-yosief.ab\" FrontendDeployment=\"remote\""
